@@ -1,14 +1,14 @@
 import AppKit
 import Combine
 
-final class Sidebar: NSVisualEffectView {
+final class Middlebar: NSVisualEffectView {
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
         super.init(frame: .zero)
         state = .active
-        material = .hudWindow
+        material = .popover
         translatesAutoresizingMaskIntoConstraints = false
-        widthAnchor.constraint(equalToConstant: 100).isActive = true
+        widthAnchor.constraint(equalToConstant: 180).isActive = true
         
         let separator = Separator()
         addSubview(separator)

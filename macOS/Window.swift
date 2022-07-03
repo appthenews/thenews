@@ -9,12 +9,13 @@ final class Window: NSWindow {
     init() {
         super.init(contentRect: .init(x: 0,
                                       y: 0,
-                                      width: NSScreen.main!.frame.width * 0.5,
-                                      height: NSScreen.main!.frame.height),
+                                      width: 800,
+                                      height: 500),
                    styleMask: [.closable, .miniaturizable, .resizable, .titled, .fullSizeContentView],
                    backing: .buffered,
                    defer: false)
-        minSize = .init(width: 300, height: 300)
+        minSize = .init(width: 440, height: 200)
+        center()
         toolbar = .init()
         isReleasedWhenClosed = false
         setFrameAutosaveName("Window")
@@ -29,6 +30,9 @@ final class Window: NSWindow {
         let sidebar = Sidebar(session: session)
         contentView!.addSubview(sidebar)
         
+        let middlebar = Middlebar(session: session)
+        contentView!.addSubview(middlebar)
+        
         let content = NSVisualEffectView()
         content.translatesAutoresizingMaskIntoConstraints = false
         content.state = .active
@@ -40,9 +44,13 @@ final class Window: NSWindow {
         sidebar.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
         sidebar.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         
+        middlebar.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
+        middlebar.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
+        middlebar.leftAnchor.constraint(equalTo: sidebar.rightAnchor).isActive = true
+        
         content.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
         content.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
-        content.leftAnchor.constraint(equalTo: sidebar.rightAnchor).isActive = true
+        content.leftAnchor.constraint(equalTo: middlebar.rightAnchor).isActive = true
         content.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
     }
     
