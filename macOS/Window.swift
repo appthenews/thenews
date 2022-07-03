@@ -14,7 +14,7 @@ final class Window: NSWindow {
                    styleMask: [.closable, .miniaturizable, .resizable, .titled, .fullSizeContentView],
                    backing: .buffered,
                    defer: false)
-        minSize = .init(width: 440, height: 200)
+        minSize = .init(width: 520, height: 200)
         center()
         toolbar = .init()
         isReleasedWhenClosed = false
@@ -23,7 +23,7 @@ final class Window: NSWindow {
         titlebarAppearsTransparent = true
         
         let bar = NSTitlebarAccessoryViewController()
-        bar.view = NSView()
+        bar.view = Topbar(session: session)
         bar.layoutAttribute = .top
         addTitlebarAccessoryViewController(bar)
         

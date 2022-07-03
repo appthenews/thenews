@@ -8,7 +8,7 @@ final class Sidebar: NSVisualEffectView {
         state = .active
         material = .hudWindow
         translatesAutoresizingMaskIntoConstraints = false
-        widthAnchor.constraint(equalToConstant: 100).isActive = true
+        widthAnchor.constraint(equalToConstant: 120).isActive = true
         
         let separator = Separator()
         addSubview(separator)
