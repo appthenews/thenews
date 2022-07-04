@@ -62,15 +62,15 @@ final class Middlebar: NSVisualEffectView {
         bookmark.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 10).isActive = true
         bookmark.rightAnchor.constraint(equalTo: field.rightAnchor).isActive = true
         
-        separator.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        separator.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        separator.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        separator.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        
         divider.topAnchor.constraint(equalTo: bookmark.bottomAnchor, constant: 10).isActive = true
         divider.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         divider.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        separator.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        separator.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        separator.widthAnchor.constraint(equalToConstant: 1).isActive = true
+        separator.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
         session
             .middlebar

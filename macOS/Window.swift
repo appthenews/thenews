@@ -2,7 +2,6 @@ import AppKit
 import Combine
 
 final class Window: NSWindow {
-    private weak var content: NSVisualEffectView!
     private var subs = Set<AnyCancellable>()
     private let session = Session()
     
@@ -33,12 +32,8 @@ final class Window: NSWindow {
         let middlebar = Middlebar(session: session)
         contentView!.addSubview(middlebar)
         
-        let content = NSVisualEffectView()
-        content.translatesAutoresizingMaskIntoConstraints = false
-        content.state = .active
-        content.material = .menu
+        let content = Content(session: session)
         contentView!.addSubview(content)
-        self.content = content
         
         sidebar.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
         sidebar.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
@@ -52,21 +47,5 @@ final class Window: NSWindow {
         content.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
         content.leftAnchor.constraint(equalTo: middlebar.rightAnchor).isActive = true
         content.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-    }
-    
-    private func place(view: NSView) {
-        content
-            .subviews
-            .forEach {
-                $0.removeFromSuperview()
-            }
-        
-        content.addSubview(view)
-        makeFirstResponder(view)
-
-        view.topAnchor.constraint(equalTo: content.safeAreaLayoutGuide.topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: content.bottomAnchor).isActive = true
-        view.leftAnchor.constraint(equalTo: content.leftAnchor).isActive = true
-        view.rightAnchor.constraint(equalTo: content.rightAnchor).isActive = true
     }
 }
