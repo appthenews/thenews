@@ -1,14 +1,25 @@
 import AppKit
+import Combine
 
 final class Topbar: NSView {
+    private var subs = Set<AnyCancellable>()
+    
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
         super.init(frame: .zero)
         
         let sidebar = Button(symbol: "sidebar.left")
+        sidebar
+            .click
+            .subscribe(session.sidebar)
+            .store(in: &subs)
         addSubview(sidebar)
         
         let middlebar = Button(symbol: "sidebar.squares.left")
+        middlebar
+            .click
+            .subscribe(session.middlebar)
+            .store(in: &subs)
         addSubview(middlebar)
         
         let delete = Button(symbol: "trash")
