@@ -9,7 +9,7 @@ final class Separator: NSView {
     }
     
     override func updateLayer() {
-        layer!.backgroundColor = NSColor.white.cgColor
+        layer!.backgroundColor = NSColor.separatorColor.cgColor
     }
     
     override var allowsVibrancy: Bool {
