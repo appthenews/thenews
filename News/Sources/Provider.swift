@@ -1,7 +1,7 @@
-public enum Provider: UInt8 {
+public enum Provider {
     case
-    theguardian,
+    theGuardian,
     reuters,
-    derspiegel,
-    thelocal
+    derSpiegel,
+    theLocal
 }
