@@ -9,10 +9,10 @@ public struct Preferences: Storable {
     public var data: Data {
         .init()
         .adding(UInt8(sources.count))
-        .adding(sources.reduce(Data()) { data, source in
-            data
-                .adding(source.key.rawValue)
-                .adding(source.value)
+        .adding(sources.reduce(.init()) {
+            $0
+                .adding($1.key.rawValue)
+                .adding($1.value)
         })
         .adding(fetch.rawValue)
         .adding(delete.rawValue)
