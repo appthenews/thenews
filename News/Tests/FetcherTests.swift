@@ -2,16 +2,20 @@ import XCTest
 @testable import News
 
 final class FetchTests: XCTestCase {
-    private var archive: Archive!
     private var fetcher: Fetcher!
+    private var data: Data!
     
     override func setUp() {
-        archive = .init()
         fetcher = .init()
+        data = .init(xml.utf8)
     }
     
-    func testParse() {
-        
+    func testParse() throws {
+        let result = try fetcher.parse(data: data, synched: [])
+        XCTAssertEqual(20, result.ids.count)
+        XCTAssertEqual(20, result.items.count)
+        XCTAssertTrue(result.ids.contains("https://www.spiegel.de/international/world/a-visit-to-volodymyr-zelenskyy-s-hometown-kryvyi-rih-city-of-steel-a-95aa1a79-905c-462f-aa02-c61b103321f8"))
+        XCTAssertTrue(result.items.contains { $0.link == "https://www.spiegel.de/international/germany/from-inflation-to-recession-is-germany-s-prosperity-at-risk-a-bd8650be-2075-40b9-a762-05e2baaf2a7d#ref=rss" })
     }
 }
 

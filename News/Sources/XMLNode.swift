@@ -1,7 +1,7 @@
 import Foundation
 
 extension XMLNode {
-    func item(strategy: Date.ParseStrategy) -> Item? {
+    func item(strategy: Date.ParseStrategy, synched: Set<String>) -> (id: String, item: Item)? {
         guard
             name == "item",
             let guid = element(name: "guid")?.max8,
@@ -12,10 +12,11 @@ extension XMLNode {
             let date = try? Date(pubDate, strategy: strategy)
         else { return nil }
         
-        return .init(title: title,
-                     description: description,
-                     link: link,
-                     date: date)
+        return (id: guid,
+                item: .init(title: title,
+                            description: description,
+                            link: link,
+                            date: date))
     }
     
     private func element(name: String) -> String? {

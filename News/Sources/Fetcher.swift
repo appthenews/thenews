@@ -34,27 +34,22 @@ struct Fetcher {
         guard (response as? HTTPURLResponse)?.statusCode == 200, !data.isEmpty
         else { throw NSError(domain: "", code: 0) }
         
+        return try parse(data: data, synched: synched)
+    }
+    
+    func parse(data: Data, synched: Set<String>) throws -> (ids: Set<String>, items: Set<Item>) {
         let document = try XMLDocument(data: data)
-//        print(doc)
         
-        debugPrint(String(decoding: data, as: UTF8.self))
-        
-        let items: [Item] =
+        let result: [(id: String, item: Item)] =
         document
             .rootElement()?
             .children?
             .first?
             .children?
             .compactMap {
-                $0.item(strategy: date)
+                $0.item(strategy: date, synched: synched)
             } ?? []
         
-        print(items)
-        
-        return (ids: [], items: [])
-    }
-    
-    func parse(data: Data, synched: Set<String>) throws -> (ids: Set<String>, items: Set<Item>) {
-        throw NSError(domain: "", code: 0)
+        return (ids: .init(result.map(\.id)), items: .init(result.map(\.item)))
     }
 }
