@@ -5,6 +5,7 @@ extension XMLNode {
         guard
             name == "item",
             let guid = element(name: "guid")?.max8,
+            !synched.contains(guid),
             let title = element(name: "title")?.max8,
             let pubDate = element(name: "pubDate"),
             let description = element(name: "description"),
