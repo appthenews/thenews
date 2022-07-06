@@ -1,9 +1,13 @@
 import AppKit
 import Combine
+import CloudKit
+import Archivable
+import News
 
 final class Window: NSWindow {
     private var subs = Set<AnyCancellable>()
     private let session = Session()
+    private let cloud = Cloud<Archive, CKContainer>.new(identifier: "iCloud.thenews")
     
     init() {
         super.init(contentRect: .init(x: 0,
@@ -20,6 +24,10 @@ final class Window: NSWindow {
         setFrameAutosaveName("Window")
         tabbingMode = .disallowed
         titlebarAppearsTransparent = true
+        
+        Task {
+            await cloud.fetch()
+        }
         
         let bar = NSTitlebarAccessoryViewController()
         bar.view = Topbar(session: session)

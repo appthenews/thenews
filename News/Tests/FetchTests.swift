@@ -3,18 +3,11 @@ import XCTest
 
 final class FetchTests: XCTestCase {
     private var archive: Archive!
-    private var fetcher: MockFetcher!
+    private var fetcher: Fetcher!
     
     override func setUp() {
         archive = .init()
         fetcher = .init()
     }
     
-    func testPreferences() async {
-        
-    }
-}
-
-private struct MockFetcher: Fetch {
-    var result: String?
 }
