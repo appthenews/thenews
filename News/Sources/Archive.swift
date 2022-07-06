@@ -4,7 +4,7 @@ import Archivable
 public struct Archive: Arch {
     public var timestamp: UInt32
     public internal(set) var preferences: Preferences
-    public internal(set) var synched: [Source : Date]
+    var synched: [Source : Date]
 
     public var data: Data {
         .init()
@@ -15,6 +15,24 @@ public struct Archive: Arch {
                 .adding($1.key.rawValue)
                 .adding($1.value)
         })
+    }
+    
+    var fetchable: Set<Source> {
+        .init(preferences
+            .sources
+            .filter {
+                $0.value
+            }
+            .filter {
+                synched[$0.key]
+                    .map {
+                        preferences.fetch.passed(date: $0)
+                    }
+                ?? false
+            }
+            .map {
+                $0.key
+            })
     }
     
     public init() {

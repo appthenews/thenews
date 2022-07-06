@@ -9,7 +9,7 @@ final class ArchiveTests: XCTestCase {
         archive = .init()
     }
     
-    func testPreferences() async {
+    func testParse() async {
         let date = Date.now
         archive.preferences.delete = .week
         archive.preferences.fetch = .hours3
@@ -25,5 +25,21 @@ final class ArchiveTests: XCTestCase {
         XCTAssertFalse(archive.preferences.sources[.theLocalInternational] ?? true)
         XCTAssertEqual(0, archive.synched[.reutersInternational]?.timestamp)
         XCTAssertGreaterThanOrEqual(archive.synched[.theLocalInternational]?.timestamp ?? 0, date.timestamp)
+    }
+    
+    func testFetchable() {
+        XCTAssertEqual([], archive.fetchable)
+        
+        archive.preferences.sources[.theLocalGermany] = true
+        XCTAssertEqual([.theLocalGermany], archive.fetchable)
+        
+        archive.preferences.sources[.theLocalInternational] = true
+        XCTAssertEqual([.theLocalGermany, .theLocalInternational], archive.fetchable)
+        
+        archive.synched[.theLocalGermany] = Calendar.current.date(byAdding: .hour, value: -3, to: .now)!
+        XCTAssertEqual([.theLocalInternational], archive.fetchable)
+        
+        archive.preferences.fetch = .hours3
+        XCTAssertEqual([.theLocalGermany, .theLocalInternational], archive.fetchable)
     }
 }
