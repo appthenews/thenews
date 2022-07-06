@@ -5,6 +5,7 @@ public struct Archive: Arch {
     public var timestamp: UInt32
     public internal(set) var preferences: Preferences
     var synched: [Source : Date]
+    
 
     public var data: Data {
         .init()

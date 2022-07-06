@@ -2,6 +2,7 @@ import Foundation
 
 struct Fetch {
     private let session: URLSession
+    private let date: Date.ParseStrategy
     
     init() {
         let configuration = URLSessionConfiguration.ephemeral
@@ -10,6 +11,14 @@ struct Fetch {
         configuration.waitsForConnectivity = true
         configuration.allowsCellularAccess = true
         session = .init(configuration: configuration)
+        
+        date = .init(
+            format: """
+\(weekday: .short), \(day: .defaultDigits) \(month: .defaultDigits) \(year: .defaultDigits) \(hour: .twoDigits(clock: .twentyFourHour, hourCycle: .zeroBased)):\(minute: .twoDigits):\(second: .twoDigits) \(timeZone: .genericLocation)
+""",
+            locale: .init(identifier: "en_US"),
+            timeZone: .current
+        )
     }
     
     func callAsFunction(_ source: Source) async throws -> String {
@@ -37,16 +46,8 @@ struct Fetch {
             .children?
             .first?
             .children?
-            .filter {
-                $0.name == "item"
-            }
-            .compactMap(\.children)
             .compactMap {
-                guard
-                    let title = $0.first(where: { $0.name == "title" })?.stringValue,
-                    !title.isEmpty
-                else { return nil }
-                return Item(title: title)
+                $0.item(strategy: date)
             } ?? []
         
         print(items)
