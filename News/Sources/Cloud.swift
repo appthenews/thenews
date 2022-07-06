@@ -16,7 +16,7 @@ extension Cloud where Output == Archive {
 //        } catch { }
 //        
         
-        let fetch = Fetch()
-        try! await Swift.debugPrint(fetch(.derSpiegelInternational))
+        let fetcher = Fetcher()
+        try! await Swift.debugPrint(fetcher.fetch(source: .derSpiegelInternational, synched: []))
     }
 }

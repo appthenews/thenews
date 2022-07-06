@@ -4,14 +4,13 @@ import Archivable
 public struct Archive: Arch {
     public var timestamp: UInt32
     public internal(set) var preferences: Preferences
-    var synched: [Source : Date]
-    
+    var history: [Source : History]
 
     public var data: Data {
         .init()
         .adding(preferences)
-        .adding(UInt8(synched.count))
-        .adding(synched.reduce(.init()) {
+        .adding(UInt8(history.count))
+        .adding(history.reduce(.init()) {
             $0
                 .adding($1.key.rawValue)
                 .adding($1.value)
@@ -25,9 +24,9 @@ public struct Archive: Arch {
                 $0.value
             }
             .filter {
-                synched[$0.key]
+                history[$0.key]
                     .map {
-                        preferences.fetch.passed(date: $0)
+                        preferences.fetch.passed(date: $0.synched)
                     }
                 ?? false
             }
@@ -39,8 +38,8 @@ public struct Archive: Arch {
     public init() {
         timestamp = 0
         preferences = .init()
-        synched = Source.allCases.reduce(into: [:]) {
-            $0[$1] = .init(timeIntervalSince1970: 0)
+        history = Source.allCases.reduce(into: [:]) {
+            $0[$1] = .init()
         }
     }
     
@@ -50,12 +49,12 @@ public struct Archive: Arch {
         
         if version == Self.version {
             preferences = .init(data: &data)
-            synched = (0 ..< .init(data.number() as UInt8)).reduce(into: [:]) { result, _ in
-                result[.init(rawValue: data.number())!] = data.date()
+            history = (0 ..< .init(data.number() as UInt8)).reduce(into: [:]) { result, _ in
+                result[.init(rawValue: data.number())!] = .init(data: &data)
             }
         } else {
             preferences = .init()
-            synched = [:]
+            history = [:]
         }
     }
 }

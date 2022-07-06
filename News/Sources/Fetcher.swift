@@ -1,6 +1,6 @@
 import Foundation
 
-struct Fetch {
+struct Fetcher {
     private let session: URLSession
     private let date: Date.ParseStrategy
     
@@ -14,14 +14,21 @@ struct Fetch {
         
         date = .init(
             format: """
-\(weekday: .short), \(day: .defaultDigits) \(month: .defaultDigits) \(year: .defaultDigits) \(hour: .twoDigits(clock: .twentyFourHour, hourCycle: .zeroBased)):\(minute: .twoDigits):\(second: .twoDigits) \(timeZone: .genericLocation)
+\(weekday: .short), \
+\(day: .defaultDigits) \
+\(month: .defaultDigits) \
+\(year: .defaultDigits) \
+\(hour: .twoDigits(clock: .twentyFourHour, hourCycle: .zeroBased)):\
+\(minute: .twoDigits):\
+\(second: .twoDigits) \
+\(timeZone: .genericLocation)
 """,
             locale: .init(identifier: "en_US"),
             timeZone: .current
         )
     }
     
-    func callAsFunction(_ source: Source) async throws -> String {
+    func fetch(source: Source, synched: Set<String>) async throws -> (ids: Set<String>, items: Set<Item>) {
         let (data, response) = try await session.data(from: source.url)
 
         guard (response as? HTTPURLResponse)?.statusCode == 200, !data.isEmpty
@@ -30,15 +37,7 @@ struct Fetch {
         let document = try XMLDocument(data: data)
 //        print(doc)
         
-        print(document
-            .rootElement()?
-            .children?
-            .first?
-            .children?
-            .filter {
-                $0.name == "item"
-            }
-            .first)
+        debugPrint(String(decoding: data, as: UTF8.self))
         
         let items: [Item] =
         document
@@ -52,6 +51,10 @@ struct Fetch {
         
         print(items)
         
-        return ""
+        return (ids: [], items: [])
+    }
+    
+    func parse(data: Data, synched: Set<String>) throws -> (ids: Set<String>, items: Set<Item>) {
+        throw NSError(domain: "", code: 0)
     }
 }

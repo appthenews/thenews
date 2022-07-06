@@ -1,7 +1,7 @@
 import Foundation
 import Archivable
 
-public struct Item: Storable {
+public struct Item: Storable, Hashable {
     public let title: String
     public let date: Date
     
