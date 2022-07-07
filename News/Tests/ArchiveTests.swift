@@ -66,6 +66,9 @@ final class ArchiveTests: XCTestCase {
     }
     
     func testItems() {
+        archive.preferences.sources[.reutersEurope] = true
+        archive.preferences.sources[.theLocalGermany] = true
+        
         archive.history[.reutersEurope] = .init(ids: [],
                                                 items: [.init(title: "asd",
                                                               description: "dfg",
@@ -81,7 +84,7 @@ final class ArchiveTests: XCTestCase {
                                                                       status: .new)],
                                                 synched: .now)
         
-        archive.history[.reutersInternational] = .init(ids: [],
+        archive.history[.theLocalGermany] = .init(ids: [],
                                                 items: [.init(title: "asd",
                                                               description: "dfg",
                                                               link: "3",
@@ -90,16 +93,25 @@ final class ArchiveTests: XCTestCase {
                                                               status: .new)],
                                                 synched: .now)
         
-        var items = archive.items(source: .reutersEurope)
+        archive.history[.derSpiegelInternational] = .init(ids: [],
+                                                items: [.init(title: "asd",
+                                                              description: "dfg",
+                                                              link: "4",
+                                                              date: .init(timeIntervalSinceNow: -1),
+                                                              synched: .now,
+                                                              status: .new)],
+                                                synched: .now)
+        
+        var items = archive.items(provider: .reuters)
         XCTAssertEqual(2, items.count)
         XCTAssertEqual(.reutersEurope, items.first?.source)
         XCTAssertEqual("1", items.first?.item.link)
         XCTAssertEqual("2", items.last?.item.link)
         
-        items = archive.items(source: nil)
+        items = archive.items(provider: .all)
         XCTAssertEqual(3, items.count)
         XCTAssertEqual(.reutersEurope, items.first?.source)
-        XCTAssertEqual(.reutersInternational, items[1].source)
+        XCTAssertEqual(.theLocalGermany, items[1].source)
         XCTAssertEqual(.reutersEurope, items.last?.source)
         XCTAssertEqual("1", items.first?.item.link)
         XCTAssertEqual("2", items.last?.item.link)

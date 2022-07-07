@@ -58,23 +58,21 @@ public struct Archive: Arch {
         }
     }
     
-    public func items(source: Source?) -> [(source: Source, item: Item)] {
-        (source == nil
-         ? history
-            .flatMap { source, history in
-                history
+    public func items(provider: Provider) -> [(source: Source, item: Item)] {
+        provider
+            .sources
+            .filter {
+                preferences.sources[$0]!
+            }
+            .flatMap { source in
+                history[source]!
                     .items
                     .map {
                         (source: source, item: $0)
                     }
             }
-         : history[source!]!
-            .items
-            .map {
-                (source: source!, item: $0)
-            })
-        .sorted { left, right in
-            left.item.date >= right.item.date
-        }
+            .sorted { left, right in
+                left.item.date >= right.item.date
+            }
     }
 }

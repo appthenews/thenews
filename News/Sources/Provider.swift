@@ -20,4 +20,17 @@ public enum Provider {
             return "The Local"
         }
     }
+    
+    var sources: [Source] {
+        switch self {
+        case .all:
+            return Source.allCases
+        default:
+            return Source
+                .allCases
+                .filter {
+                    $0.provider == self
+                }
+        }
+    }
 }
