@@ -1,6 +1,8 @@
 import AppKit
 
 @NSApplicationMain final class App: NSApplication, NSApplicationDelegate {
+    private let session = Session()
+    
     required init?(coder: NSCoder) { nil }
     override init() {
         super.init()
@@ -12,6 +14,30 @@ import AppKit
     }
     
     func applicationDidFinishLaunching(_: Notification) {
-        Window().makeKeyAndOrderFront(nil)
+        registerForRemoteNotifications()
+
+        session.cloud.ready.notify(queue: .main) {            
+            Window(session: self.session).makeKeyAndOrderFront(nil)
+
+//            if Defaults.froob {
+//                self.froob.value = true
+//            }
+            
+//            Task
+//                .detached {
+//                    await store.launch()
+//                }
+        }
+    }
+    
+    func applicationDidBecomeActive(_: Notification) {
+        session.cloud.pull.send()
+        Task {
+            await session.cloud.fetch()
+        }
+    }
+    
+    func application(_: NSApplication, didReceiveRemoteNotification: [String : Any]) {
+        session.cloud.pull.send()
     }
 }
