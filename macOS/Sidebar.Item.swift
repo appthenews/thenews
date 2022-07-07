@@ -7,10 +7,10 @@ extension Sidebar {
         
         required init?(coder: NSCoder) { nil }
         init(provider: Provider) {
+            self.provider = provider
+            
             let text = Text(vibrancy: false)
-            
-            
-            
+            text.stringValue = provider.title
             text.font = .preferredFont(forTextStyle: .callout)
             text.textColor = .secondaryLabelColor
             

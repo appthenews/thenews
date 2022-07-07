@@ -7,17 +7,17 @@ public enum Provider {
     theLocal
     
     public var title: String {
-        switch provider {
+        switch self {
         case .all:
             return "All feeds"
         case .theGuardian:
-            text.stringValue = "The Guardian"
+            return "The Guardian"
         case .reuters:
-            text.stringValue = "Reuters"
+            return "Reuters"
         case .derSpiegel:
-            text.stringValue = title
+            return "Der Spiegel"
         case .theLocal:
-            text.stringValue = title
+            return "The Local"
         }
     }
 }

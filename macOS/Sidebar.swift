@@ -1,13 +1,10 @@
 import AppKit
 import Combine
+import News
 
 final class Sidebar: NSVisualEffectView {
+    private weak var stack: Stack!
     private var subs = Set<AnyCancellable>()
-    private weak var all: Item!
-    private weak var theGuardian: Item!
-    private weak var reuters: Item!
-    private weak var derSpiegel: Item!
-    private weak var theLocal: Item!
     private let session: Session
     
     required init?(coder: NSCoder) { nil }
@@ -26,27 +23,45 @@ final class Sidebar: NSVisualEffectView {
         let separator = Separator()
         addSubview(separator)
         
-        let all = Item(title: "All feeds")
+        let all = Item(provider: .all)
         all
             .click
             .sink {
-                self.select(item: all)
-                session.provider.send()
+                self.select(provider: .all)
             }
             .store(in: &subs)
-        self.all = all
         
-        let theGuardian = Item(title: "The Guardian")
-        self.theGuardian = theGuardian
+        let theGuardian = Item(provider: .theGuardian)
+        theGuardian
+            .click
+            .sink {
+                self.select(provider: .theGuardian)
+            }
+            .store(in: &subs)
         
-        let reuters = Item(title: "Reuters")
-        self.reuters = reuters
+        let reuters = Item(provider: .reuters)
+        reuters
+            .click
+            .sink {
+                self.select(provider: .reuters)
+            }
+            .store(in: &subs)
         
-        let derSpiegel = Item(title: "Der Spiegel")
-        self.derSpiegel = derSpiegel
+        let derSpiegel = Item(provider: .derSpiegel)
+        derSpiegel
+            .click
+            .sink {
+                self.select(provider: .derSpiegel)
+            }
+            .store(in: &subs)
         
-        let theLocal = Item(title: "The Local")
-        self.theLocal = theLocal
+        let theLocal = Item(provider: .theLocal)
+        theLocal
+            .click
+            .sink {
+                self.select(provider: .theLocal)
+            }
+            .store(in: &subs)
         
         let stack = Stack(views: [
             all,
@@ -59,34 +74,7 @@ final class Sidebar: NSVisualEffectView {
         stack.alignment = .leading
         stack.spacing = 2
         addSubview(stack)
-        
-        theGuardian
-            .click
-            .sink {
-                stack.select(control: theGuardian)
-            }
-            .store(in: &subs)
-        
-        reuters
-            .click
-            .sink {
-                stack.select(control: reuters)
-            }
-            .store(in: &subs)
-        
-        derSpiegel
-            .click
-            .sink {
-                stack.select(control: derSpiegel)
-            }
-            .store(in: &subs)
-        
-        theLocal
-            .click
-            .sink {
-                stack.select(control: theLocal)
-            }
-            .store(in: &subs)
+        self.stack = stack
         
         stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         stack.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
@@ -102,26 +90,12 @@ final class Sidebar: NSVisualEffectView {
             .cloud
             .map(\.preferences.providers)
             .removeDuplicates()
-            .sink { sources in
-                if sources.isEmpty && first {
+            .sink { providers in
+                if providers.isEmpty && first {
                     (NSApp as! App).showPreferencesWindow(nil)
                 }
                 
-                if sources.contains(.theGuardian) {
-                    if theGuardian.state == .hidden {
-                        theGuardian.state = .on
-                    }
-                } else {
-                    if theGuardian.state != .hidden {
-                        theGuardian.state = .hidden
-                    }
-                    
-                    if session.provider.value == .theGuardian {
-                        session.item.send(nil)
-                        session.provider.send(nil)
-                    }
-                }
-                
+                self.show(providers: providers)
                 first = false
             }
             .store(in: &subs)
@@ -136,17 +110,47 @@ final class Sidebar: NSVisualEffectView {
             .store(in: &subs)
     }
     
-    private func select(item: Item) {
-//        views
-//            .compactMap {
-//                $0 as? Control
-//            }
-//            .forEach {
-//                $0.state = $0 == control
-//                ? .selected
-//                : $0.state == .selected
-//                    ? .on
-//                    : $0.state
-//            }
+    private func show(providers: Set<Provider>) {
+        stack
+            .views
+            .compactMap {
+                $0 as? Item
+            }
+            .filter {
+                $0.provider != .all
+            }
+            .forEach { item in
+                if providers.contains(item.provider) {
+                    if item.state == .hidden {
+                        item.state = .on
+                    }
+                } else {
+                    if item.state != .hidden {
+                        item.state = .hidden
+                    }
+                    
+                    if session.provider.value == item.provider {
+                        session.item.send(nil)
+                        session.provider.send(nil)
+                    }
+                }
+            }
+    }
+    
+    private func select(provider: Provider) {
+        session.provider.send(provider)
+        
+        stack
+            .views
+            .compactMap {
+                $0 as? Item
+            }
+            .forEach {
+                if $0.provider == provider {
+                    $0.state = .selected
+                } else if $0.state == .selected {
+                    $0.state = .on
+                }
+            }
     }
 }
