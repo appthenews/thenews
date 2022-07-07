@@ -2,25 +2,26 @@ import Archivable
 
 extension Cloud where Output == Archive {
     public func fetch() async {
-//        do {
-//            var fetch: Fetch!
-//            for source in model.fetchable {
-//                if fetch == nil {
-//                    fetch = .init()
-//                }
-//                
-//                let string = try await fetch(source)
-//                
-//                Swift.debugPrint(string)
-//            }
-//        } catch { }
-//        
-        
-        let fetcher = Fetcher()
-//        try! await Swift.debugPrint(fetcher.fetch(source: .reutersEurope, synched: []))
-        let a = try! await fetcher.fetch(source: .theLocalInternational, synched: [])
-        Swift.debugPrint(a.ids.count)
-        Swift.debugPrint(a.items.count)
+        do {
+            var fetcher: Fetcher!
+            for source in model.fetchable {
+                if fetcher == nil {
+                    fetcher = .init()
+                }
+                
+                let synched = model.history[source]!.ids
+                let result = try await fetcher.fetch(source: source, synched: synched)
+                model.history[source] = model
+                    .history[source]!
+                    .update(cleaning: model.preferences.delete,
+                            adding: result.ids,
+                            and: result.items)
+            }
+            
+            if fetcher != nil {
+                await stream()
+            }
+        } catch { }
     }
     
     public func read(source: Source, item: Item) async {
