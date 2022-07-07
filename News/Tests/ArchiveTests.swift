@@ -12,16 +12,19 @@ final class ArchiveTests: XCTestCase {
     func testParse() async {
         let date = Date.now
         let article = Date(timestamp: 123569754)
+        let synched = Date(timestamp: 35344)
         
         archive.preferences.delete = .week
         archive.preferences.fetch = .hours3
         archive.preferences.sources[.reutersEurope] = true
         archive.preferences.sources[.theLocalGermany] = true
-        archive.history[.theLocalInternational] = .init(ids: ["hello", "world"],
-                                                        items: [.init(title: "lorem",
-                                                                      description: "billy idol",
-                                                                      link: "eyes without a face",
-                                                                      date: article)])
+        archive.history[.theLocalInternational] = History().update(cleaning: .hours3,
+                                                                   adding: ["hello", "world"],
+                                                                   and: [.init(title: "lorem",
+                                                                               description: "billy idol",
+                                                                               link: "eyes without a face",
+                                                                               date: article,
+                                                                               synched: synched)])
         archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
         
         XCTAssertEqual(.week, archive.preferences.delete)
@@ -36,6 +39,7 @@ final class ArchiveTests: XCTestCase {
         XCTAssertTrue(archive.history[.theLocalInternational]?.ids.contains("hello") ?? false)
         XCTAssertTrue(archive.history[.theLocalInternational]?.ids.contains("world") ?? false)
         XCTAssertEqual(article, archive.history[.theLocalInternational]?.items.first?.date)
+        XCTAssertEqual(synched, archive.history[.theLocalInternational]?.items.first?.synched)
         XCTAssertEqual("lorem", archive.history[.theLocalInternational]?.items.first?.title)
         XCTAssertEqual("billy idol", archive.history[.theLocalInternational]?.items.first?.description)
         XCTAssertEqual("eyes without a face", archive.history[.theLocalInternational]?.items.first?.link)

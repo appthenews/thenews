@@ -18,7 +18,7 @@ extension Cloud where Output == Archive {
         
         let fetcher = Fetcher()
 //        try! await Swift.debugPrint(fetcher.fetch(source: .reutersEurope, synched: []))
-        let a = try! await fetcher.fetch(source: .theGuardianWorld, synched: [])
+        let a = try! await fetcher.fetch(source: .theLocalInternational, synched: [])
         Swift.debugPrint(a.ids.count)
         Swift.debugPrint(a.items.count)
     }

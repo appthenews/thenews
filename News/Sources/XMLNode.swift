@@ -17,7 +17,8 @@ extension XMLNode {
                 item: .init(title: title,
                             description: description,
                             link: link,
-                            date: date))
+                            date: date,
+                            synched: .now))
     }
     
     private func element(name: String) -> String? {
