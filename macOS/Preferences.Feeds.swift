@@ -114,21 +114,21 @@ extension Preferences {
                     $0.widthAnchor.constraint(equalToConstant: 180).isActive = true
                 }
             
-            let stack = NSStackView(views: [
-            theGuardianTitle,
-            theGuardianWorld,
-            theGuardianGermany,
-            theGuardianSeparator,
-            reutersTitle,
-            reutersInternational,
-            reutersEurope,
-            reutersSeparator,
-            derSpiegelTitle,
-            derSpiegelInternational,
-            derSpiegelSeparator,
-            theLocalTitle,
-            theLocalInternational,
-            theLocalGermany])
+            let stack = Stack(views: [
+                theGuardianTitle,
+                theGuardianWorld,
+                theGuardianGermany,
+                theGuardianSeparator,
+                reutersTitle,
+                reutersInternational,
+                reutersEurope,
+                reutersSeparator,
+                derSpiegelTitle,
+                derSpiegelInternational,
+                derSpiegelSeparator,
+                theLocalTitle,
+                theLocalInternational,
+                theLocalGermany])
             stack.translatesAutoresizingMaskIntoConstraints = false
             stack.orientation = .vertical
             stack.alignment = .leading

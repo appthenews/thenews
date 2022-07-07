@@ -34,7 +34,7 @@ final class Topbar: NSView {
         let open = Button(symbol: "paperplane")
         addSubview(open)
         
-        sidebar.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 5).isActive = true
+        sidebar.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 25).isActive = true
         middlebar.leftAnchor.constraint(equalTo: sidebar.rightAnchor, constant: 18).isActive = true
         delete.rightAnchor.constraint(equalTo: share.leftAnchor, constant: -18).isActive = true
         share.rightAnchor.constraint(equalTo: bookmark.leftAnchor, constant: -18).isActive = true

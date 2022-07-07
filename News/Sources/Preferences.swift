@@ -6,6 +6,14 @@ public struct Preferences: Storable {
     public internal(set) var fetch: Interval
     public internal(set) var delete: Interval
     
+    public var providers: Set<Provider> {
+        .init(sources
+            .filter {
+                $0.value
+            }
+            .map(\.key.provider))
+    }
+    
     public var data: Data {
         .init()
         .adding(UInt8(sources.count))

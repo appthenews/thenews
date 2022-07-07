@@ -13,7 +13,7 @@ final class Middlebar: NSVisualEffectView {
         state = .active
         material = .popover
         translatesAutoresizingMaskIntoConstraints = false
-        let width = widthAnchor.constraint(equalToConstant: show ? 180 : 0)
+        let width = widthAnchor.constraint(equalToConstant: show ? 190 : 0)
         width.isActive = true
         
         let field = Field()
@@ -67,7 +67,7 @@ final class Middlebar: NSVisualEffectView {
             .middlebar
             .sink {
                 show.toggle()
-                width.constant = show ? 180 : 0
+                width.constant = show ? 190 : 0
                 UserDefaults.standard.set(show, forKey: "middlebar")
             }
             .store(in: &subs)
