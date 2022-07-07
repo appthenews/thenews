@@ -40,4 +40,21 @@ import AppKit
     func application(_: NSApplication, didReceiveRemoteNotification: [String : Any]) {
         session.cloud.pull.send()
     }
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
+        true
+    }
+    
+    @objc func showPreferencesWindow(_ sender: Any?) {
+        (anyWindow() ?? Preferences(session: session))
+            .makeKeyAndOrderFront(nil)
+    }
+    
+    private func anyWindow<T>() -> T? {
+        windows
+            .compactMap {
+                $0 as? T
+            }
+            .first
+    }
 }

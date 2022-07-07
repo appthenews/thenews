@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE19C0E5287701C60045E221 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19C0E4287701C60045E221 /* Preferences.swift */; };
+		CE19C0E7287702370045E221 /* Preferences.Feeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19C0E6287702370045E221 /* Preferences.Feeds.swift */; };
+		CE19C0E9287702800045E221 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19C0E8287702800045E221 /* Switch.swift */; };
 		CE346080287066FD001962E7 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE34607F287066FD001962E7 /* App.swift */; };
 		CE346082287066FD001962E7 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE346081287066FD001962E7 /* Window.swift */; };
 		CE346084287066FE001962E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE346083287066FE001962E7 /* Assets.xcassets */; };
@@ -30,6 +33,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE19C0E4287701C60045E221 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		CE19C0E6287702370045E221 /* Preferences.Feeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.Feeds.swift; sourceTree = "<group>"; };
+		CE19C0E8287702800045E221 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		CE346077287065D9001962E7 /* News */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = News; sourceTree = "<group>"; };
 		CE34607C287066FD001962E7 /* The News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The News.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE34607F287066FD001962E7 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -110,9 +116,12 @@
 				CE3C70E328732B2100863C22 /* Middlebar.Editor.swift */,
 				CE3C70DF28732AD100863C22 /* Middlebar.Field.swift */,
 				CEC5DFAC2871B1F9008C8E56 /* Middlebar.swift */,
+				CE19C0E6287702370045E221 /* Preferences.Feeds.swift */,
+				CE19C0E4287701C60045E221 /* Preferences.swift */,
 				CEC5DFAE2871B5B3008C8E56 /* Separator.swift */,
 				CE34608E28706760001962E7 /* Session.swift */,
 				CE34608C28706751001962E7 /* Sidebar.swift */,
+				CE19C0E8287702800045E221 /* Switch.swift */,
 				CE3C70E52873328200863C22 /* Text.swift */,
 				CEC5DFB02871BB76008C8E56 /* Topbar.swift */,
 				CE346081287066FD001962E7 /* Window.swift */,
@@ -242,6 +251,7 @@
 				CEC5DFB72871BEBF008C8E56 /* Button.swift in Sources */,
 				CE3C70E228732B0900863C22 /* Middlebar.Cell.swift in Sources */,
 				CE3C70E028732AD100863C22 /* Middlebar.Field.swift in Sources */,
+				CE19C0E9287702800045E221 /* Switch.swift in Sources */,
 				CE34608F28706760001962E7 /* Session.swift in Sources */,
 				CE3C70E428732B2100863C22 /* Middlebar.Editor.swift in Sources */,
 				CEC5DFB32871BD50008C8E56 /* Control.swift in Sources */,
@@ -250,9 +260,11 @@
 				CE3C70E828733BC400863C22 /* Content.swift in Sources */,
 				CE346082287066FD001962E7 /* Window.swift in Sources */,
 				CE34608D28706751001962E7 /* Sidebar.swift in Sources */,
+				CE19C0E7287702370045E221 /* Preferences.Feeds.swift in Sources */,
 				CE3C70E62873328200863C22 /* Text.swift in Sources */,
 				CEC5DFB52871BE8A008C8E56 /* Layer.swift in Sources */,
 				CE346080287066FD001962E7 /* App.swift in Sources */,
+				CE19C0E5287701C60045E221 /* Preferences.swift in Sources */,
 				CEC5DFAF2871B5B3008C8E56 /* Separator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

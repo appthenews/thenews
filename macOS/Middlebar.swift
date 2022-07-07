@@ -2,27 +2,19 @@ import AppKit
 import Combine
 
 final class Middlebar: NSVisualEffectView {
-    var show: Bool {
-        didSet {
-            width?.constant = show ? 180 : 0
-            UserDefaults.standard.set(show, forKey: "middlebar")
-        }
-    }
-    
-    private var bookmarks = false
-    private weak var width: NSLayoutConstraint?
     private var subs = Set<AnyCancellable>()
     
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
-        show = UserDefaults.standard.value(forKey: "middlebar") as? Bool ?? true
+        var show = UserDefaults.standard.value(forKey: "middlebar") as? Bool ?? true
+        var bookmarks = false
         
         super.init(frame: .zero)
         state = .active
         material = .popover
         translatesAutoresizingMaskIntoConstraints = false
-        width = widthAnchor.constraint(equalToConstant: show ? 180 : 0)
-        width!.isActive = true
+        let width = widthAnchor.constraint(equalToConstant: show ? 180 : 0)
+        width.isActive = true
         
         let field = Field()
         addSubview(field)
@@ -37,10 +29,9 @@ final class Middlebar: NSVisualEffectView {
         let bookmark = Button(symbol: "bookmark")
         bookmark
             .click
-            .sink { [weak self] in
-                guard let self = self else { return }
-                self.bookmarks.toggle()
-                bookmark.state = self.bookmarks ? .selected : .on
+            .sink {
+                bookmarks.toggle()
+                bookmark.state = bookmarks ? .selected : .on
             }
             .store(in: &subs)
         addSubview(bookmark)
@@ -74,8 +65,10 @@ final class Middlebar: NSVisualEffectView {
         
         session
             .middlebar
-            .sink { [weak self] in
-                self?.show.toggle()
+            .sink {
+                show.toggle()
+                width.constant = show ? 180 : 0
+                UserDefaults.standard.set(show, forKey: "middlebar")
             }
             .store(in: &subs)
     }

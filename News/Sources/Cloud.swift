@@ -24,6 +24,13 @@ extension Cloud where Output == Archive {
         } catch { }
     }
     
+    public func toggle(source: Source, value: Bool) async {
+        model.preferences.sources[source] = value
+        
+        await fetch()
+        await stream()
+    }
+    
     public func read(source: Source, item: Item) async {
         model.history[source] = model.history[source]!.read(item: item)
         await stream()
