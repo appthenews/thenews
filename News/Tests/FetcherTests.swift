@@ -29,7 +29,7 @@ final class FetchTests: XCTestCase {
     
     func testCap() throws {
         let result = try fetcher.parse(data: data, synched: [])
-        var data = History(ids: result.ids, items: result.items, synched: .now).data
+        var data = History(ids: result.ids, items: result.items).data
         let history = History(data: &data)
         XCTAssertEqual(20, history.ids.count)
         XCTAssertEqual(20, history.items.count)

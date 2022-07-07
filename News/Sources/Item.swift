@@ -22,7 +22,10 @@ public struct Item: Storable, Hashable {
         date = data.date()
     }
     
-    init(title: String, description: String, link: String, date: Date) {
+    init(title: String,
+         description: String,
+         link: String,
+         date: Date) {
         self.title = title
         self.description = description
         self.link = link

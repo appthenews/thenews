@@ -35,11 +35,11 @@ public enum Source: UInt8, CaseIterable {
         case .theGuardianWorld:
             return "https://www.theguardian.com/world/rss"
         case .theGuardianGermany:
-            return "www.theguardian.com/world/germany/rss"
+            return "https://www.theguardian.com/world/germany/rss"
         case .reutersInternational:
-            return "www.reutersagency.com/feed/?taxonomy=best-regions&post_type=best"
+            return "https://www.reutersagency.com/feed/?taxonomy=best-regions&post_type=best"
         case .reutersEurope:
-            return "www.reutersagency.com/feed/?best-regions=europe&post_type=best"
+            return "https://www.reutersagency.com/feed/?best-regions=europe&post_type=best"
         case .derSpiegelInternational:
             return "https://www.spiegel.de/international/index.rss"
         case .theLocalInternational:

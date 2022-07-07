@@ -21,8 +21,7 @@ final class ArchiveTests: XCTestCase {
                                                         items: [.init(title: "lorem",
                                                                       description: "billy idol",
                                                                       link: "eyes without a face",
-                                                                      date: article)],
-                                                        synched: .now)
+                                                                      date: article)])
         archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
         
         XCTAssertEqual(.week, archive.preferences.delete)
@@ -51,7 +50,8 @@ final class ArchiveTests: XCTestCase {
         archive.preferences.sources[.theLocalInternational] = true
         XCTAssertEqual([.theLocalGermany, .theLocalInternational], archive.fetchable)
         
-        archive.history[.theLocalGermany] = .init(ids: [], items: [], synched: Calendar.current.date(byAdding: .hour, value: -3, to: .now)!)
+        var data = History().data.dropLast(4).adding(Calendar.current.date(byAdding: .hour, value: -3, to: .now)!)
+        archive.history[.theLocalGermany] = .init(data: &data)
         XCTAssertEqual([.theLocalInternational], archive.fetchable)
         
         archive.preferences.fetch = .hours3

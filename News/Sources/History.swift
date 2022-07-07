@@ -25,9 +25,9 @@ struct History: Storable {
         synched = .init(timestamp: 0)
     }
     
-    init(ids: Set<String>, items: Set<Item>, synched: Date) {
+    init(ids: Set<String>, items: Set<Item>) {
         self.ids = ids
         self.items = items
-        self.synched = synched
+        self.synched = .now
     }
 }
