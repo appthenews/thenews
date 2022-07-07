@@ -25,10 +25,10 @@ struct History: Storable {
         synched = .init(timestamp: 0)
     }
     
-    private init(ids: Set<String>, items: Set<Item>) {
+    init(ids: Set<String>, items: Set<Item>, synched: Date) {
         self.ids = ids
         self.items = items
-        self.synched = .now
+        self.synched = synched
     }
     
     func update(cleaning: Interval, adding ids: Set<String>, and items: Set<Item>) -> Self {
@@ -37,6 +37,23 @@ struct History: Storable {
             .filter {
                 $0.status == .bookmarked || !cleaning.passed(date: $0.synched)
             }
-            .union(items))
+            .union(items),
+              synched: .now)
+    }
+    
+    func read(item: Item) -> Self {
+        .init(ids: ids,
+              items: items
+            .removing(item)
+            .inserting(item.read()),
+              synched: synched)
+    }
+    
+    func bookmarked(item: Item) -> Self {
+        .init(ids: ids,
+              items: items
+            .removing(item)
+            .inserting(item.bookmarked()),
+              synched: synched)
     }
 }

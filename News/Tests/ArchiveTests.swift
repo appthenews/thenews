@@ -56,11 +56,52 @@ final class ArchiveTests: XCTestCase {
         archive.preferences.sources[.theLocalInternational] = true
         XCTAssertEqual([.theLocalGermany, .theLocalInternational], archive.fetchable)
         
-        var data = History().data.dropLast(4).adding(Calendar.current.date(byAdding: .hour, value: -3, to: .now)!)
-        archive.history[.theLocalGermany] = .init(data: &data)
+        archive.history[.theLocalGermany] = History(ids: [],
+                                                    items: [],
+                                                    synched: Calendar.current.date(byAdding: .hour, value: -3, to: .now)!)
         XCTAssertEqual([.theLocalInternational], archive.fetchable)
         
         archive.preferences.fetch = .hours3
         XCTAssertEqual([.theLocalGermany, .theLocalInternational], archive.fetchable)
+    }
+    
+    func testItems() {
+        archive.history[.reutersEurope] = .init(ids: [],
+                                                items: [.init(title: "asd",
+                                                              description: "dfg",
+                                                              link: "1",
+                                                              date: .init(timeIntervalSinceNow: -2),
+                                                              synched: .now,
+                                                              status: .new),
+                                                        .init(title: "asd",
+                                                                      description: "dfg",
+                                                                      link: "2",
+                                                                      date: .init(timeIntervalSinceNow: -6),
+                                                                      synched: .now,
+                                                                      status: .new)],
+                                                synched: .now)
+        
+        archive.history[.reutersInternational] = .init(ids: [],
+                                                items: [.init(title: "asd",
+                                                              description: "dfg",
+                                                              link: "3",
+                                                              date: .init(timeIntervalSinceNow: -4),
+                                                              synched: .now,
+                                                              status: .new)],
+                                                synched: .now)
+        
+        var items = archive.items(source: .reutersEurope)
+        XCTAssertEqual(2, items.count)
+        XCTAssertEqual(.reutersEurope, items.first?.source)
+        XCTAssertEqual("1", items.first?.item.link)
+        XCTAssertEqual("2", items.last?.item.link)
+        
+        items = archive.items(source: nil)
+        XCTAssertEqual(3, items.count)
+        XCTAssertEqual(.reutersEurope, items.first?.source)
+        XCTAssertEqual(.reutersInternational, items[1].source)
+        XCTAssertEqual(.reutersEurope, items.last?.source)
+        XCTAssertEqual("1", items.first?.item.link)
+        XCTAssertEqual("2", items.last?.item.link)
     }
 }

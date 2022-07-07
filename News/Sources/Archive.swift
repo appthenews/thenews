@@ -57,4 +57,24 @@ public struct Archive: Arch {
             history = [:]
         }
     }
+    
+    public func items(source: Source?) -> [(source: Source, item: Item)] {
+        (source == nil
+         ? history
+            .flatMap { source, history in
+                history
+                    .items
+                    .map {
+                        (source: source, item: $0)
+                    }
+            }
+         : history[source!]!
+            .items
+            .map {
+                (source: source!, item: $0)
+            })
+        .sorted { left, right in
+            left.item.date >= right.item.date
+        }
+    }
 }

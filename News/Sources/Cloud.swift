@@ -22,4 +22,14 @@ extension Cloud where Output == Archive {
         Swift.debugPrint(a.ids.count)
         Swift.debugPrint(a.items.count)
     }
+    
+    public func read(source: Source, item: Item) async {
+        model.history[source] = model.history[source]!.read(item: item)
+        await stream()
+    }
+    
+    public func bookmarked(source: Source, item: Item) async {
+        model.history[source] = model.history[source]!.bookmarked(item: item)
+        await stream()
+    }
 }
