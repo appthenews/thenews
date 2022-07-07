@@ -22,7 +22,6 @@ final class Middlebar: NSVisualEffectView {
         let count = Text(vibrancy: true)
         count.textColor = .secondaryLabelColor
         count.font = .preferredFont(forTextStyle: .callout)
-        count.stringValue = "123 articles"
         count.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         addSubview(count)
         
@@ -69,6 +68,27 @@ final class Middlebar: NSVisualEffectView {
                 show.toggle()
                 width.constant = show ? 190 : 0
                 UserDefaults.standard.set(show, forKey: "middlebar")
+            }
+            .store(in: &subs)
+        
+        session
+            .provider
+            .removeDuplicates()
+            .combineLatest(session
+                .cloud) { provider, model in
+                    provider == nil
+                    ? []
+                    : model.items(provider: provider!)
+                }
+                .removeDuplicates { left, right in
+                    left.map(\.item) == right.map(\.item)
+                }
+            .sink { items in
+                if items.isEmpty {
+                    count.stringValue = ""
+                } else {
+                    count.stringValue = items.count.formatted() + (items.count == 1 ? " article" : " articles")
+                }
             }
             .store(in: &subs)
     }
