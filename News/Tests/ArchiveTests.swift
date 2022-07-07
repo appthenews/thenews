@@ -24,7 +24,8 @@ final class ArchiveTests: XCTestCase {
                                                                                description: "billy idol",
                                                                                link: "eyes without a face",
                                                                                date: article,
-                                                                               synched: synched)])
+                                                                               synched: synched,
+                                                                               status: .bookmarked)])
         archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
         
         XCTAssertEqual(.week, archive.preferences.delete)
@@ -43,6 +44,7 @@ final class ArchiveTests: XCTestCase {
         XCTAssertEqual("lorem", archive.history[.theLocalInternational]?.items.first?.title)
         XCTAssertEqual("billy idol", archive.history[.theLocalInternational]?.items.first?.description)
         XCTAssertEqual("eyes without a face", archive.history[.theLocalInternational]?.items.first?.link)
+        XCTAssertEqual(.bookmarked, archive.history[.theLocalInternational]?.items.first?.status)
     }
     
     func testFetchable() {

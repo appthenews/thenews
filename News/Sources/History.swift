@@ -35,7 +35,7 @@ struct History: Storable {
         .init(ids: self.ids.union(ids),
               items: self.items
             .filter {
-                !cleaning.passed(date: $0.synched)
+                $0.status == .bookmarked || !cleaning.passed(date: $0.synched)
             }
             .union(items))
     }

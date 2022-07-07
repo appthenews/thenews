@@ -18,7 +18,8 @@ extension XMLNode {
                             description: description,
                             link: link,
                             date: date,
-                            synched: .now))
+                            synched: .now,
+                            status: .new))
     }
     
     private func element(name: String) -> String? {
