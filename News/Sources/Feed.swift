@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Source: UInt8, CaseIterable {
+public enum Feed: UInt8, CaseIterable {
     case
     theGuardianWorld,
     theGuardianGermany,
@@ -24,6 +24,13 @@ public enum Source: UInt8, CaseIterable {
                 .theLocalGermany:
             return .theLocal
         }
+    }
+    
+    static var synch: [Self : Date] {
+        allCases
+            .reduce(into: [:]) {
+                $0[$1] = .init(timestamp: 0)
+            }
     }
     
     var url: URL {

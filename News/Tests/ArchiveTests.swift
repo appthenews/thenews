@@ -14,106 +14,171 @@ final class ArchiveTests: XCTestCase {
         let article = Date(timestamp: 123569754)
         let synched = Date(timestamp: 35344)
         
-        archive.preferences.delete = .week
+        archive.preferences.clean = .week
         archive.preferences.fetch = .hours3
-        archive.preferences.sources[.reutersEurope] = true
-        archive.preferences.sources[.theLocalGermany] = true
-        archive.history[.theLocalInternational] = History().update(cleaning: .hours3,
-                                                                   adding: ["hello", "world"],
-                                                                   and: [.init(title: "lorem",
-                                                                               description: "billy idol",
-                                                                               link: "eyes without a face",
-                                                                               date: article,
-                                                                               synched: synched,
-                                                                               status: .bookmarked)])
+        archive.preferences.feeds[.reutersEurope] = true
+        archive.preferences.feeds[.theLocalGermany] = true
+        archive.update(feed: .theLocalInternational,
+                       date: .now,
+                       ids: ["hello", "world"],
+                       items: [.init(feed: .reutersInternational,
+                                     title: "lorem",
+                                     description: "billy idol",
+                                     link: "eyes without a face",
+                                     date: article,
+                                     synched: synched,
+                                     status: .bookmarked)])
         archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
         
-        XCTAssertEqual(.week, archive.preferences.delete)
+        XCTAssertEqual(.week, archive.preferences.clean)
         XCTAssertEqual(.hours3, archive.preferences.fetch)
-        XCTAssertTrue(archive.preferences.sources[.reutersEurope] ?? false)
-        XCTAssertTrue(archive.preferences.sources[.theLocalGermany] ?? false)
-        XCTAssertFalse(archive.preferences.sources[.theLocalInternational] ?? true)
-        XCTAssertEqual(0, archive.history[.reutersInternational]?.synched.timestamp)
-        XCTAssertGreaterThanOrEqual(archive.history[.theLocalInternational]?.synched.timestamp ?? 0, date.timestamp)
-        XCTAssertEqual(2, archive.history[.theLocalInternational]?.ids.count)
-        XCTAssertEqual(1, archive.history[.theLocalInternational]?.items.count)
-        XCTAssertTrue(archive.history[.theLocalInternational]?.ids.contains("hello") ?? false)
-        XCTAssertTrue(archive.history[.theLocalInternational]?.ids.contains("world") ?? false)
-        XCTAssertEqual(article, archive.history[.theLocalInternational]?.items.first?.date)
-        XCTAssertEqual(synched, archive.history[.theLocalInternational]?.items.first?.synched)
-        XCTAssertEqual("lorem", archive.history[.theLocalInternational]?.items.first?.title)
-        XCTAssertEqual("billy idol", archive.history[.theLocalInternational]?.items.first?.description)
-        XCTAssertEqual("eyes without a face", archive.history[.theLocalInternational]?.items.first?.link)
-        XCTAssertEqual(.bookmarked, archive.history[.theLocalInternational]?.items.first?.status)
+        XCTAssertTrue(archive.preferences.feeds[.reutersEurope]!)
+        XCTAssertTrue(archive.preferences.feeds[.theLocalGermany]!)
+        XCTAssertFalse(archive.preferences.feeds[.theLocalInternational]!)
+        XCTAssertEqual(0, archive.feeds[.reutersInternational]!.timestamp)
+        XCTAssertGreaterThanOrEqual(archive.feeds[.theLocalInternational]!.timestamp, date.timestamp)
+        XCTAssertEqual(2, archive.ids.count)
+        XCTAssertEqual(1, archive.items.count)
+        XCTAssertTrue(archive.ids.contains("hello"))
+        XCTAssertTrue(archive.ids.contains("world"))
+        XCTAssertEqual(.reutersInternational, archive.items.first?.feed)
+        XCTAssertEqual(article, archive.items.first?.date)
+        XCTAssertEqual(synched, archive.items.first?.synched)
+        XCTAssertEqual("lorem", archive.items.first?.title)
+        XCTAssertEqual("billy idol", archive.items.first?.description)
+        XCTAssertEqual("eyes without a face", archive.items.first?.link)
+        XCTAssertEqual(.bookmarked, archive.items.first?.status)
     }
     
     func testFetchable() {
         XCTAssertEqual([], archive.fetchable)
         
-        archive.preferences.sources[.theLocalGermany] = true
+        archive.preferences.feeds[.theLocalGermany] = true
         XCTAssertEqual([.theLocalGermany], archive.fetchable)
         
-        archive.preferences.sources[.theLocalInternational] = true
+        archive.preferences.feeds[.theLocalInternational] = true
         XCTAssertEqual([.theLocalGermany, .theLocalInternational], archive.fetchable)
         
-        archive.history[.theLocalGermany] = History(ids: [],
-                                                    items: [],
-                                                    synched: Calendar.current.date(byAdding: .hour, value: -3, to: .now)!)
+        archive.update(feed: .theLocalGermany,
+                       date: Calendar.current.date(byAdding: .hour, value: -3, to: .now)!,
+                       ids: [],
+                       items: [])
         XCTAssertEqual([.theLocalInternational], archive.fetchable)
         
         archive.preferences.fetch = .hours3
         XCTAssertEqual([.theLocalGermany, .theLocalInternational], archive.fetchable)
+        
+        archive.update(feed: .theLocalInternational, date: .now, ids: [], items: [])
+        XCTAssertEqual([.theLocalGermany], archive.fetchable)
     }
     
     func testItems() {
-        archive.preferences.sources[.reutersEurope] = true
-        archive.preferences.sources[.theLocalGermany] = true
+        archive.preferences.feeds[.reutersEurope] = true
+        archive.preferences.feeds[.theLocalGermany] = true
         
-        archive.history[.reutersEurope] = .init(ids: [],
-                                                items: [.init(title: "asd",
-                                                              description: "dfg",
-                                                              link: "1",
-                                                              date: .init(timeIntervalSinceNow: -2),
-                                                              synched: .now,
-                                                              status: .new),
-                                                        .init(title: "asd",
-                                                                      description: "dfg",
-                                                                      link: "2",
-                                                                      date: .init(timeIntervalSinceNow: -6),
-                                                                      synched: .now,
-                                                                      status: .new)],
-                                                synched: .now)
-        
-        archive.history[.theLocalGermany] = .init(ids: [],
-                                                items: [.init(title: "asd",
-                                                              description: "dfg",
-                                                              link: "3",
-                                                              date: .init(timeIntervalSinceNow: -4),
-                                                              synched: .now,
-                                                              status: .new)],
-                                                synched: .now)
-        
-        archive.history[.derSpiegelInternational] = .init(ids: [],
-                                                items: [.init(title: "asd",
-                                                              description: "dfg",
-                                                              link: "4",
-                                                              date: .init(timeIntervalSinceNow: -1),
-                                                              synched: .now,
-                                                              status: .new)],
-                                                synched: .now)
+        archive.update(feed: .reutersEurope,
+                       date: .now,
+                       ids: [],
+                       items: [.init(feed: .reutersEurope,
+                                     title: "asd",
+                                     description: "dfg",
+                                     link: "1",
+                                     date: .init(timeIntervalSinceNow: -2),
+                                     synched: .now,
+                                     status: .new),
+                               .init(feed: .reutersEurope,
+                                     title: "asd",
+                                     description: "dfg",
+                                     link: "2",
+                                     date: .init(timeIntervalSinceNow: -6),
+                                     synched: .now,
+                                     status: .new),
+                               .init(feed: .theLocalGermany,
+                                     title: "asd",
+                                     description: "dfg",
+                                     link: "3",
+                                     date: .init(timeIntervalSinceNow: -4),
+                                     synched: .now,
+                                     status: .new),
+                               .init(feed: .derSpiegelInternational,
+                                     title: "asd",
+                                     description: "dfg",
+                                     link: "4",
+                                     date: .init(timeIntervalSinceNow: -1),
+                                     synched: .now,
+                                     status: .new)])
         
         var items = archive.items(provider: .reuters)
         XCTAssertEqual(2, items.count)
-        XCTAssertEqual(.reutersEurope, items.first?.source)
-        XCTAssertEqual("1", items.first?.item.link)
-        XCTAssertEqual("2", items.last?.item.link)
+        XCTAssertEqual("1", items.first?.link)
+        XCTAssertEqual("2", items.last?.link)
         
         items = archive.items(provider: .all)
         XCTAssertEqual(3, items.count)
-        XCTAssertEqual(.reutersEurope, items.first?.source)
-        XCTAssertEqual(.theLocalGermany, items[1].source)
-        XCTAssertEqual(.reutersEurope, items.last?.source)
-        XCTAssertEqual("1", items.first?.item.link)
-        XCTAssertEqual("2", items.last?.item.link)
+        XCTAssertEqual(.reutersEurope, items.first?.feed)
+        XCTAssertEqual(.theLocalGermany, items[1].feed)
+        XCTAssertEqual(.reutersEurope, items.last?.feed)
+        XCTAssertEqual("1", items.first?.link)
+        XCTAssertEqual("2", items.last?.link)
+    }
+    
+    func testClean() {
+        archive.update(feed: .theLocalInternational,
+                       date: .now,
+                       ids: ["hello"],
+                       items: [.init(feed: .theLocalGermany,
+                                     title: "asd",
+                                     description: "rtg",
+                                     link: "f",
+                                     date: .now,
+                                     synched: Calendar.current.date(byAdding: .hour, value: -3, to: .now)!,
+                                     status: .new)])
+        
+        XCTAssertEqual(1, archive.ids.count)
+        XCTAssertEqual(1, archive.items.count)
+        
+        archive.update(feed: .theLocalGermany,
+                       date: .now,
+                       ids: [],
+                       items: [.init(feed: .reutersEurope,
+                                     title: "jj",
+                                     description: "uu",
+                                     link: "ii",
+                                     date: .now,
+                                     synched: .now,
+                                     status: .new)])
+        
+        archive.clean()
+        
+        XCTAssertEqual(1, archive.ids.count)
+        XCTAssertEqual(2, archive.items.count)
+        
+        archive.preferences.clean = .hours3
+        archive.clean()
+        
+        XCTAssertEqual(1, archive.ids.count)
+        XCTAssertEqual(1, archive.items.count)
+        XCTAssertEqual("jj", archive.items.first?.title)
+    }
+    
+    func testBookmarked() {
+        let item = Item(feed: .theLocalGermany,
+                         title: "asd",
+                         description: "rtg",
+                         link: "f",
+                         date: .now,
+                         synched: Calendar.current.date(byAdding: .hour, value: -3, to: .now)!,
+                         status: .new)
+        
+        archive.update(feed: .theLocalInternational,
+                       date: .now,
+                       ids: [],
+                       items: [item])
+        
+        archive.update(item: item.bookmarked)
+        archive.preferences.clean = .hours3
+        archive.clean()
+        
+        XCTAssertEqual(1, archive.items.count)
     }
 }

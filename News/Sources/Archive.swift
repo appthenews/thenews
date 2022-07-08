@@ -4,29 +4,33 @@ import Archivable
 public struct Archive: Arch {
     public var timestamp: UInt32
     public internal(set) var preferences: Preferences
-    var history: [Source : History]
+    private(set) var feeds: [Feed : Date]
+    private(set) var ids: Set<String>
+    private(set) var items: Set<Item>
 
     public var data: Data {
         .init()
         .adding(preferences)
-        .adding(UInt8(history.count))
-        .adding(history.reduce(.init()) {
+        .adding(UInt8(feeds.count))
+        .adding(feeds.reduce(.init()) {
             $0
                 .adding($1.key.rawValue)
                 .adding($1.value)
         })
+        .adding(collection: UInt32.self, strings: UInt8.self, items: ids)
+        .adding(size: UInt16.self, collection: items)
     }
     
-    var fetchable: Set<Source> {
+    var fetchable: Set<Feed> {
         .init(preferences
-            .sources
+            .feeds
             .filter {
                 $0.value
             }
             .filter {
-                history[$0.key]
+                feeds[$0.key]
                     .map {
-                        preferences.fetch.passed(date: $0.synched)
+                        preferences.fetch.passed(date: $0)
                     }
                 ?? false
             }
@@ -38,9 +42,9 @@ public struct Archive: Arch {
     public init() {
         timestamp = 0
         preferences = .init()
-        history = Source.allCases.reduce(into: [:]) {
-            $0[$1] = .init()
-        }
+        feeds = Feed.synch
+        ids = []
+        items = []
     }
     
     public init(version: UInt8, timestamp: UInt32, data: Data) async {
@@ -49,30 +53,44 @@ public struct Archive: Arch {
         
         if version == Self.version {
             preferences = .init(data: &data)
-            history = (0 ..< .init(data.number() as UInt8)).reduce(into: [:]) { result, _ in
-                result[.init(rawValue: data.number())!] = .init(data: &data)
+            feeds = (0 ..< .init(data.number() as UInt8)).reduce(into: [:]) { result, _ in
+                result[.init(rawValue: data.number())!] = data.date()
             }
+            ids = .init(data.items(collection: UInt32.self, strings: UInt8.self))
+            items = .init(data.collection(size: UInt16.self))
         } else {
             preferences = .init()
-            history = [:]
+            feeds = Feed.synch
+            ids = []
+            items = []
         }
     }
     
-    public func items(provider: Provider) -> [(source: Source, item: Item)] {
-        provider
-            .sources
+    public func items(provider: Provider) -> [Item] {
+        items
             .filter {
-                preferences.sources[$0]!
+                preferences.feeds[$0.feed]!
+                && (provider == .all || provider == $0.feed.provider)
             }
-            .flatMap { source in
-                history[source]!
-                    .items
-                    .map {
-                        (source: source, item: $0)
-                    }
+            .sorted {
+                $0.date >= $1.date
             }
-            .sorted { left, right in
-                left.item.date >= right.item.date
+    }
+    
+    mutating func clean() {
+        items = items
+            .filter {
+                $0.status == .bookmarked || !preferences.clean.passed(date: $0.synched)
             }
+    }
+    
+    mutating func update(item: Item) {
+        items = items.removing(item).inserting(item)
+    }
+    
+    mutating func update(feed: Feed, date: Date, ids: Set<String>, items: Set<Item>) {
+        feeds[feed] = date
+        self.ids = self.ids.union(ids)
+        self.items = self.items.union(items)
     }
 }

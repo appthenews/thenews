@@ -28,16 +28,16 @@ struct Fetcher {
         )
     }
     
-    func fetch(source: Source, synched: Set<String>) async throws -> (ids: Set<String>, items: Set<Item>) {
-        let (data, response) = try await session.data(from: source.url)
+    func fetch(feed: Feed, synched: Set<String>) async throws -> (ids: Set<String>, items: Set<Item>) {
+        let (data, response) = try await session.data(from: feed.url)
         
         guard (response as? HTTPURLResponse)?.statusCode == 200, !data.isEmpty
         else { throw NSError(domain: "", code: 0) }
         
-        return try parse(data: data, synched: synched)
+        return try parse(feed: feed, data: data, synched: synched)
     }
     
-    func parse(data: Data, synched: Set<String>) throws -> (ids: Set<String>, items: Set<Item>) {
+    func parse(feed: Feed, data: Data, synched: Set<String>) throws -> (ids: Set<String>, items: Set<Item>) {
         let document = try XMLDocument(data: data)
         
         let result: [(id: String, item: Item)] =
@@ -47,7 +47,7 @@ struct Fetcher {
             .first?
             .children?
             .compactMap {
-                $0.item(strategy: date, synched: synched)
+                $0.item(feed: feed, strategy: date, synched: synched)
             } ?? []
         
         return (ids: .init(result.map(\.id)), items: .init(result.map(\.item)))

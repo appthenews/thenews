@@ -10,46 +10,39 @@ final class CloudTests: XCTestCase {
     }
     
     func testRead() async {
-        let item = Item(title: "lk",
-                         description: "fgh",
-                         link: "asd",
-                         date: .now,
-                         synched: .now,
-                         status: .new)
-        let history = [Source.reutersEurope : History()
-            .update(cleaning: .hours3,
-                    adding: [],
-                    and: [item])]
-        await cloud.update(history: history)
+        let item = Item(feed: .reutersInternational,
+                        title: "lk",
+                        description: "fgh",
+                        link: "asd",
+                        date: .now,
+                        synched: .now,
+                        status: .new)
+
+        await cloud.update(item: item)
+        let new = await cloud.model.items.first?.status
+        XCTAssertEqual(.new, new)
         
-        await cloud.read(source: .reutersEurope, item: item)
-        let read = await cloud.model.history[.reutersEurope]?.items.first?.status
-        
+        await cloud.read(item: item)
+        let read = await cloud.model.items.first?.status
         XCTAssertEqual(.read, read)
     }
     
     func testBookmarked() async {
-        let item = Item(title: "lk",
-                         description: "fgh",
-                         link: "asd",
-                         date: .now,
-                         synched: .now,
-                         status: .new)
-        let history = [Source.reutersEurope : History()
-            .update(cleaning: .hours3,
-                    adding: [],
-                    and: [item])]
-        await cloud.update(history: history)
-        
-        await cloud.bookmarked(source: .reutersEurope, item: item)
-        let bookmarked = await cloud.model.history[.reutersEurope]?.items.first?.status
+        await cloud.bookmarked(item: .init(feed: .reutersInternational,
+                                          title: "lk",
+                                          description: "fgh",
+                                          link: "asd",
+                                          date: .now,
+                                          synched: .now,
+                                          status: .new))
+        let bookmarked = await cloud.model.items.first?.status
         
         XCTAssertEqual(.bookmarked, bookmarked)
     }
 }
 
 private extension Cloud where Output == Archive {
-    func update(history: [Source : History]) {
-        model.history = history
+    func update(item: Item) {
+        model.update(item: item)
     }
 }

@@ -2,6 +2,7 @@ import Foundation
 import Archivable
 
 public struct Item: Storable, Hashable {
+    public let feed: Feed
     public let title: String
     public let description: String
     public let link: String
@@ -11,6 +12,7 @@ public struct Item: Storable, Hashable {
     
     public var data: Data {
         .init()
+        .adding(feed.rawValue)
         .adding(size: UInt8.self, string: title)
         .adding(size: UInt16.self, string: description)
         .adding(size: UInt8.self, string: link)
@@ -20,6 +22,7 @@ public struct Item: Storable, Hashable {
     }
     
     public init(data: inout Data) {
+        feed = .init(rawValue: data.number())!
         title = data.string(size: UInt8.self)
         description = data.string(size: UInt16.self)
         link = data.string(size: UInt8.self)
@@ -28,12 +31,15 @@ public struct Item: Storable, Hashable {
         status = .init(rawValue: data.number())!
     }
     
-    init(title: String,
+    init(feed: Feed,
+         title: String,
          description: String,
          link: String,
          date: Date,
          synched: Date,
          status: Status) {
+        
+        self.feed = feed
         self.title = title
         self.description = description
         self.link = link
@@ -42,8 +48,9 @@ public struct Item: Storable, Hashable {
         self.status = status
     }
     
-    func read() -> Self {
-        .init(title: title,
+    var read: Self {
+        .init(feed: feed,
+              title: title,
               description: description,
               link: link,
               date: date,
@@ -51,8 +58,9 @@ public struct Item: Storable, Hashable {
               status: .read)
     }
     
-    func bookmarked() -> Self {
-        .init(title: title,
+    var bookmarked: Self {
+        .init(feed: feed,
+              title: title,
               description: description,
               link: link,
               date: date,

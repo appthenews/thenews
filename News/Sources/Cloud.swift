@@ -3,41 +3,36 @@ import Archivable
 extension Cloud where Output == Archive {
     public func fetch() async {
         do {
-            var fetcher: Fetcher!
-            for source in model.fetchable {
-                if fetcher == nil {
-                    fetcher = .init()
+            let fetchable = model.fetchable
+            
+            if !fetchable.isEmpty {
+                model.clean()
+                
+                let fetcher = Fetcher()
+                for feed in fetchable {
+                    let result = try await fetcher.fetch(feed: feed, synched: model.ids)
+                    model.update(feed: feed, date: .now, ids: result.ids, items: result.items)
                 }
                 
-                let synched = model.history[source]!.ids
-                let result = try await fetcher.fetch(source: source, synched: synched)
-                model.history[source] = model
-                    .history[source]!
-                    .update(cleaning: model.preferences.delete,
-                            adding: result.ids,
-                            and: result.items)
-            }
-            
-            if fetcher != nil {
                 await stream()
             }
         } catch { }
     }
     
-    public func toggle(source: Source, value: Bool) async {
-        model.preferences.sources[source] = value
+    public func toggle(feed: Feed, value: Bool) async {
+        model.preferences.feeds[feed] = value
         
         await fetch()
         await stream()
     }
     
-    public func read(source: Source, item: Item) async {
-        model.history[source] = model.history[source]!.read(item: item)
+    public func read(item: Item) async {
+        model.update(item: item.read)
         await stream()
     }
     
-    public func bookmarked(source: Source, item: Item) async {
-        model.history[source] = model.history[source]!.bookmarked(item: item)
+    public func bookmarked(item: Item) async {
+        model.update(item: item.bookmarked)
         await stream()
     }
 }
