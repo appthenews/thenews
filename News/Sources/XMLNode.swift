@@ -4,12 +4,12 @@ extension XMLNode {
     func item(feed: Feed, strategy: Date.ParseStrategy, synched: Set<String>) -> (id: String, item: Item)? {
         guard
             name == "item",
-            let guid = element(name: "guid")?.max8,
+            let guid = self["guid"]?.max8,
             !synched.contains(guid),
-            let title = element(name: "title")?.max8,
-            let pubDate = element(name: "pubDate"),
-            let description = element(name: "description"),
-            let link = element(name: "link")?.max8,
+            let title = self["title"]?.max8,
+            let pubDate = self["pubDate"],
+            let description = self["description"],
+            let link = self["link"]?.max8,
             let date = try? Date(pubDate, strategy: strategy)
         else { return nil }
         
@@ -23,7 +23,7 @@ extension XMLNode {
                             status: .new))
     }
     
-    private func element(name: String) -> String? {
+    private subscript(_ name: String) -> String? {
         children?
             .first { $0.name == name }?
             .stringValue

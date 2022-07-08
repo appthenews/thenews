@@ -26,6 +26,22 @@ public enum Feed: UInt8, CaseIterable {
         }
     }
     
+    public var title: String {
+        switch self {
+        case .theGuardianWorld:
+            return "World"
+        case .theGuardianGermany,
+                .theLocalGermany:
+            return "Germany"
+        case .reutersInternational,
+                .derSpiegelInternational,
+                .theLocalInternational:
+            return "International"
+        case .reutersEurope:
+            return "Europe"
+        }
+    }
+    
     static var synch: [Self : Date] {
         allCases
             .reduce(into: [:]) {

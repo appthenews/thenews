@@ -80,16 +80,14 @@ final class Middlebar: NSVisualEffectView {
                     ? []
                     : model.items(provider: provider!)
                 }
-                .removeDuplicates { left, right in
-                    left.map(\.item) == right.map(\.item)
+                .removeDuplicates()
+                .sink { items in
+                    if items.isEmpty {
+                        count.stringValue = ""
+                    } else {
+                        count.stringValue = items.count.formatted() + (items.count == 1 ? " article" : " articles")
+                    }
                 }
-            .sink { items in
-                if items.isEmpty {
-                    count.stringValue = ""
-                } else {
-                    count.stringValue = items.count.formatted() + (items.count == 1 ? " article" : " articles")
-                }
-            }
-            .store(in: &subs)
+                .store(in: &subs)
     }
 }
