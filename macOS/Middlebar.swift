@@ -20,8 +20,6 @@ final class Middlebar: NSVisualEffectView {
         addSubview(field)
         
         let count = Text(vibrancy: true)
-        count.textColor = .secondaryLabelColor
-        count.font = .preferredFont(forTextStyle: .callout)
         count.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         addSubview(count)
         
@@ -43,7 +41,7 @@ final class Middlebar: NSVisualEffectView {
         
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         field.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
-        field.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        field.widthAnchor.constraint(equalToConstant: 160).isActive = true
         
         count.leftAnchor.constraint(equalTo: field.leftAnchor).isActive = true
         count.centerYAnchor.constraint(equalTo: bookmark.centerYAnchor).isActive = true
@@ -83,9 +81,18 @@ final class Middlebar: NSVisualEffectView {
                 .removeDuplicates()
                 .sink { items in
                     if items.isEmpty {
-                        count.stringValue = ""
+                        count.attributedStringValue = .init()
                     } else {
-                        count.stringValue = items.count.formatted() + (items.count == 1 ? " article" : " articles")
+                        var string = AttributedString(items.count.formatted(),
+                                                      attributes: .init([.font : NSFont
+                                                        .monospacedDigitSystemFont(
+                                                            ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
+                                                            weight: .regular),
+                                                                         .foregroundColor: NSColor.secondaryLabelColor]))
+                        string += .init(items.count == 1 ? " article" : " articles",
+                                        attributes: .init([.font : NSFont.preferredFont(forTextStyle: .callout),
+                                                           .foregroundColor: NSColor.tertiaryLabelColor]))
+                        count.attributedStringValue = .init(string)
                     }
                 }
                 .store(in: &subs)
