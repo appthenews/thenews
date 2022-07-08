@@ -38,6 +38,7 @@
 		CED728D1287869D90010A4BC /* List.Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D0287869D90010A4BC /* List.Cell.swift */; };
 		CED728D3287869E50010A4BC /* List.Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D2287869E50010A4BC /* List.Info.swift */; };
 		CED728D528786A0A0010A4BC /* List.State.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D428786A0A0010A4BC /* List.State.swift */; };
+		CED728D728787B540010A4BC /* Vibrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D628787B540010A4BC /* Vibrant.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +77,7 @@
 		CED728D0287869D90010A4BC /* List.Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.Cell.swift; sourceTree = "<group>"; };
 		CED728D2287869E50010A4BC /* List.Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.Info.swift; sourceTree = "<group>"; };
 		CED728D428786A0A0010A4BC /* List.State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.State.swift; sourceTree = "<group>"; };
+		CED728D628787B540010A4BC /* Vibrant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibrant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				CE19C0EA287725330045E221 /* Stack.swift */,
 				CE3C70E52873328200863C22 /* Text.swift */,
 				CEC5DFB02871BB76008C8E56 /* Topbar.swift */,
+				CED728D628787B540010A4BC /* Vibrant.swift */,
 				CE346081287066FD001962E7 /* Window.swift */,
 				CE346083287066FE001962E7 /* Assets.xcassets */,
 			);
@@ -276,6 +279,7 @@
 				CED728CD287865300010A4BC /* CGRect.swift in Sources */,
 				CE3C70E228732B0900863C22 /* Middlebar.Cell.swift in Sources */,
 				CE3C70E028732AD100863C22 /* Middlebar.Field.swift in Sources */,
+				CED728D728787B540010A4BC /* Vibrant.swift in Sources */,
 				CE19C0E9287702800045E221 /* Preferences.Feeds.Switch.swift in Sources */,
 				CE34608F28706760001962E7 /* Session.swift in Sources */,
 				CE3C70E428732B2100863C22 /* Middlebar.Editor.swift in Sources */,

@@ -9,6 +9,18 @@ final class Middlebar: NSVisualEffectView {
         var show = UserDefaults.standard.value(forKey: "middlebar") as? Bool ?? true
         var bookmarks = false
         
+        let items = session
+            .provider
+            .removeDuplicates()
+            .combineLatest(session
+                .cloud) { provider, model in
+                    provider == nil
+                    ? []
+                    : model.items(provider: provider!)
+                }
+                .removeDuplicates()
+                .eraseToAnyPublisher()
+        
         super.init(frame: .zero)
         state = .active
         material = .popover
@@ -39,6 +51,9 @@ final class Middlebar: NSVisualEffectView {
         let separator = Separator()
         addSubview(separator)
         
+        let list = List(session: session, items: items)
+        addSubview(list)
+        
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         field.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
         field.widthAnchor.constraint(equalToConstant: 160).isActive = true
@@ -60,6 +75,11 @@ final class Middlebar: NSVisualEffectView {
         separator.widthAnchor.constraint(equalToConstant: 1).isActive = true
         separator.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
+        list.topAnchor.constraint(equalTo: divider.bottomAnchor).isActive = true
+        list.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        list.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        list.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        
         session
             .middlebar
             .sink {
@@ -69,34 +89,25 @@ final class Middlebar: NSVisualEffectView {
             }
             .store(in: &subs)
         
-        session
-            .provider
-            .removeDuplicates()
-            .combineLatest(session
-                .cloud) { provider, model in
-                    provider == nil
-                    ? []
-                    : model.items(provider: provider!)
+        items
+            .sink { items in
+                if items.isEmpty {
+                    count.attributedStringValue = .init()
+                } else {
+                    var string = AttributedString(items.count.formatted(),
+                                                  attributes:
+                            .init([.font : NSFont
+                                .monospacedDigitSystemFont(
+                                    ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
+                                    weight: .regular),
+                                   .foregroundColor: NSColor.secondaryLabelColor]))
+                    string.append(AttributedString(items.count == 1 ? " article" : " articles",
+                                                   attributes:
+                            .init([.font : NSFont.preferredFont(forTextStyle: .callout),
+                                   .foregroundColor: NSColor.tertiaryLabelColor])))
+                    count.attributedStringValue = .init(string)
                 }
-                .removeDuplicates()
-                .sink { items in
-                    if items.isEmpty {
-                        count.attributedStringValue = .init()
-                    } else {
-                        var string = AttributedString(items.count.formatted(),
-                                                      attributes:
-                                .init([.font : NSFont
-                                    .monospacedDigitSystemFont(
-                                        ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
-                                        weight: .regular),
-                                       .foregroundColor: NSColor.secondaryLabelColor]))
-                        string.append(AttributedString(items.count == 1 ? " article" : " articles",
-                                                       attributes:
-                                .init([.font : NSFont.preferredFont(forTextStyle: .callout),
-                                       .foregroundColor: NSColor.tertiaryLabelColor])))
-                        count.attributedStringValue = .init(string)
-                    }
-                }
-                .store(in: &subs)
+            }
+            .store(in: &subs)
     }
 }

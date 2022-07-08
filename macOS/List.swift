@@ -8,7 +8,7 @@ final class List: NSScrollView {
     private let highlight = PassthroughSubject<CGPoint, Never>()
 
     required init?(coder: NSCoder) { nil }
-    init(session: Session) {
+    init(session: Session, items: AnyPublisher<[Item], Never>) {
         var cells = Set<Cell>()
         let info = PassthroughSubject<Set<Info>, Never>()
         let size = PassthroughSubject<CGSize, Never>()
@@ -16,6 +16,8 @@ final class List: NSScrollView {
         
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        scrollerInsets.top = 8
+        scrollerInsets.bottom = 8
 
         let content = Flip()
         documentView = content
@@ -130,6 +132,26 @@ final class List: NSScrollView {
                     .forEach {
                         $0.state = .none
                     }
+            }
+            .store(in: &subs)
+        
+        items
+            .sink { items in
+                guard !items.isEmpty else {
+                    info.send([])
+                    size.send(.zero)
+                    return
+                }
+                
+                let result = items
+                    .reduce(into: (info: Set<Info>(), y: CGFloat())) {
+                        let info = Info(item: $1, y: $0.y)
+                        $0.info.insert(info)
+                        $0.y = info.rect.maxY + 10
+                    }
+                
+                info.send(result.info)
+                size.send(.init(width: 0, height: result.y))
             }
             .store(in: &subs)
     }

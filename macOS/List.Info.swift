@@ -6,9 +6,11 @@ extension List {
         let item: Item
         let string: NSAttributedString
         let rect: CGRect
-        let first: Bool
         
-        init(item: Item, rect: CGRect, first: Bool) {
+        init(item: Item, y: CGFloat) {
+            var string = AttributedString(item.title,
+                                          attributes: .init())
+            
 //            text = .make {
 //                if !website.title.isEmpty {
 //                    $0.append(.make(website.title, attributes: [
@@ -20,10 +22,9 @@ extension List {
 //                    .font: NSFont.preferredFont(forTextStyle: .callout),
 //                    .foregroundColor: NSColor.tertiaryLabelColor]))
 //            }
-            string = .init()
+            self.string = .init(string)
+            rect = .init(x: 0, y: y, width: 100, height: 100)
             self.item = item
-            self.rect = rect
-            self.first = first
         }
         
         func hash(into: inout Hasher) {
