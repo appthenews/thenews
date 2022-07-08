@@ -84,14 +84,16 @@ final class Middlebar: NSVisualEffectView {
                         count.attributedStringValue = .init()
                     } else {
                         var string = AttributedString(items.count.formatted(),
-                                                      attributes: .init([.font : NSFont
-                                                        .monospacedDigitSystemFont(
-                                                            ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
-                                                            weight: .regular),
-                                                                         .foregroundColor: NSColor.secondaryLabelColor]))
-                        string += .init(items.count == 1 ? " article" : " articles",
-                                        attributes: .init([.font : NSFont.preferredFont(forTextStyle: .callout),
-                                                           .foregroundColor: NSColor.tertiaryLabelColor]))
+                                                      attributes:
+                                .init([.font : NSFont
+                                    .monospacedDigitSystemFont(
+                                        ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
+                                        weight: .regular),
+                                       .foregroundColor: NSColor.secondaryLabelColor]))
+                        string.append(AttributedString(items.count == 1 ? " article" : " articles",
+                                                       attributes:
+                                .init([.font : NSFont.preferredFont(forTextStyle: .callout),
+                                       .foregroundColor: NSColor.tertiaryLabelColor])))
                         count.attributedStringValue = .init(string)
                     }
                 }
