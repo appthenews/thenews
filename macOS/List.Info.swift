@@ -8,25 +8,58 @@ extension List {
         let rect: CGRect
         
         init(item: Item, y: CGFloat) {
-            var string = AttributedString(item.title,
-                                          attributes: .init())
+            let fontProvider = NSFont.monospacedDigitSystemFont(
+                ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
+                weight: .regular)
             
-//            text = .make {
-//                if !website.title.isEmpty {
-//                    $0.append(.make(website.title, attributes: [
-//                        .font: NSFont.preferredFont(forTextStyle: .callout),
-//                        .foregroundColor: NSColor.labelColor]))
-//                }
-//
-//                $0.append(.make(" " + website.id.domain, attributes: [
-//                    .font: NSFont.preferredFont(forTextStyle: .callout),
-//                    .foregroundColor: NSColor.tertiaryLabelColor]))
-//            }
+            let paragraphProvider = NSMutableParagraphStyle()
+            paragraphProvider.lineSpacing = 0
+            print(fontProvider.leading)
+            
+            let attributesProvider = AttributeContainer([
+                .font: fontProvider,
+                .foregroundColor: NSColor.secondaryLabelColor,
+                .paragraphStyle: paragraphProvider])
+            
+            let fontDate = NSFont.monospacedDigitSystemFont(
+                ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
+                weight: .light)
+            
+            let paragraphDate = NSMutableParagraphStyle()
+            paragraphDate.lineSpacing = 0
+            
+            let attributesDate = AttributeContainer([
+                .font: fontDate,
+                .foregroundColor: NSColor.secondaryLabelColor,
+                .paragraphStyle: paragraphDate])
+            
+            let fontTitle = NSFont.monospacedDigitSystemFont(
+                ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize,
+                weight: .regular)
+            
+            print(fontTitle.leading)
+            
+            let paragraphTitle = NSMutableParagraphStyle()
+            paragraphTitle.
+            
+            let attributesTitle = AttributeContainer([
+                .font: fontTitle,
+                .foregroundColor: NSColor.labelColor,
+                .paragraphStyle: paragraphTitle])
+            
+            var string = AttributedString(item.feed.provider.title, attributes: attributesProvider)
+            string.append(AttributedString(" — ", attributes: attributesDate))
+            string.append(AttributedString(item.date.formatted(.relative(presentation: .named,
+                                                                         unitsStyle: .wide)),
+                                           attributes: attributesDate))
+            string.append(AttributedString("\n", attributes: attributesTitle))
+            string.append(AttributedString(item.title, attributes: attributesTitle))
+
             self.string = .init(string)
             
             let height = CTFramesetterSuggestFrameSizeWithConstraints(
                 CTFramesetterCreateWithAttributedString(self.string),
-                CFRange(),
+                .init(location: 0, length: 0),
                 nil,
                 .init(width: CGFloat(230),
                       height: .greatestFiniteMagnitude),

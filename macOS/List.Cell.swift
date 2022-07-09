@@ -34,14 +34,14 @@ extension List {
             vibrant.frame = .init(x: 10, y: 0, width: 260, height: 0)
             self.vibrant = vibrant
             
-            super.init(frame: .zero)
-            addSubview(vibrant)
-            
             let label = Text(vibrancy: true)
             label.translatesAutoresizingMaskIntoConstraints = true
             label.frame = .init(x: 25, y: 15, width: 230, height: 0)
-            addSubview(label)
             self.label = label
+            
+            super.init(frame: .zero)
+            addSubview(vibrant)
+            addSubview(label)
         }
         
         override func updateLayer() {
