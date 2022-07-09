@@ -16,8 +16,8 @@ final class List: NSScrollView {
         
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        scrollerInsets.top = 8
-        scrollerInsets.bottom = 8
+        scrollerInsets.top = 2
+        scrollerInsets.bottom = 2
 
         let content = Flip()
         documentView = content
@@ -144,14 +144,14 @@ final class List: NSScrollView {
                 }
                 
                 let result = items
-                    .reduce(into: (info: Set<Info>(), y: CGFloat())) {
+                    .reduce(into: (info: Set<Info>(), y: CGFloat(20))) {
                         let info = Info(item: $1, y: $0.y)
                         $0.info.insert(info)
                         $0.y = info.rect.maxY + 10
                     }
                 
                 info.send(result.info)
-                size.send(.init(width: 0, height: result.y))
+                size.send(.init(width: 0, height: result.y + 10))
             }
             .store(in: &subs)
     }

@@ -23,7 +23,17 @@ extension List {
 //                    .foregroundColor: NSColor.tertiaryLabelColor]))
 //            }
             self.string = .init(string)
-            rect = .init(x: 0, y: y, width: 100, height: 100)
+            
+            let height = CTFramesetterSuggestFrameSizeWithConstraints(
+                CTFramesetterCreateWithAttributedString(self.string),
+                CFRange(),
+                nil,
+                .init(width: CGFloat(230),
+                      height: .greatestFiniteMagnitude),
+                nil)
+                .height
+            
+            rect = .init(x: 0, y: y, width: 280, height: ceil(height) + 30)
             self.item = item
         }
         
