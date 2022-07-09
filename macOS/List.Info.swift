@@ -40,7 +40,7 @@ extension List {
             print(fontTitle.leading)
             
             let paragraphTitle = NSMutableParagraphStyle()
-            paragraphTitle.
+//            paragraphTitle.
             
             let attributesTitle = AttributeContainer([
                 .font: fontTitle,
@@ -54,6 +54,7 @@ extension List {
                                            attributes: attributesDate))
             string.append(AttributedString("\n", attributes: attributesTitle))
             string.append(AttributedString(item.title, attributes: attributesTitle))
+            string.append(AttributedString("       ", attributes: attributesTitle))
 
             self.string = .init(string)
             
