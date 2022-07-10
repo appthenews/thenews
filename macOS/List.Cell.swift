@@ -37,6 +37,8 @@ extension List {
             let label = Text(vibrancy: true)
             label.translatesAutoresizingMaskIntoConstraints = true
             label.frame = .init(x: 25, y: 15, width: 230, height: 0)
+            label.wantsLayer = true
+            label.layer!.masksToBounds = false
             self.label = label
             
             super.init(frame: .zero)
