@@ -69,7 +69,7 @@ extension List {
                                                                          unitsStyle: .wide)),
                                            attributes: attributesDate))
             string.append(AttributedString("\n", attributes: attributesTitle))
-            string.append(AttributedString(item.title, attributes: attributesTitle))
+            string.append(AttributedString("Anthony Albanese remembers Shinzo Abe as 'a true friend' of Australia", attributes: attributesTitle))
 
             self.string = .init(string)
             var range: CFRange! = .init()
