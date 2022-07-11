@@ -7,8 +7,12 @@ public struct Item: Storable, Hashable {
     public let description: String
     public let link: String
     public let date: Date
-    public let synched: Date
     public let status: Status
+    let synched: Date
+    
+    public var recent: Bool {
+        status == .new && !Interval.hour.passed(date: synched)
+    }
     
     public var data: Data {
         .init()
