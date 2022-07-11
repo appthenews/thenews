@@ -34,7 +34,7 @@ extension XMLNode {
             .flatMap {
                 $0.compactMap(\.stringValue)
             }?
-            .joined(separator: "\n")
+            .joined(separator: "\n\n")
     }
     
     private subscript(_ name: String) -> String? {

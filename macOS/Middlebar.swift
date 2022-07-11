@@ -22,7 +22,7 @@ final class Middlebar: NSVisualEffectView {
         
         super.init(frame: .zero)
         state = .active
-        material = .popover
+        material = .menu
         translatesAutoresizingMaskIntoConstraints = false
         let width = widthAnchor.constraint(equalToConstant: 0)
         width.isActive = true
@@ -77,7 +77,7 @@ final class Middlebar: NSVisualEffectView {
         list.topAnchor.constraint(equalTo: divider.bottomAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         list.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        list.widthAnchor.constraint(equalToConstant: 280).isActive = true
+        list.widthAnchor.constraint(equalToConstant: 290).isActive = true
         
         session
             .middlebar

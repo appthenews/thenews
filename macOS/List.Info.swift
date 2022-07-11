@@ -37,7 +37,7 @@ extension List {
                 CTFramesetterCreateWithAttributedString(self.string),
                 CFRange(),
                 nil,
-                .init(width: 230,
+                .init(width: 200,
                       height: CGFloat.greatestFiniteMagnitude),
                 nil)
                 .height

@@ -8,7 +8,7 @@ final class Content: NSVisualEffectView {
     init(session: Session) {
         super.init(frame: .zero)
         state = .active
-        material = .menu
+        material = .sidebar
         translatesAutoresizingMaskIntoConstraints = false
         
         let header = Text(vibrancy: true)
@@ -35,9 +35,10 @@ final class Content: NSVisualEffectView {
         divider.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        content.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 10).isActive = true
-        content.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        content.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        content.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 30).isActive = true
+        content.leftAnchor.constraint(equalTo: leftAnchor, constant: 40).isActive = true
+        content.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -40).isActive = true
+        content.widthAnchor.constraint(lessThanOrEqualToConstant: 600).isActive = true
         
         let attributesProvider = AttributeContainer([
             .font: NSFont.systemFont(
@@ -58,10 +59,10 @@ final class Content: NSVisualEffectView {
                                                                                  unitsStyle: .wide)),
                                                    attributes: attributesDate))
                     header.attributedStringValue = .init(string)
-                    content.attributedStringValue = .init(html: .init(item.description.utf8), documentAttributes: nil) ?? .init()
+                    content.stringValue = item.description
                 } else {
                     header.attributedStringValue = .init()
-                    content.attributedStringValue = .init()
+                    content.stringValue = ""
                 }
             }
             .store(in: &subs)

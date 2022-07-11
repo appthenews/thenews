@@ -39,6 +39,6 @@ public struct Preferences: Storable {
             $0[$1] = false
         }
         fetch = .hours6
-        clean = .days3
+        clean = .week
     }
 }
