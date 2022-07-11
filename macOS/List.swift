@@ -6,6 +6,7 @@ final class List: NSScrollView {
     private var subs = Set<AnyCancellable>()
     private let clear = PassthroughSubject<Void, Never>()
     private let highlight = PassthroughSubject<CGPoint, Never>()
+    private let select = PassthroughSubject<CGPoint, Never>()
 
     required init?(coder: NSCoder) { nil }
     init(session: Session, items: AnyPublisher<[Item], Never>) {
@@ -27,6 +28,40 @@ final class List: NSScrollView {
         contentView.postsFrameChangedNotifications = true
         drawsBackground = false
         addTrackingArea(.init(rect: .zero, options: [.mouseEnteredAndExited, .mouseMoved, .activeAlways, .inVisibleRect], owner: self))
+        
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = .byWordWrapping
+        paragraph.lineBreakStrategy = .pushOut
+        paragraph.alignment = .justified
+        paragraph.allowsDefaultTighteningForTruncation = false
+        paragraph.tighteningFactorForTruncation = 0
+        paragraph.usesDefaultHyphenation = false
+        paragraph.defaultTabInterval = 0
+        paragraph.hyphenationFactor = 0
+        
+        let fontProvider = NSFont.systemFont(
+            ofSize: NSFont.preferredFont(forTextStyle: .footnote).pointSize,
+            weight: .regular)
+        
+        let attributesProvider = AttributeContainer([
+            .font: fontProvider,
+            .paragraphStyle: paragraph])
+        
+        let fontDate = NSFont.systemFont(
+            ofSize: NSFont.preferredFont(forTextStyle: .footnote).pointSize,
+            weight: .light)
+        
+        let attributesDate = AttributeContainer([
+            .font: fontDate,
+            .paragraphStyle: paragraph])
+        
+        let fontTitle = NSFont.systemFont(
+            ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize,
+            weight: .regular)
+        
+        let attributesTitle = AttributeContainer([
+            .font: fontTitle,
+            .paragraphStyle: paragraph])
         
         let clip = PassthroughSubject<CGRect, Never>()
         clip
@@ -101,7 +136,7 @@ final class List: NSScrollView {
             .sink { highlighted in
                 cells
                     .filter {
-                        $0.state != .pressed
+                        $0.state != .selected
                     }
                     .forEach {
                         $0.state = $0.info?.item == highlighted ? .highlighted : .none
@@ -145,13 +180,39 @@ final class List: NSScrollView {
                 
                 let result = items
                     .reduce(into: (info: Set<Info>(), y: CGFloat(20))) {
-                        let info = Info(item: $1, y: $0.y)
+                        let info = Info(item: $1,
+                                        y: $0.y,
+                                        provider: attributesProvider,
+                                        date: attributesDate,
+                                        title: attributesTitle)
                         $0.info.insert(info)
-                        $0.y = info.rect.maxY + 1
+                        $0.y = info.rect.maxY + 2
                     }
                 
                 info.send(result.info)
                 size.send(.init(width: 0, height: result.y + 20))
+            }
+            .store(in: &subs)
+        
+        select
+            .compactMap { point in
+                cells
+                    .compactMap(\.info)
+                    .first {
+                        $0.rect.contains(point)
+                    }?
+                    .item
+            }
+            .subscribe(session.item)
+            .store(in: &subs)
+        
+        session
+            .item
+            .sink { selected in
+                cells
+                    .forEach {
+                        $0.state = $0.info?.item == selected ? .selected : .none
+                    }
             }
             .store(in: &subs)
     }
@@ -172,6 +233,15 @@ final class List: NSScrollView {
     override func rightMouseDown(with: NSEvent) {
         highlight.send(point(with: with))
         super.rightMouseDown(with: with)
+    }
+    
+    override func mouseUp(with: NSEvent) {
+        switch with.clickCount {
+        case 1:
+            select.send(point(with: with))
+        default:
+            break
+        }
     }
     
     private func point(with: NSEvent) -> CGPoint {

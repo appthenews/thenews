@@ -14,7 +14,7 @@ extension List {
                 label.string = info.string
                 label.frame.size.height = info.rect.height - 30
                 
-                if info.item.recent {
+                if info.recent {
                     recent.frame.origin.y = (info.rect.height - 12) / 2
                     recent.isHidden = false
                 } else {
@@ -63,7 +63,7 @@ extension List {
         
         override func updateLayer() {
             switch state {
-            case .highlighted, .pressed:
+            case .highlighted, .selected:
                 vibrant.layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.07).cgColor
             default:
                 vibrant.layer!.backgroundColor = .clear

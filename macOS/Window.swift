@@ -7,8 +7,8 @@ final class Window: NSWindow {
         self.session = session
         super.init(contentRect: .init(x: 0,
                                       y: 0,
-                                      width: 800,
-                                      height: 500),
+                                      width: 960,
+                                      height: 600),
                    styleMask: [.closable, .miniaturizable, .resizable, .titled, .fullSizeContentView],
                    backing: .buffered,
                    defer: false)

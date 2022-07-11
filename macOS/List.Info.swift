@@ -5,53 +5,32 @@ extension List {
     struct Info: Hashable {
         let item: Item
         let string: NSAttributedString
+        let recent: Bool
         let rect: CGRect
         
-        init(item: Item, y: CGFloat) {
-            let paragraph = NSMutableParagraphStyle()
-            paragraph.lineBreakMode = .byWordWrapping
-            paragraph.lineBreakStrategy = .pushOut
-            paragraph.alignment = .justified
-            paragraph.allowsDefaultTighteningForTruncation = false
-            paragraph.tighteningFactorForTruncation = 0
-            paragraph.usesDefaultHyphenation = false
-            paragraph.defaultTabInterval = 0
-            paragraph.hyphenationFactor = 0
+        init(item: Item, y: CGFloat, provider: AttributeContainer, date: AttributeContainer, title: AttributeContainer) {
+            var provider = provider
+            var date = date
+            var title = title
             
-            let fontProvider = NSFont.systemFont(
-                ofSize: NSFont.preferredFont(forTextStyle: .footnote).pointSize,
-                weight: .regular)
+            switch item.status {
+            case .new:
+                provider.foregroundColor = .secondaryLabelColor
+                date.foregroundColor = .secondaryLabelColor
+                title.foregroundColor = .labelColor
+            default:
+                provider.foregroundColor = .tertiaryLabelColor
+                date.foregroundColor = .tertiaryLabelColor
+                title.foregroundColor = .secondaryLabelColor
+            }
             
-            let attributesProvider = AttributeContainer([
-                .font: fontProvider,
-                .foregroundColor: NSColor.secondaryLabelColor,
-                .paragraphStyle: paragraph])
-            
-            let fontDate = NSFont.systemFont(
-                ofSize: NSFont.preferredFont(forTextStyle: .footnote).pointSize,
-                weight: .light)
-            
-            let attributesDate = AttributeContainer([
-                .font: fontDate,
-                .foregroundColor: NSColor.secondaryLabelColor,
-                .paragraphStyle: paragraph])
-            
-            let fontTitle = NSFont.systemFont(
-                ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize,
-                weight: .regular)
-            
-            let attributesTitle = AttributeContainer([
-                .font: fontTitle,
-                .foregroundColor: NSColor.labelColor,
-                .paragraphStyle: paragraph])
-            
-            var string = AttributedString(item.feed.provider.title, attributes: attributesProvider)
-            string.append(AttributedString(" — ", attributes: attributesDate))
+            var string = AttributedString(item.feed.provider.title, attributes: provider)
+            string.append(AttributedString(" — ", attributes: date))
             string.append(AttributedString(item.date.formatted(.relative(presentation: .named,
                                                                          unitsStyle: .wide)),
-                                           attributes: attributesDate))
-            string.append(AttributedString("\n", attributes: attributesTitle))
-            string.append(AttributedString(item.title, attributes: attributesTitle))
+                                           attributes: date))
+            string.append(AttributedString("\n", attributes: title))
+            string.append(AttributedString(item.title, attributes: title))
             self.string = .init(string)
             
             let height = CTFramesetterSuggestFrameSizeWithConstraints(
@@ -64,6 +43,7 @@ extension List {
                 .height
             
             rect = .init(x: 0, y: y, width: 290, height: ceil(height) + 30)
+            recent = item.recent
             self.item = item
         }
         

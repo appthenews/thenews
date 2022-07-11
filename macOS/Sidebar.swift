@@ -106,7 +106,7 @@ final class Sidebar: NSVisualEffectView {
                             
                             item.recents = model
                                 .items(provider: item.provider)
-                                .map(\.recent)
+                                .filter(\.recent)
                                 .count
                             
                         } else {

@@ -6,7 +6,7 @@ import News
 final class Session {
     let cloud = Cloud<Archive, CKContainer>.new(identifier: "iCloud.thenews")
     let provider = CurrentValueSubject<Provider?, Never>(nil)
-    let item = PassthroughSubject<Item?, Never>()
+    let item = CurrentValueSubject<Item?, Never>(nil)
     let sidebar: CurrentValueSubject<Bool, Never>
     let middlebar: CurrentValueSubject<Bool, Never>
     

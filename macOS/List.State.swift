@@ -3,6 +3,6 @@ extension List {
         case
         none,
         highlighted,
-        pressed
+        selected
     }
 }

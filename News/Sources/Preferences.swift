@@ -38,7 +38,7 @@ public struct Preferences: Storable {
         feeds = Feed.allCases.reduce(into: [:]) {
             $0[$1] = false
         }
-        fetch = .hours12
+        fetch = .hours6
         clean = .days3
     }
 }
