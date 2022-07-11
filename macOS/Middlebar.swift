@@ -6,7 +6,6 @@ final class Middlebar: NSVisualEffectView {
     
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
-        var show = UserDefaults.standard.value(forKey: "middlebar") as? Bool ?? true
         var bookmarks = false
         
         let items = session
@@ -25,7 +24,7 @@ final class Middlebar: NSVisualEffectView {
         state = .active
         material = .popover
         translatesAutoresizingMaskIntoConstraints = false
-        let width = widthAnchor.constraint(equalToConstant: show ? 291 : 0)
+        let width = widthAnchor.constraint(equalToConstant: 0)
         width.isActive = true
         
         let field = Field()
@@ -83,9 +82,8 @@ final class Middlebar: NSVisualEffectView {
         session
             .middlebar
             .sink {
-                show.toggle()
-                width.constant = show ? 291 : 0
-                UserDefaults.standard.set(show, forKey: "middlebar")
+                width.constant = $0 ? 291 : 0
+                UserDefaults.standard.set($0, forKey: "middlebar")
             }
             .store(in: &subs)
         

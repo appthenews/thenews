@@ -7,6 +7,11 @@ final class Session {
     let cloud = Cloud<Archive, CKContainer>.new(identifier: "iCloud.thenews")
     let provider = CurrentValueSubject<Provider?, Never>(nil)
     let item = PassthroughSubject<Item?, Never>()
-    let sidebar = PassthroughSubject<Void, Never>()
-    let middlebar = PassthroughSubject<Void, Never>()
+    let sidebar: CurrentValueSubject<Bool, Never>
+    let middlebar: CurrentValueSubject<Bool, Never>
+    
+    init() {
+        sidebar = .init(UserDefaults.standard.value(forKey: "sidebar") as? Bool ?? true)
+        middlebar = .init(UserDefaults.standard.value(forKey: "middlebar") as? Bool ?? true)
+    }
 }

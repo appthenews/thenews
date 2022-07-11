@@ -11,13 +11,11 @@ final class Sidebar: NSVisualEffectView {
     init(session: Session) {
         self.session = session
         
-        var show = UserDefaults.standard.value(forKey: "sidebar") as? Bool ?? true
-        
         super.init(frame: .zero)
         state = .active
         material = .hudWindow
         translatesAutoresizingMaskIntoConstraints = false
-        let width = widthAnchor.constraint(equalToConstant: show ? 180 : 0)
+        let width = widthAnchor.constraint(equalToConstant: 0)
         width.isActive = true
         
         let separator = Separator()
@@ -130,9 +128,8 @@ final class Sidebar: NSVisualEffectView {
         session
             .sidebar
             .sink {
-                show.toggle()
-                width.constant = show ? 180 : 0
-                UserDefaults.standard.set(show, forKey: "sidebar")
+                width.constant = $0 ? 180 : 0
+                UserDefaults.standard.set($0, forKey: "sidebar")
             }
             .store(in: &subs)
     }
