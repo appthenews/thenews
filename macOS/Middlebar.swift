@@ -78,7 +78,7 @@ final class Middlebar: NSVisualEffectView {
         list.topAnchor.constraint(equalTo: divider.bottomAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         list.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        list.rightAnchor.constraint(equalTo: rightAnchor, constant: -1).isActive = true
+        list.widthAnchor.constraint(equalToConstant: 280).isActive = true
         
         session
             .middlebar

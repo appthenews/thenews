@@ -17,7 +17,7 @@ final class Sidebar: NSVisualEffectView {
         state = .active
         material = .hudWindow
         translatesAutoresizingMaskIntoConstraints = false
-        let width = widthAnchor.constraint(equalToConstant: show ? 140 : 0)
+        let width = widthAnchor.constraint(equalToConstant: show ? 180 : 0)
         width.isActive = true
         
         let separator = Separator()
@@ -88,14 +88,41 @@ final class Sidebar: NSVisualEffectView {
         
         session
             .cloud
-            .map(\.preferences.providers)
-            .removeDuplicates()
-            .sink { providers in
+            .sink { model in
+                let providers = model.preferences.providers
+                
                 if providers.isEmpty && first {
                     (NSApp as! App).showPreferencesWindow(nil)
                 }
                 
-                self.show(providers: providers)
+                stack
+                    .views
+                    .compactMap {
+                        $0 as? Item
+                    }
+                    .forEach { item in
+                        if item.provider == .all || providers.contains(item.provider) {
+                            if item.state == .hidden {
+                                item.state = .on
+                            }
+                            
+                            item.recents = model
+                                .items(provider: item.provider)
+                                .map(\.recent)
+                                .count
+                            
+                        } else {
+                            if item.state != .hidden {
+                                item.state = .hidden
+                            }
+                            
+                            if session.provider.value == item.provider {
+                                session.item.send(nil)
+                                session.provider.send(nil)
+                            }
+                        }
+                    }
+                
                 first = false
             }
             .store(in: &subs)
@@ -104,37 +131,10 @@ final class Sidebar: NSVisualEffectView {
             .sidebar
             .sink {
                 show.toggle()
-                width.constant = show ? 140 : 0
+                width.constant = show ? 180 : 0
                 UserDefaults.standard.set(show, forKey: "sidebar")
             }
             .store(in: &subs)
-    }
-    
-    private func show(providers: Set<Provider>) {
-        stack
-            .views
-            .compactMap {
-                $0 as? Item
-            }
-            .filter {
-                $0.provider != .all
-            }
-            .forEach { item in
-                if providers.contains(item.provider) {
-                    if item.state == .hidden {
-                        item.state = .on
-                    }
-                } else {
-                    if item.state != .hidden {
-                        item.state = .hidden
-                    }
-                    
-                    if session.provider.value == item.provider {
-                        session.item.send(nil)
-                        session.provider.send(nil)
-                    }
-                }
-            }
     }
     
     private func select(provider: Provider) {
