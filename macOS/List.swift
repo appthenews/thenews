@@ -147,11 +147,11 @@ final class List: NSScrollView {
                     .reduce(into: (info: Set<Info>(), y: CGFloat(20))) {
                         let info = Info(item: $1, y: $0.y)
                         $0.info.insert(info)
-                        $0.y = info.rect.maxY + 10
+                        $0.y = info.rect.maxY + 1
                     }
                 
                 info.send(result.info)
-                size.send(.init(width: 0, height: result.y + 10))
+                size.send(.init(width: 0, height: result.y + 20))
             }
             .store(in: &subs)
     }

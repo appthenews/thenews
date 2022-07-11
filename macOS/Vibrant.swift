@@ -5,11 +5,7 @@ final class Vibrant: NSView {
     init(layer: Bool) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        
-        if layer {
-            self.layer = Layer()
-            wantsLayer = true
-        }
+        wantsLayer = layer
     }
     
     override var allowsVibrancy: Bool {

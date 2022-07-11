@@ -25,7 +25,7 @@ final class Middlebar: NSVisualEffectView {
         state = .active
         material = .popover
         translatesAutoresizingMaskIntoConstraints = false
-        let width = widthAnchor.constraint(equalToConstant: show ? 281 : 0)
+        let width = widthAnchor.constraint(equalToConstant: show ? 291 : 0)
         width.isActive = true
         
         let field = Field()
@@ -56,7 +56,7 @@ final class Middlebar: NSVisualEffectView {
         
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         field.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
-        field.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        field.widthAnchor.constraint(equalToConstant: 260).isActive = true
         
         count.leftAnchor.constraint(equalTo: field.leftAnchor).isActive = true
         count.centerYAnchor.constraint(equalTo: bookmark.centerYAnchor).isActive = true
@@ -84,7 +84,7 @@ final class Middlebar: NSVisualEffectView {
             .middlebar
             .sink {
                 show.toggle()
-                width.constant = show ? 281 : 0
+                width.constant = show ? 291 : 0
                 UserDefaults.standard.set(show, forKey: "middlebar")
             }
             .store(in: &subs)
