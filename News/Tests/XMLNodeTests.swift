@@ -12,7 +12,7 @@ final class XMLNodeTests: XCTestCase {
     
     func testParse() throws {
         let result = try fetcher.parse(feed: .theLocalInternational, data: data, synched: []).items.first
-        XCTAssertEqual("hello", result?.description)
+        XCTAssertEqual("Reuters revealed that Germany and Qatar have hit difficulties in talks over long-term liquefied natural gas (LNG) supply deals amid differences over […]\nThe post Reuters reveals Germany, Qatar at odds over terms in talks on LNG supply deal appeared first on Reuters News Agency.", result?.description)
     }
 }
 
