@@ -171,6 +171,14 @@ final class List: NSScrollView {
             .store(in: &subs)
         
         items
+            .sink { [weak self] _ in
+                highlighted.value = nil
+                //selec
+                self?.contentView.bounds.origin.y = 0
+            }
+            .store(in: &subs)
+        
+        items
             .sink { items in
                 guard !items.isEmpty else {
                     info.send([])

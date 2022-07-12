@@ -25,7 +25,7 @@ final class Sidebar: NSVisualEffectView {
         all
             .click
             .sink {
-                self.select(provider: .all)
+                session.provider.value = .all
             }
             .store(in: &subs)
         
@@ -33,7 +33,7 @@ final class Sidebar: NSVisualEffectView {
         theGuardian
             .click
             .sink {
-                self.select(provider: .theGuardian)
+                session.provider.value = .theGuardian
             }
             .store(in: &subs)
         
@@ -41,7 +41,7 @@ final class Sidebar: NSVisualEffectView {
         reuters
             .click
             .sink {
-                self.select(provider: .reuters)
+                session.provider.value = .reuters
             }
             .store(in: &subs)
         
@@ -49,7 +49,7 @@ final class Sidebar: NSVisualEffectView {
         derSpiegel
             .click
             .sink {
-                self.select(provider: .derSpiegel)
+                session.provider.value = .derSpiegel
             }
             .store(in: &subs)
         
@@ -57,7 +57,7 @@ final class Sidebar: NSVisualEffectView {
         theLocal
             .click
             .sink {
-                self.select(provider: .theLocal)
+                session.provider.value = .theLocal
             }
             .store(in: &subs)
         
@@ -132,22 +132,23 @@ final class Sidebar: NSVisualEffectView {
                 UserDefaults.standard.set($0, forKey: "sidebar")
             }
             .store(in: &subs)
-    }
-    
-    private func select(provider: Provider) {
-        session.provider.send(provider)
         
-        stack
-            .views
-            .compactMap {
-                $0 as? Item
+        session
+            .provider
+            .sink { provider in
+                stack
+                    .views
+                    .compactMap {
+                        $0 as? Item
+                    }
+                    .forEach {
+                        if $0.provider == provider {
+                            $0.state = .selected
+                        } else if $0.state == .selected {
+                            $0.state = .on
+                        }
+                    }
             }
-            .forEach {
-                if $0.provider == provider {
-                    $0.state = .selected
-                } else if $0.state == .selected {
-                    $0.state = .on
-                }
-            }
+            .store(in: &subs)
     }
 }
