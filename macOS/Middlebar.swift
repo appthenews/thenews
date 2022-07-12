@@ -28,14 +28,14 @@ final class Middlebar: NSVisualEffectView {
         let field = Field()
         addSubview(field)
         
-        let filter = Button(symbol: "line.3.horizontal.decrease")
+        let filter = Control.Symbol(symbol: "line.3.horizontal.decrease.circle", size: 18)
         filter
             .click
             .sink {
                 
             }
             .store(in: &subs)
-//        addSubview(filter)
+        addSubview(filter)
         
         let count = Text(vibrancy: true)
         count.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -53,7 +53,10 @@ final class Middlebar: NSVisualEffectView {
         
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         field.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
-        field.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        field.widthAnchor.constraint(equalToConstant: 220).isActive = true
+        
+        filter.centerYAnchor.constraint(equalTo: field.centerYAnchor).isActive = true
+        filter.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         
         count.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
         let trailing = count.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -20)

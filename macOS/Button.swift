@@ -1,15 +1,13 @@
 import AppKit
 
 final class Button: Control {
-    private weak var image: NSImageView!
-    
     required init?(coder: NSCoder) { nil }
     init(symbol: String) {
         let image = NSImageView(image: .init(systemSymbolName: symbol,
                                              accessibilityDescription: nil) ?? .init())
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.symbolConfiguration = .init(pointSize: 14, weight: .medium)
-        self.image = image
+        image.symbolConfiguration = .init(pointSize: 14, weight: .regular)
+        image.contentTintColor = .controlAccentColor
         
         super.init(layer: true)
         layer!.cornerRadius = 6
@@ -26,19 +24,10 @@ final class Button: Control {
         super.updateLayer()
         
         switch state {
-        case .selected:
-            layer!.backgroundColor = NSColor.controlAccentColor.cgColor
-            image.contentTintColor = .white
         case .pressed, .highlighted:
-            layer!.backgroundColor = NSColor.controlAccentColor.withAlphaComponent(0.15).cgColor
-            image.contentTintColor = .controlAccentColor
+            layer!.backgroundColor = NSColor.controlAccentColor.withAlphaComponent(0.2).cgColor
         default:
             layer!.backgroundColor = .clear
-            image.contentTintColor = .controlAccentColor
         }
-    }
-    
-    override var allowsVibrancy: Bool {
-        true
     }
 }

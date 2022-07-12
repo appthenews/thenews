@@ -11,15 +11,15 @@ final class Topbar: NSView {
         super.init(frame: .zero)
         
         let split3 = NSImage(systemSymbolName: "rectangle.split.3x1", accessibilityDescription: nil)?
-            .withSymbolConfiguration(.init(pointSize: 14, weight: .medium)
+            .withSymbolConfiguration(.init(pointSize: 14, weight: .regular)
                 .applying(.init(hierarchicalColor: .controlAccentColor))) ?? .init()
         
         let split2 = NSImage(systemSymbolName: "rectangle.split.2x1", accessibilityDescription: nil)?
-            .withSymbolConfiguration(.init(pointSize: 14, weight: .medium)
+            .withSymbolConfiguration(.init(pointSize: 14, weight: .regular)
                 .applying(.init(hierarchicalColor: .controlAccentColor))) ?? .init()
         
         let split1 = NSImage(systemSymbolName: "square", accessibilityDescription: nil)?
-            .withSymbolConfiguration(.init(pointSize: 14, weight: .medium)
+            .withSymbolConfiguration(.init(pointSize: 14, weight: .regular)
                 .applying(.init(hierarchicalColor: .controlAccentColor))) ?? .init()
          
         let segmented = NSSegmentedControl(images: [split3, split2, split1],

@@ -26,6 +26,7 @@
 		CE3C70E62873328200863C22 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C70E52873328200863C22 /* Text.swift */; };
 		CE3C70E828733BC400863C22 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C70E728733BC400863C22 /* Content.swift */; };
 		CE5285212875A6EE00F3A688 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5285202875A6EE00F3A688 /* CloudKit.framework */; };
+		CE9DC2F8287DB436004DA15D /* Control.Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9DC2F7287DB436004DA15D /* Control.Symbol.swift */; };
 		CEC5DFAD2871B1F9008C8E56 /* Middlebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC5DFAC2871B1F9008C8E56 /* Middlebar.swift */; };
 		CEC5DFAF2871B5B3008C8E56 /* Separator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC5DFAE2871B5B3008C8E56 /* Separator.swift */; };
 		CEC5DFB12871BB76008C8E56 /* Topbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC5DFB02871BB76008C8E56 /* Topbar.swift */; };
@@ -64,6 +65,7 @@
 		CE3C70E52873328200863C22 /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
 		CE3C70E728733BC400863C22 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		CE5285202875A6EE00F3A688 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		CE9DC2F7287DB436004DA15D /* Control.Symbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Control.Symbol.swift; sourceTree = "<group>"; };
 		CEC5DFAC2871B1F9008C8E56 /* Middlebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Middlebar.swift; sourceTree = "<group>"; };
 		CEC5DFAE2871B5B3008C8E56 /* Separator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Separator.swift; sourceTree = "<group>"; };
 		CEC5DFB02871BB76008C8E56 /* Topbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topbar.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				CED728CC287865300010A4BC /* CGRect.swift */,
 				CE3C70E728733BC400863C22 /* Content.swift */,
 				CEC5DFB22871BD50008C8E56 /* Control.swift */,
+				CE9DC2F7287DB436004DA15D /* Control.Symbol.swift */,
 				CED728CE2878659F0010A4BC /* Flip.swift */,
 				CED728D0287869D90010A4BC /* List.Cell.swift */,
 				CED728D2287869E50010A4BC /* List.Info.swift */,
@@ -281,6 +284,7 @@
 				CE34608F28706760001962E7 /* Session.swift in Sources */,
 				CE3C70E428732B2100863C22 /* Middlebar.Editor.swift in Sources */,
 				CEC5DFB32871BD50008C8E56 /* Control.swift in Sources */,
+				CE9DC2F8287DB436004DA15D /* Control.Symbol.swift in Sources */,
 				CED728CF2878659F0010A4BC /* Flip.swift in Sources */,
 				CEC5DFB12871BB76008C8E56 /* Topbar.swift in Sources */,
 				CE19C0ED287726150045E221 /* Sidebar.Item.swift in Sources */,
