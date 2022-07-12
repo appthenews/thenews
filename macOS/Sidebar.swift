@@ -3,14 +3,10 @@ import Combine
 import News
 
 final class Sidebar: NSVisualEffectView {
-    private weak var stack: Stack!
     private var subs = Set<AnyCancellable>()
-    private let session: Session
     
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
-        self.session = session
-        
         super.init(frame: .zero)
         state = .active
         material = .hudWindow
@@ -72,7 +68,6 @@ final class Sidebar: NSVisualEffectView {
         stack.alignment = .leading
         stack.spacing = 2
         addSubview(stack)
-        self.stack = stack
         
         stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         stack.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
@@ -126,10 +121,9 @@ final class Sidebar: NSVisualEffectView {
             .store(in: &subs)
         
         session
-            .sidebar
+            .columns
             .sink {
-                width.constant = $0 ? 180 : 0
-                UserDefaults.standard.set($0, forKey: "sidebar")
+                width.constant = $0 == 0 ? 195 : 0
             }
             .store(in: &subs)
         

@@ -7,14 +7,13 @@ final class Button: Control {
     init(symbol: String) {
         let image = NSImageView(image: .init(systemSymbolName: symbol,
                                              accessibilityDescription: nil) ?? .init())
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.symbolConfiguration = .init(pointSize: 14, weight: .medium)
         self.image = image
         
         super.init(layer: true)
         layer!.cornerRadius = 6
         layer!.cornerCurve = .continuous
-
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.symbolConfiguration = .init(pointSize: 14, weight: .regular)
         addSubview(image)
         
         widthAnchor.constraint(equalToConstant: 26).isActive = true

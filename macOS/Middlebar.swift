@@ -6,8 +6,6 @@ final class Middlebar: NSVisualEffectView {
     
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
-        var bookmarks = false
-        
         let items = session
             .provider
             .removeDuplicates()
@@ -30,19 +28,19 @@ final class Middlebar: NSVisualEffectView {
         let field = Field()
         addSubview(field)
         
-        let count = Text(vibrancy: true)
-        count.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        addSubview(count)
-        
-        let bookmark = Button(symbol: "bookmark")
-        bookmark
+        let filter = Button(symbol: "line.3.horizontal.decrease")
+        filter
             .click
             .sink {
-                bookmarks.toggle()
-                bookmark.state = bookmarks ? .selected : .on
+                
             }
             .store(in: &subs)
-        addSubview(bookmark)
+//        addSubview(filter)
+        
+        let count = Text(vibrancy: true)
+        count.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        count.maximumNumberOfLines = 1
+        addSubview(count)
         
         let divider = Separator()
         addSubview(divider)
@@ -54,17 +52,17 @@ final class Middlebar: NSVisualEffectView {
         addSubview(list)
         
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-        field.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
-        field.widthAnchor.constraint(equalToConstant: 260).isActive = true
+        field.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        field.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
-        count.leftAnchor.constraint(equalTo: field.leftAnchor).isActive = true
-        count.centerYAnchor.constraint(equalTo: bookmark.centerYAnchor).isActive = true
-        count.rightAnchor.constraint(lessThanOrEqualTo: bookmark.leftAnchor, constant: -10).isActive = true
+        count.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
+        let trailing = count.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -20)
+        let leading = count.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor)
+        trailing.priority = .defaultLow
+        trailing.isActive = true
+        leading.isActive = true
         
-        bookmark.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 10).isActive = true
-        bookmark.rightAnchor.constraint(equalTo: field.rightAnchor).isActive = true
-        
-        divider.topAnchor.constraint(equalTo: bookmark.bottomAnchor, constant: 10).isActive = true
+        divider.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 20).isActive = true
         divider.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         divider.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
@@ -79,11 +77,24 @@ final class Middlebar: NSVisualEffectView {
         list.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         list.widthAnchor.constraint(equalToConstant: 290).isActive = true
         
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = .byTruncatingTail
+        
+        let countAttributes = AttributeContainer([.font: NSFont
+            .monospacedDigitSystemFont(
+                ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize,
+                weight: .regular),
+                                                  .foregroundColor: NSColor.secondaryLabelColor,
+                                                  .paragraphStyle: paragraph])
+        let titleAttributes = AttributeContainer([.font: NSFont.preferredFont(forTextStyle: .body),
+                                                  .foregroundColor: NSColor.tertiaryLabelColor,
+                                                  .paragraphStyle: paragraph])
+        
         session
-            .middlebar
+            .columns
             .sink {
-                width.constant = $0 ? 291 : 0
-                UserDefaults.standard.set($0, forKey: "middlebar")
+                width.constant = $0 < 2 ? 291 : 0
+                leading.constant = $0 == 1 ? 195 : 20
             }
             .store(in: &subs)
         
@@ -93,16 +104,9 @@ final class Middlebar: NSVisualEffectView {
                     count.attributedStringValue = .init()
                 } else {
                     var string = AttributedString(items.count.formatted(),
-                                                  attributes:
-                            .init([.font : NSFont
-                                .monospacedDigitSystemFont(
-                                    ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
-                                    weight: .regular),
-                                   .foregroundColor: NSColor.secondaryLabelColor]))
+                                                  attributes: countAttributes)
                     string.append(AttributedString(items.count == 1 ? " article" : " articles",
-                                                   attributes:
-                            .init([.font : NSFont.preferredFont(forTextStyle: .callout),
-                                   .foregroundColor: NSColor.tertiaryLabelColor])))
+                                                   attributes: titleAttributes))
                     count.attributedStringValue = .init(string)
                 }
             }

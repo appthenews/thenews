@@ -15,7 +15,7 @@ extension Middlebar {
             font = .preferredFont(forTextStyle: .body)
             controlSize = .large
             lineBreakMode = .byTruncatingTail
-            textColor = .white
+            textColor = .labelColor
             isAutomaticTextCompletionEnabled = false
             placeholderString = "Search"
             wantsLayer = true
