@@ -106,7 +106,7 @@ final class List: NSScrollView {
                                 cells.insert($0)
                                 return $0
                             } (Cell())
-                            cell.state = .none
+                            cell.state = session.item.value == info.item ? .selected : .none
                             cell.info = info
                             content.addSubview(cell)
                         }
@@ -148,6 +148,9 @@ final class List: NSScrollView {
             .map { point in
                 cells
                     .compactMap(\.info)
+                    .filter {
+                        session.item.value != $0.item
+                    }
                     .first {
                         $0
                             .rect
@@ -171,9 +174,9 @@ final class List: NSScrollView {
             .store(in: &subs)
         
         items
-            .sink { [weak self] _ in
+            .sink { [weak self] items in
                 highlighted.value = nil
-                //selec
+                session.item.value = nil
                 self?.contentView.bounds.origin.y = 0
             }
             .store(in: &subs)

@@ -23,9 +23,10 @@ final class Content: NSVisualEffectView {
         content.textColor = .labelColor
         addSubview(content)
         
-        title.leftAnchor.constraint(equalTo: leftAnchor, constant: 40).isActive = true
         title.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
         title.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -180).isActive = true
+        let leading = title.leftAnchor.constraint(equalTo: leftAnchor)
+        leading.isActive = true
         
         content.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         content.leftAnchor.constraint(equalTo: leftAnchor, constant: 40).isActive = true
@@ -45,6 +46,13 @@ final class Content: NSVisualEffectView {
             ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
             weight: .light),
                                                  .paragraphStyle: paragraph])
+        
+        session
+            .columns
+            .sink {
+                leading.constant = $0 == 2 ? 195 : 40
+            }
+            .store(in: &subs)
         
         session
             .item
