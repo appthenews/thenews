@@ -66,6 +66,12 @@ final class Content: NSVisualEffectView {
                                                    attributes: attributesDate))
                     title.attributedStringValue = .init(string)
                     content.stringValue = item.description
+                    
+                    if item.status == .new {
+                        Task {
+                            await session.cloud.read(item: item)
+                        }
+                    }
                 } else {
                     title.attributedStringValue = .init()
                     content.stringValue = ""

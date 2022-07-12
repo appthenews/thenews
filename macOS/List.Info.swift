@@ -21,7 +21,7 @@ extension List {
             default:
                 provider.foregroundColor = .tertiaryLabelColor
                 date.foregroundColor = .tertiaryLabelColor
-                title.foregroundColor = .secondaryLabelColor
+                title.foregroundColor = .tertiaryLabelColor
             }
             
             var string = AttributedString(item.feed.provider.title, attributes: provider)
@@ -49,10 +49,11 @@ extension List {
         
         func hash(into: inout Hasher) {
             into.combine(item)
+            into.combine(item.status)
         }
         
         static func == (lhs: Self, rhs: Self) -> Bool {
-            lhs.item == rhs.item
+            lhs.item == rhs.item && lhs.item.status == rhs.item.status
         }
     }
 }

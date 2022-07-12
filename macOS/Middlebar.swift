@@ -15,7 +15,6 @@ final class Middlebar: NSVisualEffectView {
                     ? []
                     : model.items(provider: provider!)
                 }
-                .removeDuplicates()
                 .eraseToAnyPublisher()
         
         super.init(frame: .zero)

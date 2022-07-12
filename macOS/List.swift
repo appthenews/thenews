@@ -175,17 +175,12 @@ final class List: NSScrollView {
         
         items
             .sink { [weak self] items in
-                highlighted.value = nil
-                session.item.value = nil
-                self?.contentView.bounds.origin.y = 0
-            }
-            .store(in: &subs)
-        
-        items
-            .sink { items in
                 guard !items.isEmpty else {
                     info.send([])
                     size.send(.zero)
+                    session.item.value = nil
+                    highlighted.value = nil
+                    self?.contentView.bounds.origin.y = 0
                     return
                 }
                 
@@ -202,6 +197,15 @@ final class List: NSScrollView {
                 
                 info.send(result.info)
                 size.send(.init(width: 0, height: result.y + 20))
+                highlighted.value = nil
+                
+                if let current = session.item.value,
+                   let rect = result.info.first(where: { $0.item == current })?.rect {
+                    self?.center(y: rect.minY - 20)
+                } else {
+                    session.item.value = nil
+                    self?.contentView.bounds.origin.y = 0
+                }
             }
             .store(in: &subs)
         
@@ -257,5 +261,14 @@ final class List: NSScrollView {
     
     private func point(with: NSEvent) -> CGPoint {
         documentView!.convert(with.locationInWindow, from: nil)
+    }
+    
+    private func center(y: CGFloat) {
+        contentView.bounds.origin.y = y
+        contentView.layer?.add({
+            $0.duration = 0.3
+            $0.timingFunction = .init(name: .easeInEaseOut)
+            return $0
+        } (CABasicAnimation(keyPath: "bounds")), forKey: "bounds")
     }
 }

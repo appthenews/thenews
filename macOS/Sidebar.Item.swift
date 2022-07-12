@@ -34,7 +34,7 @@ extension Sidebar {
             recent.isHidden = true
             recent.translatesAutoresizingMaskIntoConstraints = false
             recent.wantsLayer = true
-            recent.layer!.backgroundColor = NSColor.white.cgColor
+            recent.layer!.backgroundColor = NSColor.controlAccentColor.cgColor
             recent.layer!.cornerRadius = 9
             self.recent = recent
             
