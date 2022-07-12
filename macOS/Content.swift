@@ -30,7 +30,7 @@ final class Content: NSVisualEffectView {
         content.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         content.leftAnchor.constraint(equalTo: leftAnchor, constant: 40).isActive = true
         content.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -40).isActive = true
-        content.widthAnchor.constraint(lessThanOrEqualToConstant: 660).isActive = true
+        content.widthAnchor.constraint(lessThanOrEqualToConstant: 740).isActive = true
         
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = .byTruncatingTail

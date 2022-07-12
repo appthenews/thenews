@@ -37,12 +37,12 @@ extension List {
                 CTFramesetterCreateWithAttributedString(self.string),
                 CFRange(),
                 nil,
-                .init(width: 200,
+                .init(width: 226,
                       height: CGFloat.greatestFiniteMagnitude),
                 nil)
                 .height
             
-            rect = .init(x: 0, y: y, width: 290, height: ceil(height) + 30)
+            rect = .init(x: 0, y: y, width: 290, height: ceil(height) + 20)
             recent = item.recent
             self.item = item
         }

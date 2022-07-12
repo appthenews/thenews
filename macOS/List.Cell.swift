@@ -12,13 +12,19 @@ extension List {
                 frame = info.rect
                 vibrant.frame.size.height = info.rect.height
                 label.string = info.string
-                label.frame.size.height = info.rect.height - 30
+                label.frame.size.height = info.rect.height - 20
                 
                 if info.recent {
                     recent.frame.origin.y = (info.rect.height - 12) / 2
                     recent.isHidden = false
+                    bookmark.isHidden = true
+                } else if info.item.status == .bookmarked {
+                    recent.isHidden = true
+                    bookmark.frame.origin.y = (info.rect.height - 30) / 2
+                    bookmark.isHidden = false
                 } else {
                     recent.isHidden = true
+                    bookmark.isHidden = true
                 }
             }
         }
@@ -32,28 +38,38 @@ extension List {
         private weak var vibrant: Vibrant!
         private weak var label: CATextLayer!
         private weak var recent: CAShapeLayer!
+        private weak var bookmark: NSImageView!
         
         required init?(coder: NSCoder) { nil }
         required init() {
             let vibrant = Vibrant(layer: true)
             vibrant.translatesAutoresizingMaskIntoConstraints = true
             vibrant.layer!.cornerCurve = .continuous
-            vibrant.layer!.cornerRadius = 13
-            vibrant.frame = .init(x: 15, y: 0, width: 230, height: 0)
+            vibrant.layer!.cornerRadius = 10
+            vibrant.frame = .init(x: 10, y: 0, width: 270, height: 0)
             self.vibrant = vibrant
 
             let label = CATextLayer()
-            label.frame = .init(x: 15, y: 15, width: 200, height: 0)
+            label.frame = .init(x: 15, y: 10, width: 226, height: 0)
             label.contentsScale = NSScreen.main?.backingScaleFactor ?? 2
             label.isWrapped = true
             vibrant.layer!.addSublayer(label)
             self.label = label
             
             let recent = CAShapeLayer()
+            recent.isHidden = true
             recent.frame = .init(x: 260, y: 0, width: 12, height: 12)
             recent.path = .init(ellipseIn: .init(x: 2, y: 2, width: 8, height: 8), transform: nil)
             recent.fillColor = NSColor.controlAccentColor.cgColor
             self.recent = recent
+            
+            let bookmark = NSImageView(image: .init(systemSymbolName: "bookmark", accessibilityDescription: nil) ?? .init())
+            bookmark.isHidden = true
+            bookmark.frame = .init(x: 241, y: 0, width: 30, height: 30)
+            bookmark.symbolConfiguration = .init(pointSize: 14, weight: .regular)
+                .applying(.init(hierarchicalColor: .secondaryLabelColor))
+            vibrant.addSubview(bookmark)
+            self.bookmark = bookmark
             
             super.init(frame: .zero)
             wantsLayer = true
