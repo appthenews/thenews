@@ -24,8 +24,8 @@ extension XMLNode {
     
     private var content: String? {
         guard let description = self["description"] else { return nil }
-        let wrapped = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>" + description + "</root>"
-        guard let xml = try? XMLDocument(data: .init(wrapped.utf8)) else { return nil }
+        let wrapped = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><xml>" + description + "</xml>"
+        guard let xml = try? XMLDocument(data: .init(wrapped.utf8), options: .documentTidyXML) else { return nil }
         return xml
             .rootDocument?
             .children?
