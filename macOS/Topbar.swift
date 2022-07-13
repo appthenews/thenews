@@ -41,6 +41,7 @@ final class Topbar: NSView {
         let stack = NSStackView(views: [delete, share, bookmark, open])
         stack.spacing = 18
         stack.setClippingResistancePriority(.defaultLow, for: .horizontal)
+        stack.isHidden = true
         addSubview(stack)
         
         segmented.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 7).isActive = true
@@ -58,6 +59,17 @@ final class Topbar: NSView {
             .columns
             .sink {
                 leading.constant = $0 == 0 ? 600 : 0
+            }
+            .store(in: &subs)
+        
+        session
+            .item
+            .map {
+                $0 == nil
+            }
+            .removeDuplicates()
+            .sink {
+                stack.isHidden = $0
             }
             .store(in: &subs)
     }
