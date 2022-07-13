@@ -27,12 +27,20 @@ extension Cloud where Output == Archive {
     }
     
     public func read(item: Item) async {
-        model.update(item: item.read)
+        guard item.status != .read else { return }
+        model.items = model
+            .items
+            .removing(item)
+            .inserting(item.read)
         await stream()
     }
     
     public func bookmarked(item: Item) async {
-        model.update(item: item.bookmarked)
+        guard item.status != .bookmarked else { return }
+        model.items = model
+            .items
+            .removing(item)
+            .inserting(item.bookmarked)
         await stream()
     }
 }

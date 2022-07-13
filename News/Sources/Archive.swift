@@ -6,7 +6,7 @@ public struct Archive: Arch {
     public internal(set) var preferences: Preferences
     private(set) var feeds: [Feed : Date]
     private(set) var ids: Set<String>
-    private(set) var items: Set<Item>
+    var items: Set<Item>
 
     public var data: Data {
         .init()
@@ -79,10 +79,6 @@ public struct Archive: Arch {
             .filter {
                 $0.status == .bookmarked || !preferences.clean.passed(date: $0.synched)
             }
-    }
-    
-    mutating func update(item: Item) {
-        items = items.removing(item).inserting(item)
     }
     
     mutating func update(feed: Feed, date: Date, ids: Set<String>, items: Set<Item>) {

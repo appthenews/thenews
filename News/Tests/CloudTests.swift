@@ -18,31 +18,35 @@ final class CloudTests: XCTestCase {
                         synched: .now,
                         status: .new)
 
-        await cloud.update(item: item)
+        await cloud.add(item: item)
+        
         let new = await cloud.model.items.first?.status
         XCTAssertEqual(.new, new)
         
         await cloud.read(item: item)
-        let read = await cloud.model.items.first?.status
-        XCTAssertEqual(.read, read)
+        let items = await cloud.model.items
+        XCTAssertEqual(.read, items.first?.status)
+        XCTAssertEqual(1, items.count)
     }
     
     func testBookmarked() async {
-        await cloud.bookmarked(item: .init(feed: .reutersInternational,
-                                          title: "lk",
-                                          description: "fgh",
-                                          link: "asd",
-                                          date: .now,
-                                          synched: .now,
-                                          status: .new))
-        let bookmarked = await cloud.model.items.first?.status
-        
-        XCTAssertEqual(.bookmarked, bookmarked)
+        let item = Item(feed: .reutersInternational,
+                         title: "lk",
+                         description: "fgh",
+                         link: "asd",
+                         date: .now,
+                         synched: .now,
+                         status: .new)
+        await cloud.add(item: item)
+        await cloud.bookmarked(item: item)
+        let items = await cloud.model.items
+        XCTAssertEqual(.bookmarked, items.first?.status)
+        XCTAssertEqual(1, items.count)
     }
 }
 
 private extension Cloud where Output == Archive {
-    func update(item: Item) {
-        model.update(item: item)
+    func add(item: Item) {
+        model.items = model.items.inserting(item)
     }
 }

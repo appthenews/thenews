@@ -107,7 +107,7 @@ final class List: NSScrollView {
                                 cells.insert($0)
                                 return $0
                             } (Cell())
-                            cell.state = session.item.value == info.item ? .selected : .none
+                            cell.state = session.item.value?.link == info.item.link ? .selected : .none
                             cell.info = info
                             content.addSubview(cell)
                         }
@@ -140,7 +140,7 @@ final class List: NSScrollView {
                         $0.state != .selected
                     }
                     .forEach {
-                        $0.state = $0.info?.item == highlighted ? .highlighted : .none
+                        $0.state = $0.info?.item.link == highlighted?.link ? .highlighted : .none
                     }
             }
             .store(in: &subs)
@@ -150,7 +150,7 @@ final class List: NSScrollView {
                 cells
                     .compactMap(\.info)
                     .filter {
-                        session.item.value != $0.item
+                        session.item.value?.link != $0.item.link
                     }
                     .first {
                         $0
@@ -201,8 +201,8 @@ final class List: NSScrollView {
                 size.send(.init(width: 0, height: result.y + 20))
                 highlighted.value = nil
                 
-                if let current = session.item.value,
-                   let rect = result.info.first(where: { $0.item == current })?.rect {
+                if let current = session.item.value?.link,
+                   let rect = result.info.first(where: { $0.item.link == current })?.rect {
                     
                     if !clip.value.intersects(rect) {
                         self?.center(y: rect.minY - 20, animated: false)
@@ -231,7 +231,7 @@ final class List: NSScrollView {
             .sink { selected in
                 cells
                     .forEach {
-                        $0.state = $0.info?.item == selected ? .selected : .none
+                        $0.state = $0.info?.item.link == selected?.link ? .selected : .none
                     }
             }
             .store(in: &subs)

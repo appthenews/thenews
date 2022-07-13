@@ -74,10 +74,12 @@ public struct Item: Storable, Hashable, Comparable {
     
     public func hash(into: inout Hasher) {
         into.combine(link)
+        into.combine(status)
     }
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.link == rhs.link
+        && lhs.status == rhs.status
     }
     
     public static func < (lhs: Self, rhs: Self) -> Bool {

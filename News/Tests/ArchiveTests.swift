@@ -175,7 +175,7 @@ final class ArchiveTests: XCTestCase {
                        ids: [],
                        items: [item])
         
-        archive.update(item: item.bookmarked)
+        archive.items = archive.items.inserting(item.bookmarked)
         archive.preferences.clean = .hours3
         archive.clean()
         

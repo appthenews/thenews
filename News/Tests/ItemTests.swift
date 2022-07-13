@@ -49,4 +49,15 @@ final class ItemTests: XCTestCase {
         XCTAssertEqual(2, items.filter(search: "g").count)
         XCTAssertEqual(2, items.filter(search: "").count)
     }
+    
+    func testEquallity() {
+        let item = Item(feed: .derSpiegelInternational,
+                          title: "asd",
+                          description: "def",
+                          link: "gfdgd",
+                          date: .now,
+                          synched: Calendar.current.date(byAdding: .hour, value: -2, to: .now)!,
+                          status: .new)
+        XCTAssertNotEqual(item, item.read)
+    }
 }
