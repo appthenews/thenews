@@ -1,7 +1,7 @@
 import Foundation
 import Archivable
 
-public struct Item: Storable, Hashable {
+public struct Item: Storable, Hashable, Comparable {
     public let feed: Feed
     public let title: String
     public let description: String
@@ -78,5 +78,9 @@ public struct Item: Storable, Hashable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.link == rhs.link
+    }
+    
+    public static func < (lhs: Self, rhs: Self) -> Bool {
+        lhs.date > rhs.date
     }
 }

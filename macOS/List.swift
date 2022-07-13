@@ -9,7 +9,7 @@ final class List: NSScrollView {
     private let select = PassthroughSubject<CGPoint, Never>()
 
     required init?(coder: NSCoder) { nil }
-    init(session: Session, items: AnyPublisher<[Item], Never>) {
+    init(session: Session) {
         var cells = Set<Cell>()
         let info = PassthroughSubject<Set<Info>, Never>()
         let size = PassthroughSubject<CGSize, Never>()
@@ -174,7 +174,8 @@ final class List: NSScrollView {
             }
             .store(in: &subs)
         
-        items
+        session
+            .items
             .sink { [weak self] items in
                 guard !items.isEmpty else {
                     info.send([])

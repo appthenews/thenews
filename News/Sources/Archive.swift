@@ -72,9 +72,6 @@ public struct Archive: Arch {
                 preferences.feeds[$0.feed]!
                 && (provider == .all || provider == $0.feed.provider)
             }
-            .sorted {
-                $0.date >= $1.date
-            }
     }
     
     mutating func clean() {

@@ -6,17 +6,6 @@ final class Middlebar: NSVisualEffectView {
     
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
-        let items = session
-            .provider
-            .removeDuplicates()
-            .combineLatest(session
-                .cloud) { provider, model in
-                    provider == nil
-                    ? []
-                    : model.items(provider: provider!)
-                }
-                .eraseToAnyPublisher()
-        
         super.init(frame: .zero)
         state = .active
         material = .menu
@@ -47,7 +36,7 @@ final class Middlebar: NSVisualEffectView {
         let separator = Separator()
         addSubview(separator)
         
-        let list = List(session: session, items: items)
+        let list = List(session: session)
         addSubview(list)
         
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
@@ -100,7 +89,8 @@ final class Middlebar: NSVisualEffectView {
             }
             .store(in: &subs)
         
-        items
+        session
+            .items
             .sink { items in
                 if items.isEmpty {
                     count.attributedStringValue = .init()
