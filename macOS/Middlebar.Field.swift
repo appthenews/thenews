@@ -1,8 +1,10 @@
 import AppKit
+import Combine
 
 extension Middlebar {
     final class Field: NSTextField, NSTextFieldDelegate {
         private let session: Session
+        private var subs = Set<AnyCancellable>()
         
         override var canBecomeKeyView: Bool {
             false
@@ -27,6 +29,16 @@ extension Middlebar {
             layer!.cornerRadius = 8
             layer!.cornerCurve = .continuous
             delegate = self
+            
+            session
+                .provider
+                .removeDuplicates()
+                .sink { [weak self] _ in
+                    self?.stringValue = ""
+                    self?.undoManager?.removeAllActions()
+                    session.search.send("")
+                }
+                .store(in: &subs)
         }
         
         deinit {
@@ -36,8 +48,6 @@ extension Middlebar {
                     $0.undoManager?.removeAllActions()
                 }
         }
-        
-        // undoManager?.removeAllActions()
         
         override func cancelOperation(_: Any?) {
             window?.makeFirstResponder(nil)

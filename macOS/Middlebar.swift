@@ -20,7 +20,15 @@ final class Middlebar: NSVisualEffectView {
         filter
             .click
             .sink {
+                let filters = Filters(session: session)
                 
+                let popover = NSPopover()
+                popover.behavior = .transient
+                popover.contentSize = filters.frame.size
+                popover.contentViewController = .init()
+                popover.contentViewController!.view = filters
+                popover.show(relativeTo: filter.bounds, of: filter, preferredEdge: .minY)
+                popover.contentViewController!.view.window!.makeKey()
             }
             .store(in: &subs)
         addSubview(filter)
@@ -91,16 +99,27 @@ final class Middlebar: NSVisualEffectView {
         
         session
             .items
-            .sink { items in
-                if items.isEmpty {
-                    count.attributedStringValue = .init()
-                } else {
-                    var string = AttributedString(items.count.formatted(),
-                                                  attributes: countAttributes)
-                    string.append(AttributedString(items.count == 1 ? " article" : " articles",
-                                                   attributes: titleAttributes))
-                    count.attributedStringValue = .init(string)
+            .combineLatest(session
+                .showing
+                .removeDuplicates())
+            .sink { items, showing in
+                var string = AttributedString(items.count.formatted(),
+                                              attributes: countAttributes)
+                string.append(AttributedString(" ", attributes: titleAttributes))
+                
+                let title: String
+                
+                switch showing {
+                case 0:
+                    title = items.count == 1 ? "article" : "articles"
+                case 1:
+                    title = "not read"
+                default:
+                    title = items.count == 1 ? "bookmark" : "bookmarks"
                 }
+                
+                string.append(AttributedString(title, attributes: titleAttributes))
+                count.attributedStringValue = .init(string)
             }
             .store(in: &subs)
     }
