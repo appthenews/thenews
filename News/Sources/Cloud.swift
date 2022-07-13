@@ -35,7 +35,7 @@ extension Cloud where Output == Archive {
         await stream()
     }
     
-    public func bookmarked(item: Item) async {
+    public func bookmark(item: Item) async {
         guard item.status != .bookmarked else { return }
         model.items = model
             .items

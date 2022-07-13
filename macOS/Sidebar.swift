@@ -108,11 +108,6 @@ final class Sidebar: NSVisualEffectView {
                             if item.state != .hidden {
                                 item.state = .hidden
                             }
-                            
-                            if session.provider.value == item.provider {
-                                session.item.send(nil)
-                                session.provider.send(nil)
-                            }
                         }
                     }
                 

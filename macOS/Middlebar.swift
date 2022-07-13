@@ -17,6 +17,7 @@ final class Middlebar: NSVisualEffectView {
         addSubview(field)
         
         let filter = Control.Symbol(symbol: "line.3.horizontal.decrease.circle", size: 18)
+        filter.toolTip = "Filters"
         filter
             .click
             .sink {

@@ -5,8 +5,8 @@ import News
 
 final class Session {
     let cloud = Cloud<Archive, CKContainer>.new(identifier: "iCloud.thenews")
-    let provider = CurrentValueSubject<Provider?, Never>(.all)
     let search = CurrentValueSubject<_, Never>("")
+    let provider: CurrentValueSubject<Provider?, Never>
     let item: CurrentValueSubject<Item?, Never>
     let columns: CurrentValueSubject<Int, Never>
     let showing: CurrentValueSubject<Int, Never>
@@ -15,6 +15,7 @@ final class Session {
     
     init() {
         let item = CurrentValueSubject<Item?, Never>(nil)
+        let provider = CurrentValueSubject<Provider?, Never>(.all)
         columns = .init(UserDefaults.standard.value(forKey: "columns") as? Int ?? 0)
         showing = .init(UserDefaults.standard.value(forKey: "showing") as? Int ?? 0)
         items = provider
@@ -47,5 +48,32 @@ final class Session {
                 .removeDuplicates()
                 .eraseToAnyPublisher()
         self.item = item
+        self.provider = provider
+        
+        items
+            .sink { items in
+                if let current = item.value {
+                    if let new = items.first(where: { $0.link == current.link }) {
+                        if new.status != current.status {
+                            item.value = new
+                        }
+                    } else {
+                        item.value = nil
+                    }
+                }
+            }
+            .store(in: &subs)
+        
+        cloud
+            .map(\.preferences.providers)
+            .removeDuplicates()
+            .sink { providers in
+                if let current = provider.value,
+                   current != .all,
+                   !providers.contains(current) {
+                    provider.value = nil
+                }
+            }
+            .store(in: &subs)
     }
 }

@@ -31,45 +31,65 @@ final class Topbar: NSView {
         addSubview(segmented)
         
         let delete = Button(symbol: "trash")
+        delete.state = .hidden
+        delete.toolTip = "Delete article"
+        addSubview(delete)
         
         let share = Button(symbol: "square.and.arrow.up")
+        share.state = .hidden
+        share.toolTip = "Share article"
+        addSubview(share)
         
         let bookmark = Button(symbol: "bookmark")
+        bookmark.state = .hidden
+        bookmark
+            .click
+            .sink {
+                guard let item = session.item.value else { return }
+                Task {
+                    if item.status == .bookmarked {
+                        await session.cloud.read(item: item)
+                    } else {
+                        await session.cloud.bookmark(item: item)
+                    }
+                }
+            }
+            .store(in: &subs)
+        addSubview(bookmark)
         
         let open = Button(symbol: "paperplane")
-        
-        let stack = NSStackView(views: [delete, share, bookmark, open])
-        stack.spacing = 18
-        stack.setClippingResistancePriority(.defaultLow, for: .horizontal)
-        stack.isHidden = true
-        addSubview(stack)
+        open.state = .hidden
+        open.toolTip = "Read article"
+        addSubview(open)
         
         segmented.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 7).isActive = true
+        delete.rightAnchor.constraint(equalTo: share.leftAnchor, constant: -18).isActive = true
+        share.rightAnchor.constraint(equalTo: bookmark.leftAnchor, constant: -18).isActive = true
+        bookmark.rightAnchor.constraint(equalTo: open.leftAnchor, constant: -18).isActive = true
+        open.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -18).isActive = true
         
-        stack.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-        let leading = stack.leftAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.leftAnchor)
-        leading.isActive = true
-        
-        [segmented, stack]
+        [segmented, delete, share, bookmark, open]
             .forEach {
                 $0.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             }
         
         session
-            .columns
-            .sink {
-                leading.constant = $0 == 0 ? 600 : 0
-            }
-            .store(in: &subs)
-        
-        session
             .item
-            .map {
-                $0 == nil
-            }
             .removeDuplicates()
-            .sink {
-                stack.isHidden = $0
+            .sink { item in
+                bookmark.toolTip = item?.status == .bookmarked ? "Remove bookmark" : "Add bookmark"
+                
+                if item == nil {
+                    delete.state = .hidden
+                    share.state = .hidden
+                    bookmark.state = .hidden
+                    open.state = .hidden
+                } else {
+                    delete.state = .on
+                    share.state = .on
+                    bookmark.state = .on
+                    open.state = .on
+                }
             }
             .store(in: &subs)
     }

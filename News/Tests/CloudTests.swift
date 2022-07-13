@@ -38,7 +38,7 @@ final class CloudTests: XCTestCase {
                          synched: .now,
                          status: .new)
         await cloud.add(item: item)
-        await cloud.bookmarked(item: item)
+        await cloud.bookmark(item: item)
         let items = await cloud.model.items
         XCTAssertEqual(.bookmarked, items.first?.status)
         XCTAssertEqual(1, items.count)

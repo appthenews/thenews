@@ -180,7 +180,6 @@ final class List: NSScrollView {
                 guard !items.isEmpty else {
                     info.send([])
                     size.send(.zero)
-                    session.item.value = nil
                     highlighted.value = nil
                     self?.contentView.bounds.origin.y = 0
                     return
@@ -208,7 +207,6 @@ final class List: NSScrollView {
                         self?.center(y: rect.minY - 20, animated: false)
                     }
                 } else {
-                    session.item.value = nil
                     self?.contentView.bounds.origin.y = 0
                 }
             }
