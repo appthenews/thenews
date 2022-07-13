@@ -1,14 +1,18 @@
 import AppKit
 
 extension Middlebar {
-    final class Field: NSTextField {
+    final class Field: NSTextField, NSTextFieldDelegate {
+        private let session: Session
+        
         override var canBecomeKeyView: Bool {
             false
         }
         
         required init?(coder: NSCoder) { nil }
-        init() {
+        init(session: Session) {
             Self.cellClass = Cell.self
+            self.session = session
+            
             super.init(frame: .zero)
             bezelStyle = .roundedBezel
             translatesAutoresizingMaskIntoConstraints = false
@@ -22,6 +26,7 @@ extension Middlebar {
             layer!.backgroundColor = NSColor.quaternaryLabelColor.cgColor
             layer!.cornerRadius = 8
             layer!.cornerCurve = .continuous
+            delegate = self
         }
         
         deinit {
@@ -42,5 +47,25 @@ extension Middlebar {
             undoManager?.removeAllActions()
             return super.becomeFirstResponder()
         }
+        
+        func controlTextDidChange(_ notification: Notification) {
+            guard let search = notification.object as? Field else { return }
+            session.search.send(search.stringValue)
+        }
+        
+//        func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
+//            switch doCommandBy {
+//            case #selector(cancelOperation), #selector(complete), #selector(NSSavePanel.cancel):
+//                fatalError()
+//            case #selector(insertNewline):
+//                fatalError()
+//            case #selector(moveUp):
+//                fatalError()
+//            case #selector(moveDown):
+//                fatalError()
+//            default:
+//                fatalError()
+//            }
+//        }
     }
 }

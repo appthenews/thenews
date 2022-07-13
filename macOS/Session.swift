@@ -7,6 +7,7 @@ final class Session {
     let cloud = Cloud<Archive, CKContainer>.new(identifier: "iCloud.thenews")
     let provider = CurrentValueSubject<Provider?, Never>(.all)
     let item = CurrentValueSubject<Item?, Never>(nil)
+    let search = CurrentValueSubject<_, Never>("")
     let columns: CurrentValueSubject<Int, Never>
     let items: AnyPublisher<[Item], Never>
     
@@ -19,6 +20,10 @@ final class Session {
                 ? []
                 : model
                     .items(provider: provider!)
+            }
+            .combineLatest(search) { items, search in
+                items
+                    .filter(search: search)
                     .sorted()
             }
             .removeDuplicates()

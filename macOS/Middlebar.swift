@@ -13,7 +13,7 @@ final class Middlebar: NSVisualEffectView {
         let width = widthAnchor.constraint(equalToConstant: 0)
         width.isActive = true
         
-        let field = Field()
+        let field = Field(session: session)
         addSubview(field)
         
         let filter = Control.Symbol(symbol: "line.3.horizontal.decrease.circle", size: 18)

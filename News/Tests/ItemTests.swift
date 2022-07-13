@@ -27,4 +27,26 @@ final class ItemTests: XCTestCase {
                      status: .new)
         XCTAssertFalse(item.recent)
     }
+    
+    func testFilter() {
+        let items = [Item(feed: .derSpiegelInternational,
+                          title: "asd",
+                          description: "def",
+                          link: "gfdgd",
+                          date: .now,
+                          synched: Calendar.current.date(byAdding: .hour, value: -2, to: .now)!,
+                          status: .new),
+                     .init(feed: .reutersEurope,
+                           title: "fdsgsfdfsd",
+                           description: "gfsgfgs",
+                           link: "hfgfh",
+                           date: .now,
+                           synched: .now,
+                           status: .new)]
+        
+        XCTAssertTrue(items.filter(search: "lol").isEmpty)
+        XCTAssertEqual(1, items.filter(search: "sg").count)
+        XCTAssertEqual(2, items.filter(search: "g").count)
+        XCTAssertEqual(2, items.filter(search: "").count)
+    }
 }

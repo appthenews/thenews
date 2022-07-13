@@ -108,12 +108,12 @@ final class ArchiveTests: XCTestCase {
                                      synched: .now,
                                      status: .new)])
         
-        var items = archive.items(provider: .reuters)
+        var items = archive.items(provider: .reuters).sorted()
         XCTAssertEqual(2, items.count)
         XCTAssertEqual("1", items.first?.link)
         XCTAssertEqual("2", items.last?.link)
         
-        items = archive.items(provider: .all)
+        items = archive.items(provider: .all).sorted()
         XCTAssertEqual(3, items.count)
         XCTAssertEqual(.reutersEurope, items.first?.feed)
         XCTAssertEqual(.theLocalGermany, items[1].feed)
