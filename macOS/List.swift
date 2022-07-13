@@ -63,7 +63,7 @@ final class List: NSScrollView {
             .font: fontTitle,
             .paragraphStyle: paragraph])
         
-        let clip = PassthroughSubject<CGRect, Never>()
+        let clip = CurrentValueSubject<_, Never>(CGRect.zero)
         clip
             .combineLatest(size) {
                 .init(width: max($0.width, $1.width), height: max($0.height, $1.height))
@@ -76,6 +76,7 @@ final class List: NSScrollView {
 
         info
             .combineLatest(clip
+                .dropFirst()
                 .removeDuplicates()) { info, clip in
                     info
                         .filter {
@@ -201,7 +202,10 @@ final class List: NSScrollView {
                 
                 if let current = session.item.value,
                    let rect = result.info.first(where: { $0.item == current })?.rect {
-                    self?.center(y: rect.minY - 20)
+                    
+                    if !clip.value.intersects(rect) {
+                        self?.center(y: rect.minY - 20, animated: false)
+                    }
                 } else {
                     session.item.value = nil
                     self?.contentView.bounds.origin.y = 0
@@ -263,12 +267,14 @@ final class List: NSScrollView {
         documentView!.convert(with.locationInWindow, from: nil)
     }
     
-    private func center(y: CGFloat) {
+    private func center(y: CGFloat, animated: Bool) {
         contentView.bounds.origin.y = y
-        contentView.layer?.add({
-            $0.duration = 0.3
-            $0.timingFunction = .init(name: .easeInEaseOut)
-            return $0
-        } (CABasicAnimation(keyPath: "bounds")), forKey: "bounds")
+        if animated {
+            contentView.layer?.add({
+                $0.duration = 0.3
+                $0.timingFunction = .init(name: .easeInEaseOut)
+                return $0
+            } (CABasicAnimation(keyPath: "bounds")), forKey: "bounds")
+        }
     }
 }

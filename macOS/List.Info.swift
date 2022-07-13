@@ -48,12 +48,19 @@ extension List {
         }
         
         func hash(into: inout Hasher) {
-            into.combine(item)
+            into.combine(item.link)
             into.combine(item.status)
+            into.combine(string)
+            into.combine(rect)
+            into.combine(recent)
         }
         
         static func == (lhs: Self, rhs: Self) -> Bool {
-            lhs.item == rhs.item && lhs.item.status == rhs.item.status
+            lhs.item.link == rhs.item.link
+            && lhs.item.status == rhs.item.status
+            && lhs.string == rhs.string
+            && lhs.rect == rhs.rect
+            && lhs.recent == rhs.recent
         }
     }
 }

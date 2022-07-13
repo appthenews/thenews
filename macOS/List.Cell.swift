@@ -49,14 +49,14 @@ extension List {
             vibrant.frame = .init(x: 10, y: 0, width: 270, height: 0)
             self.vibrant = vibrant
 
-            let label = CATextLayer()
+            let label = TextLayer()
             label.frame = .init(x: 15, y: 10, width: 226, height: 0)
             label.contentsScale = NSScreen.main?.backingScaleFactor ?? 2
             label.isWrapped = true
             vibrant.layer!.addSublayer(label)
             self.label = label
             
-            let recent = CAShapeLayer()
+            let recent = ShapeLayer()
             recent.isHidden = true
             recent.frame = .init(x: 260, y: 0, width: 12, height: 12)
             recent.path = .init(ellipseIn: .init(x: 2, y: 2, width: 8, height: 8), transform: nil)
