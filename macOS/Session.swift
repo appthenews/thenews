@@ -21,7 +21,9 @@ final class Session {
                 : model
                     .items(provider: provider!)
             }
-            .combineLatest(search) { items, search in
+            .removeDuplicates()
+            .combineLatest(search
+                .removeDuplicates()) { items, search in
                 items
                     .filter(search: search)
                     .sorted()
