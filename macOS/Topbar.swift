@@ -59,14 +59,24 @@ final class Topbar: NSView {
         
         let open = Button(symbol: "paperplane")
         open.state = .hidden
-        open.toolTip = "Read article"
+        open.toolTip = "Continue reading"
+        open
+            .click
+            .sink {
+                guard
+                    let link = session.item.value?.link,
+                    let url = URL(string: link)
+                else { return }
+                NSWorkspace.shared.open(url)
+            }
+            .store(in: &subs)
         addSubview(open)
         
         segmented.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 7).isActive = true
-        delete.rightAnchor.constraint(equalTo: share.leftAnchor, constant: -18).isActive = true
-        share.rightAnchor.constraint(equalTo: bookmark.leftAnchor, constant: -18).isActive = true
-        bookmark.rightAnchor.constraint(equalTo: open.leftAnchor, constant: -18).isActive = true
-        open.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -18).isActive = true
+        delete.rightAnchor.constraint(equalTo: share.leftAnchor, constant: -14).isActive = true
+        share.rightAnchor.constraint(equalTo: bookmark.leftAnchor, constant: -14).isActive = true
+        bookmark.rightAnchor.constraint(equalTo: open.leftAnchor, constant: -14).isActive = true
+        open.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
         
         [segmented, delete, share, bookmark, open]
             .forEach {

@@ -1,4 +1,4 @@
-public enum Provider {
+public enum Provider: UInt8 {
     case
     all,
     theGuardian,

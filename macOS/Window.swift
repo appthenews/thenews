@@ -48,4 +48,9 @@ final class Window: NSWindow {
         content.leftAnchor.constraint(equalTo: middlebar.rightAnchor).isActive = true
         content.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
     }
+    
+    override func close() {
+        super.close()
+        NSApp.terminate(nil)
+    }
 }

@@ -24,7 +24,7 @@ final class Content: NSVisualEffectView {
         addSubview(content)
         
         title.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
-        title.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -190).isActive = true
+        title.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -162).isActive = true
         let leading = title.leftAnchor.constraint(equalTo: leftAnchor)
         leading.isActive = true
         

@@ -15,7 +15,8 @@ final class Session {
     
     init() {
         let item = CurrentValueSubject<Item?, Never>(nil)
-        let provider = CurrentValueSubject<Provider?, Never>(.all)
+        let provider = CurrentValueSubject<Provider?, Never>(.init(
+            rawValue: UserDefaults.standard.value(forKey: "provider") as? UInt8 ?? 0)!)
         columns = .init(UserDefaults.standard.value(forKey: "columns") as? Int ?? 0)
         showing = .init(UserDefaults.standard.value(forKey: "showing") as? Int ?? 0)
         items = provider
@@ -65,6 +66,9 @@ final class Session {
             .store(in: &subs)
         
         cloud
+            .filter {
+                $0.timestamp > 0
+            }
             .map(\.preferences.providers)
             .removeDuplicates()
             .sink { providers in

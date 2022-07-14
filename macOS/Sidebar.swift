@@ -139,5 +139,13 @@ final class Sidebar: NSVisualEffectView {
                     }
             }
             .store(in: &subs)
+        
+        session
+            .provider
+            .dropFirst()
+            .sink { provider in
+                UserDefaults.standard.set(provider?.rawValue, forKey: "provider")
+            }
+            .store(in: &subs)
     }
 }
