@@ -60,12 +60,12 @@ final class ArchiveTests: XCTestCase {
         XCTAssertEqual([.theLocalGermany, .theLocalInternational], archive.fetchable)
         
         archive.update(feed: .theLocalGermany,
-                       date: Calendar.current.date(byAdding: .hour, value: -3, to: .now)!,
+                       date: Calendar.current.date(byAdding: .hour, value: -2, to: .now)!,
                        ids: [],
                        items: [])
         XCTAssertEqual([.theLocalInternational], archive.fetchable)
         
-        archive.preferences.fetch = .hours3
+        archive.preferences.fetch = .hour
         XCTAssertEqual([.theLocalGermany, .theLocalInternational], archive.fetchable)
         
         archive.update(feed: .theLocalInternational, date: .now, ids: [], items: [])

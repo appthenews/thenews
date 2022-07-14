@@ -19,6 +19,7 @@ final class Filters: NSView {
                                          target: self,
                                          action: #selector(change))
         segmented.translatesAutoresizingMaskIntoConstraints = false
+        segmented.controlSize = .large
         segmented.selectedSegment = session.showing.value
         addSubview(segmented)
         

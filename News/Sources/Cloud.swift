@@ -26,6 +26,16 @@ extension Cloud where Output == Archive {
         await stream()
     }
     
+    public func fetch(interval: Interval) async {
+        model.preferences.fetch = interval
+        await stream()
+    }
+    
+    public func clean(interval: Interval) async {
+        model.preferences.clean = interval
+        await stream()
+    }
+    
     public func read(item: Item) async {
         guard item.status != .read else { return }
         model.items = model

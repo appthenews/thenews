@@ -50,7 +50,7 @@ extension List {
             self.vibrant = vibrant
 
             let label = TextLayer()
-            label.frame = .init(x: 15, y: 10, width: 226, height: 0)
+            label.frame = .init(x: 15, y: 10, width: 220, height: 0)
             label.contentsScale = NSScreen.main?.backingScaleFactor ?? 2
             label.isWrapped = true
             vibrant.layer!.addSublayer(label)
@@ -59,7 +59,7 @@ extension List {
             let recent = ShapeLayer()
             recent.isHidden = true
             recent.frame = .init(x: 260, y: 0, width: 12, height: 12)
-            recent.path = .init(ellipseIn: .init(x: 2, y: 2, width: 8, height: 8), transform: nil)
+            recent.path = .init(ellipseIn: .init(x: 1, y: 1, width: 10, height: 10), transform: nil)
             recent.fillColor = NSColor.controlAccentColor.cgColor
             self.recent = recent
             
