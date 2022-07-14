@@ -43,6 +43,25 @@ final class CloudTests: XCTestCase {
         XCTAssertEqual(.bookmarked, items.first?.status)
         XCTAssertEqual(1, items.count)
     }
+    
+    func testDelete() async {
+        let item = Item(feed: .reutersInternational,
+                        title: "lk",
+                        description: "fgh",
+                        link: "asd",
+                        date: .now,
+                        synched: .now,
+                        status: .new)
+
+        await cloud.add(item: item)
+        
+        var items = await cloud.model.items
+        XCTAssertEqual(1, items.count)
+        
+        await cloud.delete(item: item)
+        items = await cloud.model.items
+        XCTAssertTrue(items.isEmpty)
+    }
 }
 
 private extension Cloud where Output == Archive {

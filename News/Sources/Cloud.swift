@@ -43,4 +43,11 @@ extension Cloud where Output == Archive {
             .inserting(item.bookmarked)
         await stream()
     }
+    
+    public func delete(item: Item) async {
+        model.items = model
+            .items
+            .removing(item)
+        await stream()
+    }
 }

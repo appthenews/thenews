@@ -33,6 +33,16 @@ final class Topbar: NSView {
         let delete = Button(symbol: "trash")
         delete.state = .hidden
         delete.toolTip = "Delete article"
+        delete
+            .click
+            .sink {
+                guard let item = session.item.value else { return }
+                
+                Task {
+                    await session.cloud.delete(item: item)
+                }
+            }
+            .store(in: &subs)
         addSubview(delete)
         
         let share = Button(symbol: "square.and.arrow.up")
