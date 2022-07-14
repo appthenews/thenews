@@ -56,6 +56,8 @@ final class Menu: NSMenu, NSMenuDelegate {
             .child("Minimize", #selector(NSWindow.miniaturize), "m"),
             .child("Zoom", #selector(NSWindow.zoom)),
             .separator(),
+            .child("Close", #selector(NSWindow.close), "w"),
+            .separator(),
             .child("Bring All to Front", #selector(NSApplication.arrangeInFront)),
             .separator()])
     }

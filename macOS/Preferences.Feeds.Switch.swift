@@ -16,7 +16,7 @@ extension Preferences.Feeds {
             
             let text = Text(vibrancy: false)
             text.stringValue = feed.title
-            text.font = .preferredFont(forTextStyle: .body)
+            text.font = .preferredFont(forTextStyle: .callout)
             text.textColor = .secondaryLabelColor
             addSubview(text)
             

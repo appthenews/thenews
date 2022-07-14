@@ -1,65 +1,45 @@
 import AppKit
+import News
 
 extension Preferences {
     final class Feeds: NSVisualEffectView {
         required init?(coder: NSCoder) { nil }
         init(session: Session) {
-            super.init(frame: .init(origin: .zero, size: .init(width: 300, height: 480)))
-            
-            let theGuardianTitle = Text(vibrancy: true)
-            theGuardianTitle.stringValue = "The Guardian"
-            let theGuardianSeparator = Separator()
-            
-            let reutersTitle = Text(vibrancy: true)
-            reutersTitle.stringValue = "Reuters"
-            let reutersSeparator = Separator()
-            
-            let derSpiegelTitle = Text(vibrancy: true)
-            derSpiegelTitle.stringValue = "Der Spiegel"
-            let derSpiegelSeparator = Separator()
-            
-            let theLocalTitle = Text(vibrancy: true)
-            theLocalTitle.stringValue = "The Local"
-            
-            [theGuardianTitle,
-             reutersTitle,
-             derSpiegelTitle,
-             theLocalTitle]
-                .forEach {
-                    $0.font = .systemFont(ofSize: NSFont.preferredFont(forTextStyle: .title3).pointSize, weight: .medium)
-                    $0.textColor = .secondaryLabelColor
-                }
-            
-            [theGuardianSeparator,
-             reutersSeparator,
-             derSpiegelSeparator]
-                .forEach {
-                    $0.heightAnchor.constraint(equalToConstant: 1).isActive = true
-                    $0.widthAnchor.constraint(equalToConstant: 180).isActive = true
-                }
-            
-            let stack = Stack(views: [
-                theGuardianTitle,
-                Switch(session: session, feed: .theGuardianWorld),
-                Switch(session: session, feed: .theGuardianGermany),
-                theGuardianSeparator,
-                reutersTitle,
-                Switch(session: session, feed: .reutersInternational),
-                Switch(session: session, feed: .reutersEurope),
-                reutersSeparator,
-                derSpiegelTitle,
-                Switch(session: session, feed: .derSpiegelInternational),
-                derSpiegelSeparator,
-                theLocalTitle,
-                Switch(session: session, feed: .theLocalInternational),
-                Switch(session: session, feed: .theLocalGermany)])
+            super.init(frame: .init(origin: .zero, size: .init(width: 400, height: 360)))
+            let stack = Stack(views: [make(provider: .theGuardian, session: session),
+                                      make(provider: .reuters, session: session),
+                                      make(provider: .derSpiegel, session: session),
+                                      make(provider: .theLocal, session: session)])
             stack.translatesAutoresizingMaskIntoConstraints = false
             stack.orientation = .vertical
             stack.alignment = .leading
+            stack.spacing = 20
             addSubview(stack)
             
-            stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-            stack.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+            stack.centerXAnchor.constraint(equalTo: centerXAnchor, constant: -30).isActive = true
+        }
+        
+        private func make(provider: Provider, session: Session) -> Stack {
+            let label = Text(vibrancy: false)
+            label.stringValue = provider.title
+            label.font = .systemFont(ofSize: NSFont.preferredFont(forTextStyle: .title3).pointSize, weight: .medium)
+            label.textColor = .controlAccentColor
+            label.alignment = .right
+            label.widthAnchor.constraint(equalToConstant: 140).isActive = true
+            
+            let switches = Stack(views: Feed
+                .allCases
+                .filter {
+                    $0.provider == provider
+                }
+                .map {
+                    Switch(session: session, feed: $0)
+                })
+            switches.orientation = .vertical
+            switches.alignment = .leading
+            switches.spacing = 1
+            return .init(views: [label, switches])
         }
     }
 }

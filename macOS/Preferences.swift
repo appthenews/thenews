@@ -9,8 +9,8 @@ final class Preferences: NSWindow {
                    styleMask: [.closable, .miniaturizable, .titled, .fullSizeContentView], backing: .buffered, defer: true)
         
         controller.tabViewItems = [
-            item(Feeds(session: session), title: "Feeds", symbol: "switch.2")]
-        
+            item(Feeds(session: session), title: "Feeds", symbol: "switch.2"),
+            item(Update(session: session), title: "Update", symbol: "calendar.badge.clock")]
         animationBehavior = .alertPanel
         isReleasedWhenClosed = false
         isMovableByWindowBackground = true
