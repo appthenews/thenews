@@ -10,7 +10,7 @@ import AppKit
     }
     
     func applicationWillFinishLaunching(_: Notification) {
-//        mainMenu = Menu()
+        mainMenu = Menu(session: session)
     }
     
     func applicationDidFinishLaunching(_: Notification) {

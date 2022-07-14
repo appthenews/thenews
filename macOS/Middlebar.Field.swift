@@ -34,9 +34,7 @@ extension Middlebar {
                 .provider
                 .removeDuplicates()
                 .sink { [weak self] _ in
-                    self?.stringValue = ""
-                    self?.undoManager?.removeAllActions()
-                    session.search.send("")
+                    self?.cancelOperation(nil)
                 }
                 .store(in: &subs)
         }
@@ -50,7 +48,9 @@ extension Middlebar {
         }
         
         override func cancelOperation(_: Any?) {
-            window?.makeFirstResponder(nil)
+            stringValue = ""
+            undoManager?.removeAllActions()
+            session.search.send("")
         }
         
         override func becomeFirstResponder() -> Bool {
@@ -63,19 +63,19 @@ extension Middlebar {
             session.search.send(search.stringValue)
         }
         
-//        func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
-//            switch doCommandBy {
-//            case #selector(cancelOperation), #selector(complete), #selector(NSSavePanel.cancel):
-//                fatalError()
-//            case #selector(insertNewline):
-//                fatalError()
-//            case #selector(moveUp):
-//                fatalError()
-//            case #selector(moveDown):
-//                fatalError()
-//            default:
-//                fatalError()
-//            }
-//        }
+        func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
+            switch doCommandBy {
+            case #selector(cancelOperation):
+                cancelOperation(nil)
+                return true
+            case #selector(complete),
+                #selector(NSSavePanel.cancel),
+                #selector(insertNewline):
+                window!.makeFirstResponder(window!.contentView)
+                return true
+            default:
+                return false
+            }
+        }
     }
 }

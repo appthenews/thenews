@@ -1,3 +1,4 @@
+import AppKit
 import Combine
 import CloudKit
 import Archivable
@@ -6,6 +7,9 @@ import News
 final class Session {
     let cloud = Cloud<Archive, CKContainer>.new(identifier: "iCloud.thenews")
     let search = CurrentValueSubject<_, Never>("")
+    let up = PassthroughSubject<Void, Never>()
+    let down = PassthroughSubject<Void, Never>()
+    let open = PassthroughSubject<Void, Never>()
     let provider: CurrentValueSubject<Provider?, Never>
     let item: CurrentValueSubject<Item?, Never>
     let columns: CurrentValueSubject<Int, Never>
@@ -77,6 +81,54 @@ final class Session {
                    !providers.contains(current) {
                     provider.value = nil
                 }
+            }
+            .store(in: &subs)
+        
+        open
+            .sink {
+                guard
+                    let link = item.value?.link,
+                    let url = URL(string: link)
+                else { return }
+                NSWorkspace.shared.open(url)
+            }
+            .store(in: &subs)
+        
+        down
+            .map { Void -> Date in
+                Date.now
+            }
+            .combineLatest(items)
+            .removeDuplicates {
+                $0.0 == $1.0
+            }
+            .sink { _, items in
+                items
+                    .firstIndex {
+                        $0.link == item.value?.link
+                    }
+                    .map { index in
+                        item.value = items[index < items.count - 1 ? index + 1 : 0]
+                    }
+            }
+            .store(in: &subs)
+        
+        up
+            .map { Void -> Date in
+                Date.now
+            }
+            .combineLatest(items)
+            .removeDuplicates {
+                $0.0 == $1.0
+            }
+            .sink { _, items in
+                items
+                    .firstIndex {
+                        $0.link == item.value?.link
+                    }
+                    .map { index in
+                        item.value = items[index > 0 ? index - 1 : items.count - 1]
+                    }
             }
             .store(in: &subs)
     }

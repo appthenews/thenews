@@ -89,13 +89,7 @@ final class Topbar: NSView {
         open.toolTip = "Continue reading"
         open
             .click
-            .sink {
-                guard
-                    let link = session.item.value?.link,
-                    let url = URL(string: link)
-                else { return }
-                NSWorkspace.shared.open(url)
-            }
+            .subscribe(session.open)
             .store(in: &subs)
         addSubview(open)
         

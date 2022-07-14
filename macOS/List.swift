@@ -226,11 +226,26 @@ final class List: NSScrollView {
         
         session
             .item
-            .sink { selected in
-                cells
-                    .forEach {
-                        $0.state = $0.info?.item.link == selected?.link ? .selected : .none
+            .combineLatest(info)
+            .removeDuplicates {
+                $0.0 == $1.0
+            }
+            .sink { [weak self] selected, info in
+                if let link = selected?.link {
+                    if cells.contains(where: { $0.info?.item.link == link }) {
+                        cells
+                            .forEach {
+                                $0.state = $0.info?.item.link == link ? .selected : .none
+                            }
+                    } else if let rect = info.first(where: { $0.item.link == link })?.rect {
+                        self?.center(y: rect.minY - 20, animated: true)
                     }
+                } else {
+                    cells
+                        .forEach {
+                            $0.state = .none
+                        }
+                }
             }
             .store(in: &subs)
     }
