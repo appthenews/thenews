@@ -38,6 +38,23 @@ final class Topbar: NSView {
         let share = Button(symbol: "square.and.arrow.up")
         share.state = .hidden
         share.toolTip = "Share article"
+        share
+            .click
+            .sink {
+                guard
+                    let link = session.item.value?.link,
+                    let url = URL(string: link)
+                else { return }
+                
+                share.menu = .init()
+                share.menu!.items = [
+                    Menu.Link(link: link),
+                    .separator(),
+                    Menu.Share(title: "To Service...", url: url)]
+                
+                share.menu!.popUp(positioning: nil, at: .init(x: 0, y: -8), in: share)
+            }
+            .store(in: &subs)
         addSubview(share)
         
         let bookmark = Button(symbol: "bookmark")
