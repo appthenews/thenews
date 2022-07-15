@@ -25,7 +25,7 @@ final class Session {
         
         columns = .init(UserDefaults.standard.value(forKey: "columns") as? Int ?? 0)
         showing = .init(UserDefaults.standard.value(forKey: "showing") as? Int ?? 0)
-        font = .init(UserDefaults.standard.value(forKey: "font") as? Int ?? 4)
+        font = .init(UserDefaults.standard.value(forKey: "font") as? Int ?? 2)
         
         items = provider
             .removeDuplicates()
