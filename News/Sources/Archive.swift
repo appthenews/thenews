@@ -7,6 +7,7 @@ public struct Archive: Arch {
     private(set) var feeds: [Feed : Date]
     private(set) var ids: Set<String>
     var items: Set<Item>
+    var history: [String]
 
     public var data: Data {
         .init()
@@ -19,6 +20,7 @@ public struct Archive: Arch {
         })
         .adding(collection: UInt32.self, strings: UInt8.self, items: ids)
         .adding(size: UInt16.self, collection: items)
+        .adding(collection: UInt8.self, strings: UInt8.self, items: history)
     }
     
     var fetchable: Set<Feed> {
@@ -45,6 +47,7 @@ public struct Archive: Arch {
         feeds = Feed.synch
         ids = []
         items = []
+        history = []
     }
     
     public init(version: UInt8, timestamp: UInt32, data: Data) async {
@@ -58,11 +61,13 @@ public struct Archive: Arch {
             }
             ids = .init(data.items(collection: UInt32.self, strings: UInt8.self))
             items = .init(data.collection(size: UInt16.self))
+            history = .init(data.items(collection: UInt8.self, strings: UInt8.self))
         } else {
             preferences = .init()
             feeds = Feed.synch
             ids = []
             items = []
+            history = []
         }
     }
     
