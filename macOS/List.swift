@@ -27,7 +27,7 @@ final class List: NSScrollView {
         contentView.postsBoundsChangedNotifications = true
         contentView.postsFrameChangedNotifications = true
         drawsBackground = false
-        addTrackingArea(.init(rect: .zero, options: [.mouseEnteredAndExited, .mouseMoved, .activeAlways, .inVisibleRect], owner: self))
+        addTrackingArea(.init(rect: .zero, options: [.mouseEnteredAndExited, .mouseMoved, .activeInKeyWindow, .inVisibleRect], owner: self))
         
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = .byWordWrapping
@@ -155,27 +155,12 @@ final class List: NSScrollView {
             .store(in: &subs)
         
         session
-            .font
-            .sink {
-                attributesProvider.font = NSFont.systemFont(
-                    ofSize: NSFont.preferredFont(forTextStyle: .caption1).pointSize + .init($0),
-                    weight: .regular)
-                attributesDate.font = NSFont.systemFont(
-                    ofSize: NSFont.preferredFont(forTextStyle: .caption1).pointSize + .init($0),
-                    weight: .light)
-                attributesTitle.font = NSFont.systemFont(
-                    ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize + .init($0),
-                    weight: .regular)
-            }
-            .store(in: &subs)
-        
-        session
             .items
             .combineLatest(session.font)
             .removeDuplicates { first, second in
                 first.0 == second.0 && first.1 == second.1
             }
-            .sink { [weak self] items, _ in
+            .sink { [weak self] items, font in
                 guard !items.isEmpty else {
                     info.send([])
                     size.send(.zero)
@@ -183,6 +168,16 @@ final class List: NSScrollView {
                     self?.contentView.bounds.origin.y = 0
                     return
                 }
+                
+                attributesProvider.font = NSFont.systemFont(
+                    ofSize: NSFont.preferredFont(forTextStyle: .caption1).pointSize + .init(font),
+                    weight: .regular)
+                attributesDate.font = NSFont.systemFont(
+                    ofSize: NSFont.preferredFont(forTextStyle: .caption1).pointSize + .init(font),
+                    weight: .light)
+                attributesTitle.font = NSFont.systemFont(
+                    ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize + .init(font),
+                    weight: .regular)
                 
                 let result = items
                     .reduce(into: (info: Set<Info>(), y: CGFloat(20))) {

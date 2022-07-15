@@ -42,11 +42,11 @@ extension List {
                 CFRange(),
                 nil,
                 .init(width: 220,
-                      height: 900),
+                      height: CGFloat.greatestFiniteMagnitude),
                 nil)
                 .height
             
-            rect = .init(x: 0, y: y, width: 290, height: ceil(height) + 20)
+            rect = .init(x: 0, y: y, width: 290, height: ceil(height) + 25)
             recent = item.recent
             self.item = item
         }

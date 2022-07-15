@@ -59,7 +59,6 @@ extension Preferences {
             guard session.font.value != slider.integerValue else { return }
             session.font.value = slider.integerValue
             UserDefaults.standard.set(slider.integerValue, forKey: "font")
-            print(slider.integerValue)
         }
     }
 }
