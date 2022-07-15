@@ -14,6 +14,7 @@ final class Session {
     let item: CurrentValueSubject<Item?, Never>
     let columns: CurrentValueSubject<Int, Never>
     let showing: CurrentValueSubject<Int, Never>
+    let font: CurrentValueSubject<Int, Never>
     let items: AnyPublisher<[Item], Never>
     private var subs = Set<AnyCancellable>()
     
@@ -21,8 +22,11 @@ final class Session {
         let item = CurrentValueSubject<Item?, Never>(nil)
         let provider = CurrentValueSubject<Provider?, Never>(.init(
             rawValue: UserDefaults.standard.value(forKey: "provider") as? UInt8 ?? 0)!)
+        
         columns = .init(UserDefaults.standard.value(forKey: "columns") as? Int ?? 0)
         showing = .init(UserDefaults.standard.value(forKey: "showing") as? Int ?? 0)
+        font = .init(UserDefaults.standard.value(forKey: "font") as? Int ?? 4)
+        
         items = provider
             .removeDuplicates()
             .combineLatest(cloud) { provider, model in
