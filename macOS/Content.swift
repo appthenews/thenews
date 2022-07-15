@@ -16,19 +16,39 @@ final class Content: NSVisualEffectView {
         header.maximumNumberOfLines = 1
         addSubview(header)
         
+        let flip = Flip()
+        flip.translatesAutoresizingMaskIntoConstraints = false
+        
+        let scroll = NSScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.documentView = flip
+        scroll.drawsBackground = false
+        scroll.automaticallyAdjustsContentInsets = false
+        addSubview(scroll)
+        
         let content = Text(vibrancy: true)
         content.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        addSubview(content)
+        flip.addSubview(content)
         
         header.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
         header.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -162).isActive = true
         let leading = header.leftAnchor.constraint(equalTo: leftAnchor)
         leading.isActive = true
         
-        content.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        content.leftAnchor.constraint(equalTo: leftAnchor, constant: 40).isActive = true
-        content.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -40).isActive = true
+        scroll.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        scroll.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        scroll.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        scroll.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
+        flip.topAnchor.constraint(equalTo: scroll.topAnchor).isActive = true
+        flip.leftAnchor.constraint(equalTo: scroll.leftAnchor).isActive = true
+        flip.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
+        
+        content.topAnchor.constraint(equalTo: flip.topAnchor, constant: 30).isActive = true
+        content.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 40).isActive = true
+        content.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -40).isActive = true
         content.widthAnchor.constraint(lessThanOrEqualToConstant: 740).isActive = true
+        content.bottomAnchor.constraint(equalTo: flip.bottomAnchor, constant: -30).isActive = true
         
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = .byTruncatingTail
