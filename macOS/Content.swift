@@ -11,24 +11,21 @@ final class Content: NSVisualEffectView {
         material = .sidebar
         translatesAutoresizingMaskIntoConstraints = false
         
-        let title = Text(vibrancy: true)
-        title.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        title.textColor = .secondaryLabelColor
-        title.maximumNumberOfLines = 1
-        addSubview(title)
+        let header = Text(vibrancy: true)
+        header.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        header.maximumNumberOfLines = 1
+        addSubview(header)
         
         let content = Text(vibrancy: true)
-        content.font = NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .title3).pointSize, weight: .regular)
         content.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        content.textColor = .labelColor
         addSubview(content)
         
-        title.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
-        title.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -162).isActive = true
-        let leading = title.leftAnchor.constraint(equalTo: leftAnchor)
+        header.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
+        header.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -162).isActive = true
+        let leading = header.leftAnchor.constraint(equalTo: leftAnchor)
         leading.isActive = true
         
-        content.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        content.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         content.leftAnchor.constraint(equalTo: leftAnchor, constant: 40).isActive = true
         content.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -40).isActive = true
         content.widthAnchor.constraint(lessThanOrEqualToConstant: 740).isActive = true
@@ -36,16 +33,12 @@ final class Content: NSVisualEffectView {
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = .byTruncatingTail
         
-        let attributesProvider = AttributeContainer([
-            .font: NSFont.systemFont(
-                ofSize: NSFont.preferredFont(forTextStyle: .title3).pointSize,
-                weight: .regular),
-            .paragraphStyle: paragraph])
-        
-        let attributesDate = AttributeContainer([.font: NSFont.systemFont(
-            ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
-            weight: .light),
-                                                 .paragraphStyle: paragraph])
+        var attributesProvider = AttributeContainer([.paragraphStyle: paragraph,
+                                                     .foregroundColor: NSColor.secondaryLabelColor])
+        var attributesDate = AttributeContainer([.paragraphStyle: paragraph,
+                                                 .foregroundColor: NSColor.tertiaryLabelColor])
+        var attributesTitle = AttributeContainer([.foregroundColor: NSColor.labelColor])
+        var attributesDescription = AttributeContainer([.foregroundColor: NSColor.secondaryLabelColor])
         
         session
             .columns
@@ -56,16 +49,37 @@ final class Content: NSVisualEffectView {
         
         session
             .item
-            .removeDuplicates()
-            .sink {
-                if let item = $0 {
-                    var string = AttributedString(item.feed.provider.title, attributes: attributesProvider)
-                    string.append(AttributedString(" — ", attributes: attributesDate))
-                    string.append(AttributedString(item.date.formatted(.relative(presentation: .named,
+            .combineLatest(session.font)
+            .removeDuplicates { first, second in
+                first.0 == second.0 && first.1 == second.1
+            }
+            .sink { item, font in
+                if let item = item {
+                    attributesProvider.font = NSFont.systemFont(
+                        ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize + .init(font),
+                        weight: .regular)
+                    attributesDate.font = NSFont.systemFont(
+                        ofSize: NSFont.preferredFont(forTextStyle: .footnote).pointSize + .init(font),
+                        weight: .light)
+                    attributesTitle.font = NSFont.systemFont(
+                        ofSize: NSFont.preferredFont(forTextStyle: .title1).pointSize + .init(font),
+                        weight: .regular)
+                    attributesDescription.font = NSFont.systemFont(
+                        ofSize: NSFont.preferredFont(forTextStyle: .title3).pointSize + .init(font),
+                        weight: .regular)
+                    
+                    var stringHeader = AttributedString(item.feed.provider.title, attributes: attributesProvider)
+                    stringHeader.append(AttributedString(" — ", attributes: attributesDate))
+                    stringHeader.append(AttributedString(item.date.formatted(.relative(presentation: .named,
                                                                                  unitsStyle: .wide)),
                                                    attributes: attributesDate))
-                    title.attributedStringValue = .init(string)
-                    content.stringValue = item.description
+                    
+                    var stringContent = AttributedString(item.title, attributes: attributesTitle)
+                    stringContent.append(AttributedString("\n\n", attributes: attributesDescription))
+                    stringContent.append(AttributedString(item.description, attributes: attributesDescription))
+
+                    header.attributedStringValue = .init(stringHeader)
+                    content.attributedStringValue = .init(stringContent)
                     
                     if item.status == .new {
                         Task {
@@ -73,7 +87,7 @@ final class Content: NSVisualEffectView {
                         }
                     }
                 } else {
-                    title.attributedStringValue = .init()
+                    header.attributedStringValue = .init()
                     content.stringValue = ""
                 }
             }

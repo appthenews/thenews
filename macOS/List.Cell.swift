@@ -12,7 +12,7 @@ extension List {
                 frame = info.rect
                 vibrant.frame.size.height = info.rect.height
                 label.string = info.string
-                label.frame.size.height = info.rect.height - 5
+                label.frame.size.height = info.rect.height - 4
                 
                 if info.recent {
                     recent.frame.origin.y = (info.rect.height - 12) / 2
@@ -50,7 +50,7 @@ extension List {
             self.vibrant = vibrant
 
             let label = TextLayer()
-            label.frame = .init(x: 15, y: -5, width: 220, height: 0)
+            label.frame = .init(x: 15, y: -6, width: 220, height: 0)
             label.contentsScale = NSScreen.main?.backingScaleFactor ?? 2
             label.isWrapped = true
             vibrant.layer!.addSublayer(label)

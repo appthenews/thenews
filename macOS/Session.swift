@@ -107,13 +107,17 @@ final class Session {
                 $0.0 == $1.0
             }
             .sink { _, items in
-                items
-                    .firstIndex {
-                        $0.link == item.value?.link
-                    }
-                    .map { index in
-                        item.value = items[index < items.count - 1 ? index + 1 : 0]
-                    }
+                if let current = item.value?.link {
+                    items
+                        .firstIndex {
+                            $0.link == current
+                        }
+                        .map { index in
+                            item.value = items[index < items.count - 1 ? index + 1 : 0]
+                        }
+                } else {
+                    item.value = items.first
+                }
             }
             .store(in: &subs)
         
@@ -126,13 +130,17 @@ final class Session {
                 $0.0 == $1.0
             }
             .sink { _, items in
-                items
-                    .firstIndex {
-                        $0.link == item.value?.link
-                    }
-                    .map { index in
-                        item.value = items[index > 0 ? index - 1 : items.count - 1]
-                    }
+                if let current = item.value?.link {
+                    items
+                        .firstIndex {
+                            $0.link == current
+                        }
+                        .map { index in
+                            item.value = items[index > 0 ? index - 1 : items.count - 1]
+                        }
+                } else {
+                    item.value = items.last
+                }
             }
             .store(in: &subs)
     }

@@ -46,7 +46,7 @@ extension List {
                 nil)
                 .height
             
-            rect = .init(x: 0, y: y, width: 290, height: ceil(height) + 25)
+            rect = .init(x: 0, y: y, width: 290, height: ceil(height) + 24)
             recent = item.recent
             self.item = item
         }
