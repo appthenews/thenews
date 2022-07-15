@@ -21,14 +21,14 @@ extension Preferences {
             addSubview(small)
             
             let large = Text(vibrancy: true)
-            large.font = NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize + 20, weight: .regular)
+            large.font = NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize + 10, weight: .regular)
             large.stringValue = "A"
             large.textColor = .secondaryLabelColor
             addSubview(large)
             
             let slider = NSSlider(value: .init(session.font.value),
                                   minValue: 0,
-                                  maxValue: 20,
+                                  maxValue: 10,
                                   target: self,
                                   action: #selector(update))
             slider.allowsTickMarkValuesOnly = true
@@ -59,6 +59,7 @@ extension Preferences {
             guard session.font.value != slider.integerValue else { return }
             session.font.value = slider.integerValue
             UserDefaults.standard.set(slider.integerValue, forKey: "font")
+            print(slider.integerValue)
         }
     }
 }

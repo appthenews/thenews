@@ -39,29 +39,9 @@ final class List: NSScrollView {
         paragraph.defaultTabInterval = 0
         paragraph.hyphenationFactor = 0
         
-        let fontProvider = NSFont.systemFont(
-            ofSize: NSFont.preferredFont(forTextStyle: .footnote).pointSize,
-            weight: .regular)
-        
-        let attributesProvider = AttributeContainer([
-            .font: fontProvider,
-            .paragraphStyle: paragraph])
-        
-        let fontDate = NSFont.systemFont(
-            ofSize: NSFont.preferredFont(forTextStyle: .footnote).pointSize,
-            weight: .light)
-        
-        let attributesDate = AttributeContainer([
-            .font: fontDate,
-            .paragraphStyle: paragraph])
-        
-        let fontTitle = NSFont.systemFont(
-            ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize,
-            weight: .regular)
-        
-        let attributesTitle = AttributeContainer([
-            .font: fontTitle,
-            .paragraphStyle: paragraph])
+        var attributesProvider = AttributeContainer([.paragraphStyle: paragraph])
+        var attributesDate = AttributeContainer([.paragraphStyle: paragraph])
+        var attributesTitle = AttributeContainer([.paragraphStyle: paragraph])
         
         let clip = CurrentValueSubject<_, Never>(CGRect.zero)
         clip
@@ -175,8 +155,27 @@ final class List: NSScrollView {
             .store(in: &subs)
         
         session
+            .font
+            .sink {
+                attributesProvider.font = NSFont.systemFont(
+                    ofSize: NSFont.preferredFont(forTextStyle: .caption1).pointSize + .init($0),
+                    weight: .regular)
+                attributesDate.font = NSFont.systemFont(
+                    ofSize: NSFont.preferredFont(forTextStyle: .caption1).pointSize + .init($0),
+                    weight: .light)
+                attributesTitle.font = NSFont.systemFont(
+                    ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize + .init($0),
+                    weight: .regular)
+            }
+            .store(in: &subs)
+        
+        session
             .items
-            .sink { [weak self] items in
+            .combineLatest(session.font)
+            .removeDuplicates { first, second in
+                first.0 == second.0 && first.1 == second.1
+            }
+            .sink { [weak self] items, _ in
                 guard !items.isEmpty else {
                     info.send([])
                     size.send(.zero)

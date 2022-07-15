@@ -8,7 +8,11 @@ extension List {
         let recent: Bool
         let rect: CGRect
         
-        init(item: Item, y: CGFloat, provider: AttributeContainer, date: AttributeContainer, title: AttributeContainer) {
+        init(item: Item,
+             y: CGFloat,
+             provider: AttributeContainer,
+             date: AttributeContainer,
+             title: AttributeContainer) {
             var provider = provider
             var date = date
             var title = title
@@ -38,7 +42,7 @@ extension List {
                 CFRange(),
                 nil,
                 .init(width: 220,
-                      height: CGFloat.greatestFiniteMagnitude),
+                      height: 900),
                 nil)
                 .height
             
