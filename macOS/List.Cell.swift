@@ -12,7 +12,7 @@ extension List {
                 frame = info.rect
                 vibrant.frame.size.height = info.rect.height
                 label.string = info.string
-                label.frame.size.height = info.rect.height - 4
+                label.frame.size.height = info.rect.height - 10
                 
                 if info.recent {
                     recent.frame.origin.y = (info.rect.height - 12) / 2
