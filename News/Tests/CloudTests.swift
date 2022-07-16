@@ -61,6 +61,75 @@ final class CloudTests: XCTestCase {
         await cloud.delete(item: item)
         items = await cloud.model.items
         XCTAssertTrue(items.isEmpty)
+        
+        await cloud.add(item: item)
+        await cloud.read(item: item)
+        await cloud.delete(item: item)
+        items = await cloud.model.items
+        XCTAssertTrue(items.isEmpty)
+    }
+    
+    func testHistory() async {
+        let itemA = Item(feed: .reutersInternational,
+                        title: "lk",
+                        description: "fgh",
+                        link: "asd1",
+                        date: .now,
+                        synched: .now,
+                        status: .new)
+        
+        let itemB = Item(feed: .reutersInternational,
+                        title: "lk",
+                        description: "fgh",
+                        link: "asd2",
+                        date: .now,
+                        synched: .now,
+                        status: .new)
+        
+        var history = await cloud.model.history
+        XCTAssertTrue(history.isEmpty)
+        
+        await cloud.read(item: itemA)
+        history = await cloud.model.history
+        XCTAssertEqual(itemA.link, history.first)
+        
+        await cloud.read(item: itemB)
+        history = await cloud.model.history
+        XCTAssertEqual(itemB.link, history.first)
+        XCTAssertEqual(itemA.link, history.last)
+        XCTAssertEqual(2, history.count)
+        
+        await cloud.read(item: itemA)
+        history = await cloud.model.history
+        XCTAssertEqual(itemA.link, history.first)
+        XCTAssertEqual(itemB.link, history.last)
+        XCTAssertEqual(2, history.count)
+    }
+    
+    func testRecents() async {
+        let item = Item(feed: .reutersInternational,
+                        title: "lk",
+                        description: "fgh",
+                        link: "asd",
+                        date: .now,
+                        synched: .now,
+                        status: .new)
+        
+        var recents = await cloud.model.recents
+        XCTAssertTrue(recents.isEmpty)
+        
+        await cloud.add(item: item)
+        await cloud.read(item: item)
+        recents = await cloud.model.recents
+        XCTAssertEqual(item.link, recents.first)
+        
+        await cloud.delete(item: item)
+        recents = await cloud.model.recents
+        let items = await cloud.model.items
+        let history = await cloud.model.history
+        XCTAssertTrue(recents.isEmpty)
+        XCTAssertTrue(items.isEmpty)
+        XCTAssertEqual(item.link, history.first)
     }
 }
 

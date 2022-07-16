@@ -8,6 +8,16 @@ public struct Archive: Arch {
     private(set) var ids: Set<String>
     var items: Set<Item>
     var history: [String]
+    
+    public var recents: [String] {
+        history
+            .filter { recent in
+                items
+                    .contains {
+                        $0.link == recent
+                    }
+            }
+    }
 
     public var data: Data {
         .init()
