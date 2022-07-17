@@ -38,7 +38,7 @@ extension List {
             self.string = .init(string)
             
             let height = self.string.boundingRect(
-                with: .init(width: 220,
+                with: .init(width: 240,
                             height: CGFloat.greatestFiniteMagnitude),
                 options: [
                     .usesFontLeading,

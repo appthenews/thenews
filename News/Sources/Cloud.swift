@@ -28,6 +28,8 @@ extension Cloud where Output == Archive {
     
     public func fetch(interval: Interval) async {
         model.preferences.fetch = interval
+        
+        await fetch()
         await stream()
     }
     
