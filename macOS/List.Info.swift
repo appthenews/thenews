@@ -33,7 +33,7 @@ extension List {
             string.append(AttributedString(item.date.formatted(.relative(presentation: .named,
                                                                          unitsStyle: .wide)),
                                            attributes: date))
-            string.append(AttributedString("\n", attributes: title))
+            string.append(AttributedString("\n\n", attributes: .init([.font : NSFont.systemFont(ofSize: 4)])))
             string.append(AttributedString(item.title, attributes: title))
             self.string = .init(string)
             

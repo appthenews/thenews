@@ -66,7 +66,7 @@ extension List {
             let bookmark = NSImageView(image: .init(systemSymbolName: "bookmark", accessibilityDescription: nil) ?? .init())
             bookmark.isHidden = true
             bookmark.frame = .init(x: 241, y: 0, width: 30, height: 30)
-            bookmark.symbolConfiguration = .init(pointSize: 14, weight: .regular)
+            bookmark.symbolConfiguration = .init(pointSize: 15, weight: .regular)
                 .applying(.init(hierarchicalColor: .secondaryLabelColor))
             vibrant.addSubview(bookmark)
             self.bookmark = bookmark
