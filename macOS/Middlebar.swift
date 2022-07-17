@@ -50,7 +50,7 @@ final class Middlebar: NSVisualEffectView {
         
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         field.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
-        field.widthAnchor.constraint(equalToConstant: 220).isActive = true
+        field.widthAnchor.constraint(equalToConstant: 240).isActive = true
         
         filter.centerYAnchor.constraint(equalTo: field.centerYAnchor).isActive = true
         filter.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
@@ -75,7 +75,7 @@ final class Middlebar: NSVisualEffectView {
         list.topAnchor.constraint(equalTo: divider.bottomAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         list.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        list.widthAnchor.constraint(equalToConstant: 290).isActive = true
+        list.widthAnchor.constraint(equalToConstant: 310).isActive = true
         
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = .byTruncatingTail
@@ -93,7 +93,7 @@ final class Middlebar: NSVisualEffectView {
         session
             .columns
             .sink {
-                width.constant = $0 < 2 ? 291 : 0
+                width.constant = $0 < 2 ? 311 : 0
                 leading.constant = $0 == 1 ? 195 : 20
             }
             .store(in: &subs)

@@ -170,13 +170,13 @@ final class List: NSScrollView {
                 }
                 
                 attributesProvider.font = NSFont.systemFont(
-                    ofSize: NSFont.preferredFont(forTextStyle: .caption1).pointSize + .init(font) - 2,
+                    ofSize: 8 + .init(font),
                     weight: .regular)
                 attributesDate.font = NSFont.systemFont(
-                    ofSize: NSFont.preferredFont(forTextStyle: .caption1).pointSize + .init(font) - 2,
+                    ofSize: 8 + .init(font),
                     weight: .light)
                 attributesTitle.font = NSFont.systemFont(
-                    ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize + .init(font),
+                    ofSize: 12 + .init(font),
                     weight: .regular)
                 
                 let result = items

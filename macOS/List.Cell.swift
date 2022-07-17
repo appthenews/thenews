@@ -12,10 +12,10 @@ extension List {
                 frame = info.rect
                 vibrant.frame.size.height = info.rect.height
                 label.string = info.string
-                label.frame.size.height = info.rect.height - 10
+                label.frame.size.height = info.rect.height - 30
                 
                 if info.recent {
-                    recent.frame.origin.y = (info.rect.height - 12) / 2
+                    recent.frame.origin.y = (info.rect.height - 14) / 2
                     recent.isHidden = false
                     bookmark.isHidden = true
                 } else if info.item.status == .bookmarked {
@@ -46,11 +46,11 @@ extension List {
             vibrant.translatesAutoresizingMaskIntoConstraints = true
             vibrant.layer!.cornerCurve = .continuous
             vibrant.layer!.cornerRadius = 10
-            vibrant.frame = .init(x: 10, y: 0, width: 270, height: 0)
+            vibrant.frame = .init(x: 10, y: 0, width: 290, height: 0)
             self.vibrant = vibrant
 
             let label = TextLayer()
-            label.frame = .init(x: 15, y: -6, width: 220, height: 0)
+            label.frame = .init(x: 15, y: 15, width: 240, height: 0)
             label.contentsScale = NSScreen.main?.backingScaleFactor ?? 2
             label.isWrapped = true
             vibrant.layer!.addSublayer(label)
@@ -58,14 +58,14 @@ extension List {
             
             let recent = ShapeLayer()
             recent.isHidden = true
-            recent.frame = .init(x: 260, y: 0, width: 12, height: 12)
-            recent.path = .init(ellipseIn: .init(x: 1, y: 1, width: 10, height: 10), transform: nil)
+            recent.frame = .init(x: 278, y: 0, width: 14, height: 14)
+            recent.path = .init(ellipseIn: .init(x: 1, y: 1, width: 12, height: 12), transform: nil)
             recent.fillColor = NSColor.controlAccentColor.cgColor
             self.recent = recent
             
             let bookmark = NSImageView(image: .init(systemSymbolName: "bookmark", accessibilityDescription: nil) ?? .init())
             bookmark.isHidden = true
-            bookmark.frame = .init(x: 241, y: 0, width: 30, height: 30)
+            bookmark.frame = .init(x: 260, y: 0, width: 30, height: 30)
             bookmark.symbolConfiguration = .init(pointSize: 15, weight: .regular)
                 .applying(.init(hierarchicalColor: .secondaryLabelColor))
             vibrant.addSubview(bookmark)

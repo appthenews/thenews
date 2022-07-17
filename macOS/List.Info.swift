@@ -37,16 +37,16 @@ extension List {
             string.append(AttributedString(item.title, attributes: title))
             self.string = .init(string)
             
-            let height = CTFramesetterSuggestFrameSizeWithConstraints(
-                CTFramesetterCreateWithAttributedString(self.string),
-                CFRange(),
-                nil,
-                .init(width: 220,
-                      height: CGFloat.greatestFiniteMagnitude),
-                nil)
+            let height = self.string.boundingRect(
+                with: .init(width: 220,
+                            height: CGFloat.greatestFiniteMagnitude),
+                options: [
+                    .usesFontLeading,
+                    .usesLineFragmentOrigin,
+                        .usesDeviceMetrics])
                 .height
             
-            rect = .init(x: 0, y: y, width: 290, height: ceil(height) + 36)
+            rect = .init(x: 0, y: y, width: 310, height: ceil(height) + 30)
             recent = item.recent
             self.item = item
         }

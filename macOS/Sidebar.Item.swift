@@ -35,11 +35,11 @@ extension Sidebar {
             recent.translatesAutoresizingMaskIntoConstraints = false
             recent.wantsLayer = true
             recent.layer!.backgroundColor = NSColor.controlAccentColor.cgColor
-            recent.layer!.cornerRadius = 9
+            recent.layer!.cornerRadius = 10
             self.recent = recent
             
             let count = Text(vibrancy: false)
-            count.font = .systemFont(ofSize: 10, weight: .medium)
+            count.font = .systemFont(ofSize: 11, weight: .semibold)
             count.textColor = .white
             recent.addSubview(count)
             self.count = count
@@ -61,11 +61,11 @@ extension Sidebar {
             
             recent.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             recent.rightAnchor.constraint(equalTo: rightAnchor, constant: -8).isActive = true
-            recent.heightAnchor.constraint(equalToConstant: 18).isActive = true
-            recent.leftAnchor.constraint(equalTo: count.leftAnchor, constant: -5).isActive = true
+            recent.heightAnchor.constraint(equalToConstant: 20).isActive = true
+            recent.leftAnchor.constraint(equalTo: count.leftAnchor, constant: -7).isActive = true
             
             count.centerYAnchor.constraint(equalTo: recent.centerYAnchor).isActive = true
-            count.rightAnchor.constraint(equalTo: recent.rightAnchor, constant: -5).isActive = true
+            count.rightAnchor.constraint(equalTo: recent.rightAnchor, constant: -7).isActive = true
         }
         
         override func updateLayer() {
