@@ -35,7 +35,6 @@ final class Session {
                 : model
                     .items(provider: provider!)
             }
-            .removeDuplicates()
             .combineLatest(search
                 .removeDuplicates(),
                            showing
@@ -54,7 +53,6 @@ final class Session {
                         .filter(search: search)
                         .sorted()
                 }
-                .removeDuplicates()
                 .eraseToAnyPublisher()
         self.item = item
         self.provider = provider

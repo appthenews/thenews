@@ -157,9 +157,6 @@ final class List: NSScrollView {
         session
             .items
             .combineLatest(session.font)
-            .removeDuplicates { first, second in
-                first.0 == second.0 && first.1 == second.1
-            }
             .sink { [weak self] items, font in
                 guard !items.isEmpty else {
                     info.send([])

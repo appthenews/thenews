@@ -114,10 +114,8 @@ final class Content: NSVisualEffectView {
                     header.attributedStringValue = .init(stringHeader)
                     content.attributedStringValue = .init(stringContent)
                     
-                    if item.status == .new {
-                        Task {
-                            await session.cloud.read(item: item)
-                        }
+                    Task {
+                        await session.cloud.read(item: item)
                     }
                 } else {
                     header.attributedStringValue = .init()
