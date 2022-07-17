@@ -170,11 +170,6 @@ final class ArchiveTests: XCTestCase {
                          synched: Calendar.current.date(byAdding: .hour, value: -3, to: .now)!,
                          status: .new)
         
-        archive.update(feed: .theLocalInternational,
-                       date: .now,
-                       ids: [],
-                       items: [item])
-        
         archive.items = archive.items.inserting(item.bookmarked)
         archive.preferences.clean = .hours3
         archive.clean()
