@@ -25,7 +25,6 @@ extension Middlebar {
             isAutomaticTextCompletionEnabled = false
             placeholderString = "Search"
             wantsLayer = true
-            layer!.backgroundColor = NSColor.quaternaryLabelColor.cgColor
             layer!.cornerRadius = 8
             layer!.cornerCurve = .continuous
             delegate = self

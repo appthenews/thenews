@@ -2,10 +2,14 @@ import AppKit
 import Combine
 
 final class Middlebar: NSVisualEffectView {
+    private weak var field: Field!
     private var subs = Set<AnyCancellable>()
     
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
+        let field = Field(session: session)
+        self.field = field
+        
         super.init(frame: .zero)
         state = .active
         material = .menu
@@ -13,7 +17,6 @@ final class Middlebar: NSVisualEffectView {
         let width = widthAnchor.constraint(equalToConstant: 0)
         width.isActive = true
         
-        let field = Field(session: session)
         addSubview(field)
         
         let filter = Control.Symbol(symbol: "line.3.horizontal.decrease.circle", size: 18)
@@ -123,5 +126,15 @@ final class Middlebar: NSVisualEffectView {
                 count.attributedStringValue = .init(string)
             }
             .store(in: &subs)
+    }
+    
+    override func updateLayer() {
+        super.updateLayer()
+        
+        NSApp
+            .effectiveAppearance
+            .performAsCurrentDrawingAppearance {
+                field.layer!.backgroundColor = NSColor.quaternaryLabelColor.cgColor
+            }
     }
 }

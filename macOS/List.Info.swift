@@ -8,33 +8,14 @@ extension List {
         let recent: Bool
         let rect: CGRect
         
-        init(item: Item,
-             y: CGFloat,
-             provider: AttributeContainer,
-             date: AttributeContainer,
-             title: AttributeContainer) {
-            var provider = provider
-            var date = date
-            var title = title
-            
-            switch item.status {
-            case .new:
-                provider.foregroundColor = .secondaryLabelColor
-                date.foregroundColor = .secondaryLabelColor
-                title.foregroundColor = .labelColor
-            default:
-                provider.foregroundColor = .tertiaryLabelColor
-                date.foregroundColor = .tertiaryLabelColor
-                title.foregroundColor = .tertiaryLabelColor
-            }
-            
-            var string = AttributedString(item.feed.provider.title, attributes: provider)
-            string.append(AttributedString(" — ", attributes: date))
+        init(item: Item, y: CGFloat, appearance: Appearance) {
+            var string = AttributedString(item.feed.provider.title, attributes: appearance.provider)
+            string.append(AttributedString(" — ", attributes: appearance.date))
             string.append(AttributedString(item.date.formatted(.relative(presentation: .named,
                                                                          unitsStyle: .wide)),
-                                           attributes: date))
+                                           attributes: appearance.date))
             string.append(AttributedString("\n\n", attributes: .init([.font : NSFont.systemFont(ofSize: 4)])))
-            string.append(AttributedString(item.title, attributes: title))
+            string.append(AttributedString(item.title, attributes: appearance.title))
             self.string = .init(string)
             
             let height = self.string.boundingRect(

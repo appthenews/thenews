@@ -48,6 +48,7 @@
 		CED728D3287869E50010A4BC /* List.Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D2287869E50010A4BC /* List.Info.swift */; };
 		CED728D528786A0A0010A4BC /* List.State.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D428786A0A0010A4BC /* List.State.swift */; };
 		CED728D728787B540010A4BC /* Vibrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D628787B540010A4BC /* Vibrant.swift */; };
+		CEE9BB3F288578040061886E /* List.Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9BB3E288578040061886E /* List.Appearance.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +97,7 @@
 		CED728D2287869E50010A4BC /* List.Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.Info.swift; sourceTree = "<group>"; };
 		CED728D428786A0A0010A4BC /* List.State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.State.swift; sourceTree = "<group>"; };
 		CED728D628787B540010A4BC /* Vibrant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibrant.swift; sourceTree = "<group>"; };
+		CEE9BB3E288578040061886E /* List.Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.Appearance.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +153,7 @@
 				CE9DC2F7287DB436004DA15D /* Control.Symbol.swift */,
 				CEAE3BFB287F0B2200B35AF6 /* Filters.swift */,
 				CED728CE2878659F0010A4BC /* Flip.swift */,
+				CEE9BB3E288578040061886E /* List.Appearance.swift */,
 				CED728D0287869D90010A4BC /* List.Cell.swift */,
 				CED728D2287869E50010A4BC /* List.Info.swift */,
 				CED728D428786A0A0010A4BC /* List.State.swift */,
@@ -307,6 +310,7 @@
 				CE3C70E228732B0900863C22 /* Middlebar.Cell.swift in Sources */,
 				CEAE3BFC287F0B2200B35AF6 /* Filters.swift in Sources */,
 				CE3EEC6828804336004060A1 /* Preferences.Update.swift in Sources */,
+				CEE9BB3F288578040061886E /* List.Appearance.swift in Sources */,
 				CE3C70E028732AD100863C22 /* Middlebar.Field.swift in Sources */,
 				CED728D728787B540010A4BC /* Vibrant.swift in Sources */,
 				CE19C0E9287702800045E221 /* Preferences.Feeds.Switch.swift in Sources */,

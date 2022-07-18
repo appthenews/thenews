@@ -3,6 +3,7 @@ import Combine
 import News
 
 final class List: NSScrollView {
+    private var appear = Appearance()
     private var subs = Set<AnyCancellable>()
     private let clear = PassthroughSubject<Void, Never>()
     private let highlight = PassthroughSubject<CGPoint, Never>()
@@ -28,20 +29,6 @@ final class List: NSScrollView {
         contentView.postsFrameChangedNotifications = true
         drawsBackground = false
         addTrackingArea(.init(rect: .zero, options: [.mouseEnteredAndExited, .mouseMoved, .activeInKeyWindow, .inVisibleRect], owner: self))
-        
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.lineBreakMode = .byWordWrapping
-        paragraph.lineBreakStrategy = .pushOut
-        paragraph.alignment = .justified
-        paragraph.allowsDefaultTighteningForTruncation = false
-        paragraph.tighteningFactorForTruncation = 0
-        paragraph.usesDefaultHyphenation = false
-        paragraph.defaultTabInterval = 0
-        paragraph.hyphenationFactor = 0
-        
-        var attributesProvider = AttributeContainer([.paragraphStyle: paragraph])
-        var attributesDate = AttributeContainer([.paragraphStyle: paragraph])
-        var attributesTitle = AttributeContainer([.paragraphStyle: paragraph])
         
         let clip = CurrentValueSubject<_, Never>(CGRect.zero)
         clip
@@ -158,7 +145,10 @@ final class List: NSScrollView {
             .items
             .combineLatest(session.font)
             .sink { [weak self] items, font in
-                guard !items.isEmpty else {
+                guard
+                    !items.isEmpty,
+                    var appearance = self?.appear
+                else {
                     info.send([])
                     size.send(.zero)
                     highlighted.value = nil
@@ -166,23 +156,13 @@ final class List: NSScrollView {
                     return
                 }
                 
-                attributesProvider.font = NSFont.systemFont(
-                    ofSize: 8 + .init(font),
-                    weight: .regular)
-                attributesDate.font = NSFont.systemFont(
-                    ofSize: 8 + .init(font),
-                    weight: .light)
-                attributesTitle.font = NSFont.systemFont(
-                    ofSize: 12 + .init(font),
-                    weight: .regular)
+                appearance.provider.font = .systemFont(ofSize: 8 + .init(font), weight: .regular)
+                appearance.date.font = NSFont.systemFont(ofSize: 8 + .init(font), weight: .light)
+                appearance.title.font = NSFont.systemFont(ofSize: 12 + .init(font), weight: .regular)
                 
                 let result = items
                     .reduce(into: (info: Set<Info>(), y: CGFloat(20))) {
-                        let info = Info(item: $1,
-                                        y: $0.y,
-                                        provider: attributesProvider,
-                                        date: attributesDate,
-                                        title: attributesTitle)
+                        let info = Info(item: $1, y: $0.y, appearance: appearance)
                         $0.info.insert(info)
                         $0.y = info.rect.maxY + 2
                     }

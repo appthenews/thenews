@@ -31,6 +31,7 @@ extension List {
         
         var state = State.none {
             didSet {
+                guard state != oldValue else { return }
                 updateLayer()
             }
         }
@@ -78,12 +79,18 @@ extension List {
         }
         
         override func updateLayer() {
-            switch state {
-            case .highlighted, .selected:
-                vibrant.layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.07).cgColor
-            default:
-                vibrant.layer!.backgroundColor = .clear
-            }
+            super.updateLayer()
+
+            NSApp
+                .effectiveAppearance
+                .performAsCurrentDrawingAppearance {
+                    switch state {
+                    case .highlighted, .selected:
+                        vibrant.layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.07).cgColor
+                    default:
+                        vibrant.layer!.backgroundColor = .clear
+                    }
+                }
         }
         
         override func hitTest(_: NSPoint) -> NSView? {

@@ -71,12 +71,16 @@ extension Sidebar {
         override func updateLayer() {
             super.updateLayer()
             
-            switch state {
-            case .highlighted, .pressed, .selected:
-                vibrant.layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.07).cgColor
-            default:
-                vibrant.layer!.backgroundColor = .clear
-            }
+            NSApp
+                .effectiveAppearance
+                .performAsCurrentDrawingAppearance {
+                    switch state {
+                    case .highlighted, .pressed, .selected:
+                        vibrant.layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.07).cgColor
+                    default:
+                        vibrant.layer!.backgroundColor = .clear
+                    }
+                }
         }
     }
 }
