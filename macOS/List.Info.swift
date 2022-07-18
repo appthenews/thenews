@@ -9,16 +9,15 @@ extension List {
         let rect: CGRect
         
         init(item: Item, y: CGFloat, appearance: Appearance) {
-            var string = AttributedString(item.feed.provider.title, attributes: appearance.provider)
-            string.append(AttributedString(" — ", attributes: appearance.date))
-            string.append(AttributedString(item.date.formatted(.relative(presentation: .named,
-                                                                         unitsStyle: .wide)),
-                                           attributes: appearance.date))
-            string.append(AttributedString("\n\n", attributes: .init([.font : NSFont.systemFont(ofSize: 4)])))
-            string.append(AttributedString(item.title, attributes: appearance.title))
-            self.string = .init(string)
+            let string = NSMutableAttributedString()
+            string.append(.init(string: item.feed.provider.title, attributes: [.foregroundColor: NSColor.secondaryLabelColor]))
+            string.append(.init(string: " - ", attributes: [.foregroundColor: NSColor.secondaryLabelColor]))
+            string.append(.init(string: item.date.formatted(.relative(presentation: .named,
+                                                                      unitsStyle: .wide)), attributes: [.foregroundColor: NSColor.secondaryLabelColor]))
+            string.append(.init(string: item.title, attributes: [.foregroundColor: NSColor.labelColor]))
+            self.string = string
             
-            let height = self.string.boundingRect(
+            let height = string.boundingRect(
                 with: .init(width: 240,
                             height: CGFloat.greatestFiniteMagnitude),
                 options: [

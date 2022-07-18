@@ -156,30 +156,34 @@ final class List: NSScrollView {
                     return
                 }
                 
-                appearance.provider.font = .systemFont(ofSize: 8 + .init(font), weight: .regular)
-                appearance.date.font = NSFont.systemFont(ofSize: 8 + .init(font), weight: .light)
-                appearance.title.font = NSFont.systemFont(ofSize: 12 + .init(font), weight: .regular)
-                
-                let result = items
-                    .reduce(into: (info: Set<Info>(), y: CGFloat(20))) {
-                        let info = Info(item: $1, y: $0.y, appearance: appearance)
-                        $0.info.insert(info)
-                        $0.y = info.rect.maxY + 2
+                NSApp
+                    .effectiveAppearance
+                    .performAsCurrentDrawingAppearance {
+                        appearance.provider.font = .systemFont(ofSize: 8 + .init(font), weight: .regular)
+                        appearance.date.font = NSFont.systemFont(ofSize: 8 + .init(font), weight: .light)
+                        appearance.title.font = NSFont.systemFont(ofSize: 12 + .init(font), weight: .regular)
+                        
+                        let result = items
+                            .reduce(into: (info: Set<Info>(), y: CGFloat(20))) {
+                                let info = Info(item: $1, y: $0.y, appearance: appearance)
+                                $0.info.insert(info)
+                                $0.y = info.rect.maxY + 2
+                            }
+                        
+                        info.send(result.info)
+                        size.send(.init(width: 0, height: result.y + 20))
+                        highlighted.value = nil
+                        
+                        if let current = session.item.value?.link,
+                           let rect = result.info.first(where: { $0.item.link == current })?.rect {
+                            
+                            if !clip.value.intersects(rect) {
+                                self?.center(y: rect.minY - 20, animated: false)
+                            }
+                        } else {
+                            self?.contentView.bounds.origin.y = 0
+                        }
                     }
-                
-                info.send(result.info)
-                size.send(.init(width: 0, height: result.y + 20))
-                highlighted.value = nil
-                
-                if let current = session.item.value?.link,
-                   let rect = result.info.first(where: { $0.item.link == current })?.rect {
-                    
-                    if !clip.value.intersects(rect) {
-                        self?.center(y: rect.minY - 20, animated: false)
-                    }
-                } else {
-                    self?.contentView.bounds.origin.y = 0
-                }
             }
             .store(in: &subs)
         
