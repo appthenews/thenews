@@ -8,7 +8,7 @@ extension Control {
                                                  accessibilityDescription: nil) ?? .init())
             image.translatesAutoresizingMaskIntoConstraints = false
             image.symbolConfiguration = .init(pointSize: size, weight: .regular)
-            image.contentTintColor = .secondaryLabelColor
+                .applying(.init(hierarchicalColor: .secondaryLabelColor))
             
             super.init(layer: true)
             layer!.cornerRadius = 7
@@ -24,12 +24,16 @@ extension Control {
         override func updateLayer() {
             super.updateLayer()
             
-            switch state {
-            case .pressed, .highlighted:
-                layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.1).cgColor
-            default:
-                layer!.backgroundColor = .clear
-            }
+            NSApp
+                .effectiveAppearance
+                .performAsCurrentDrawingAppearance {
+                    switch state {
+                    case .pressed, .highlighted:
+                        layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.07).cgColor
+                    default:
+                        layer!.backgroundColor = .clear
+                    }
+                }
         }
         
         override var allowsVibrancy: Bool {

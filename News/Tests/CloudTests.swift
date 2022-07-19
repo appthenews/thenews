@@ -70,6 +70,8 @@ final class CloudTests: XCTestCase {
     }
     
     func testHistory() async {
+        await cloud.toggle(.reutersInternational, true)
+        
         let itemA = Item(feed: .reutersInternational,
                         title: "lk",
                         description: "fgh",
@@ -107,6 +109,8 @@ final class CloudTests: XCTestCase {
     }
     
     func testRecents() async {
+        await cloud.toggle(.reutersInternational, true)
+        
         let item = Item(feed: .reutersInternational,
                         title: "lk",
                         description: "fgh",
@@ -133,6 +137,8 @@ final class CloudTests: XCTestCase {
     }
     
     func testRecentsLimit10() async {
+        await cloud.toggle(.reutersInternational, true)
+        
         let items = (0 ... 15)
             .map {
                 Item(feed: .reutersInternational,
@@ -152,7 +158,9 @@ final class CloudTests: XCTestCase {
         XCTAssertEqual(10, recents.count)
     }
     
-    func testRecentsClean() async {
+    func testRecentsCleanDeleted() async {
+        await cloud.toggle(.reutersInternational, true)
+        
         let items = (0 ... 3)
             .map {
                 Item(feed: .reutersInternational,
@@ -182,10 +190,41 @@ final class CloudTests: XCTestCase {
         XCTAssertEqual(history.first, items[3].link)
         XCTAssertEqual(history.last, items[0].link)
     }
+    
+    func testRecentsCleanDeactivated() async {
+        await cloud.toggle(.reutersInternational, true)
+        await cloud.toggle(.derSpiegelInternational, true)
+        
+        let items = (0 ... 3)
+            .map {
+                Item(feed: $0 == 3 ? .reutersInternational : .derSpiegelInternational,
+                                title: "lk",
+                                description: "fgh",
+                                link: "\($0)asd",
+                                date: .now,
+                                synched: .now,
+                                status: .new)
+            }
+        
+        await cloud.read(item: items[0])
+        await cloud.read(item: items[1])
+        await cloud.read(item: items[2])
+        await cloud.toggle(.derSpiegelInternational, false)
+        await cloud.read(item: items[3])
+        
+        let history = await cloud.model.history
+    
+        XCTAssertEqual(1, history.count)
+        XCTAssertEqual(history.first, items[3].link)
+    }
 }
 
 private extension Cloud where Output == Archive {
     func add(item: Item) {
         model.items = model.items.inserting(item)
+    }
+    
+    func toggle(_ feed: Feed, _ value: Bool) {
+        model.preferences.feeds[feed] = value
     }
 }

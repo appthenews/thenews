@@ -3,12 +3,23 @@ import StoreKit
 
 final class Menu: NSMenu, NSMenuDelegate {
     private let session: Session
+    private let shortcut = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     
     required init(coder: NSCoder) { fatalError() }
     init(session: Session) {
         self.session = session
         super.init(title: "")
         items = [app, edit, news, window, help]
+        
+        shortcut.button!.image = .init(named: "status")
+        shortcut.button!.target = self
+        shortcut.button!.action = #selector(triggerShortcut)
+        shortcut.button!.sendAction(on: [.leftMouseUp, .rightMouseUp])
+        shortcut.button!.menu = .init()
+        shortcut.button!.menu!.items = [
+            .child("The News", #selector(triggerShow)) {
+                $0.target = self
+            }]
     }
     
     func menuNeedsUpdate(_ menu: NSMenu) {
@@ -102,5 +113,33 @@ final class Menu: NSMenu, NSMenuDelegate {
     
     @objc private func triggerRate() {
         SKStoreReviewController.requestReview()
+    }
+    
+    @objc private func triggerShortcut(_ button: NSStatusBarButton) {
+        guard let event = NSApp.currentEvent else { return }
+        
+        switch event.type {
+        case .rightMouseUp:
+            NSMenu.popUpContextMenu(button.menu!, with: event, for: button)
+        case .leftMouseUp:
+            let shortcut = Shortcut(session: session)
+            let popover = NSPopover()
+            popover.behavior = .transient
+            popover.contentSize = shortcut.frame.size
+            popover.contentViewController = .init()
+            popover.contentViewController!.view = shortcut
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            popover.contentViewController!.view.window!.makeKey()
+        default:
+            break
+        }
+    }
+    
+    @objc private func triggerShow(_ button: NSStatusBarButton) {
+        NSApp.activate(ignoringOtherApps: true)
+        let window = NSApp
+            .windows
+            .first { $0 is Window }
+        window?.orderFrontRegardless()
     }
 }

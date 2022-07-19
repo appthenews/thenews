@@ -47,8 +47,11 @@ extension Cloud where Output == Archive {
         model.history = .init((item.link + model
             .history
             .filter { recent in
-                model.items.contains { $0.link == recent } &&
-                recent != item.link
+                if recent != item.link,
+                   let element = model.items.first(where: { $0.link == recent }) {
+                    return model.preferences.feeds[element.feed] ?? false
+                }
+                return false
             })
         .prefix(10))
         

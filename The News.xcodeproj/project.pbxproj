@@ -48,6 +48,8 @@
 		CED728D3287869E50010A4BC /* List.Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D2287869E50010A4BC /* List.Info.swift */; };
 		CED728D528786A0A0010A4BC /* List.State.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D428786A0A0010A4BC /* List.State.swift */; };
 		CED728D728787B540010A4BC /* Vibrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D628787B540010A4BC /* Vibrant.swift */; };
+		CEDA94872886CA490087776C /* Shortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA94862886CA490087776C /* Shortcut.swift */; };
+		CEDA94892886CA5B0087776C /* Shortcut.Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA94882886CA5B0087776C /* Shortcut.Item.swift */; };
 		CEE9BB3F288578040061886E /* List.Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9BB3E288578040061886E /* List.Appearance.swift */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +99,8 @@
 		CED728D2287869E50010A4BC /* List.Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.Info.swift; sourceTree = "<group>"; };
 		CED728D428786A0A0010A4BC /* List.State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.State.swift; sourceTree = "<group>"; };
 		CED728D628787B540010A4BC /* Vibrant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibrant.swift; sourceTree = "<group>"; };
+		CEDA94862886CA490087776C /* Shortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcut.swift; sourceTree = "<group>"; };
+		CEDA94882886CA5B0087776C /* Shortcut.Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcut.Item.swift; sourceTree = "<group>"; };
 		CEE9BB3E288578040061886E /* List.Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.Appearance.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -174,6 +178,8 @@
 				CEC5DFAE2871B5B3008C8E56 /* Separator.swift */,
 				CE34608E28706760001962E7 /* Session.swift */,
 				CE9B657A287ED86700AD0D98 /* ShapeLayer.swift */,
+				CEDA94882886CA5B0087776C /* Shortcut.Item.swift */,
+				CEDA94862886CA490087776C /* Shortcut.swift */,
 				CE19C0EC287726150045E221 /* Sidebar.Item.swift */,
 				CE34608C28706751001962E7 /* Sidebar.swift */,
 				CE19C0EA287725330045E221 /* Stack.swift */,
@@ -306,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEC5DFB72871BEBF008C8E56 /* Button.swift in Sources */,
+				CEDA94892886CA5B0087776C /* Shortcut.Item.swift in Sources */,
 				CED728CD287865300010A4BC /* CGRect.swift in Sources */,
 				CE3C70E228732B0900863C22 /* Middlebar.Cell.swift in Sources */,
 				CEAE3BFC287F0B2200B35AF6 /* Filters.swift in Sources */,
@@ -324,6 +331,7 @@
 				CE19C0ED287726150045E221 /* Sidebar.Item.swift in Sources */,
 				CEC5DFAD2871B1F9008C8E56 /* Middlebar.swift in Sources */,
 				CED728D3287869E50010A4BC /* List.Info.swift in Sources */,
+				CEDA94872886CA490087776C /* Shortcut.swift in Sources */,
 				CE3C70E828733BC400863C22 /* Content.swift in Sources */,
 				CE346082287066FD001962E7 /* Window.swift in Sources */,
 				CED728CB287865210010A4BC /* List.swift in Sources */,
