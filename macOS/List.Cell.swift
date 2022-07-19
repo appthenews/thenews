@@ -60,7 +60,7 @@ extension List {
             let recent = ShapeLayer()
             recent.isHidden = true
             recent.frame = .init(x: 278, y: 0, width: 14, height: 14)
-            recent.path = .init(ellipseIn: .init(x: 1, y: 1, width: 12, height: 12), transform: nil)
+            recent.path = .init(ellipseIn: .init(x: 3, y: 3, width: 8, height: 8), transform: nil)
             recent.fillColor = NSColor.controlAccentColor.cgColor
             self.recent = recent
             
