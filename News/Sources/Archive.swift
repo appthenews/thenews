@@ -9,11 +9,11 @@ public struct Archive: Arch {
     var items: Set<Item>
     var history: [String]
     
-    public var recents: [String] {
+    public var recents: [Item] {
         history
-            .filter { recent in
+            .compactMap { recent in
                 items
-                    .contains {
+                    .first {
                         $0.link == recent
                     }
             }

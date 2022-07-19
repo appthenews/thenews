@@ -43,11 +43,15 @@ extension Cloud where Output == Archive {
             .items
             .removing(item)
             .inserting(item.read)
-        model.history = item.link + model
+        
+        model.history = .init((item.link + model
             .history
-            .filter {
-                $0 != item.link
-            }
+            .filter { recent in
+                model.items.contains { $0.link == recent } &&
+                recent != item.link
+            })
+        .prefix(10))
+        
         await stream()
     }
     

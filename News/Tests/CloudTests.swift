@@ -121,7 +121,7 @@ final class CloudTests: XCTestCase {
         await cloud.add(item: item)
         await cloud.read(item: item)
         recents = await cloud.model.recents
-        XCTAssertEqual(item.link, recents.first)
+        XCTAssertEqual(item.link, recents.first?.link)
         
         await cloud.delete(item: item)
         recents = await cloud.model.recents
@@ -130,6 +130,57 @@ final class CloudTests: XCTestCase {
         XCTAssertTrue(recents.isEmpty)
         XCTAssertTrue(items.isEmpty)
         XCTAssertEqual(item.link, history.first)
+    }
+    
+    func testRecentsLimit10() async {
+        let items = (0 ... 15)
+            .map {
+                Item(feed: .reutersInternational,
+                                title: "lk",
+                                description: "fgh",
+                                link: "\($0)asd",
+                                date: .now,
+                                synched: .now,
+                                status: .new)
+            }
+        
+        for item in items {
+            await cloud.read(item: item)
+        }
+        
+        let recents = await cloud.model.recents
+        XCTAssertEqual(10, recents.count)
+    }
+    
+    func testRecentsClean() async {
+        let items = (0 ... 3)
+            .map {
+                Item(feed: .reutersInternational,
+                                title: "lk",
+                                description: "fgh",
+                                link: "\($0)asd",
+                                date: .now,
+                                synched: .now,
+                                status: .new)
+            }
+        
+        await cloud.read(item: items[0])
+        await cloud.read(item: items[1])
+        await cloud.read(item: items[2])
+        await cloud.delete(item: items[1])
+        await cloud.delete(item: items[2])
+        await cloud.read(item: items[3])
+        
+        let recents = await cloud.model.recents
+        let history = await cloud.model.history
+        
+        XCTAssertEqual(2, recents.count)
+        XCTAssertEqual(recents.first?.link, items[3].link)
+        XCTAssertEqual(recents.last?.link, items[0].link)
+        
+        XCTAssertEqual(2, history.count)
+        XCTAssertEqual(history.first, items[3].link)
+        XCTAssertEqual(history.last, items[0].link)
     }
 }
 
