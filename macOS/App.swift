@@ -1,4 +1,5 @@
 import AppKit
+import News
 
 @NSApplicationMain final class App: NSApplication, NSApplicationDelegate {
     private let session = Session()
@@ -18,10 +19,7 @@ import AppKit
 
         session.cloud.ready.notify(queue: .main) {            
             Window(session: self.session).makeKeyAndOrderFront(nil)
-
-//            if Defaults.froob {
-//                self.froob.value = true
-//            }
+            Defaults.start()
             
 //            Task
 //                .detached {

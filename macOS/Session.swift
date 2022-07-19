@@ -15,6 +15,7 @@ final class Session {
     let columns: CurrentValueSubject<Int, Never>
     let showing: CurrentValueSubject<Int, Never>
     let font: CurrentValueSubject<Int, Never>
+    let froob: CurrentValueSubject<Bool, Never>
     let items: AnyPublisher<[Item], Never>
     private var subs = Set<AnyCancellable>()
     
@@ -26,6 +27,7 @@ final class Session {
         columns = .init(UserDefaults.standard.value(forKey: "columns") as? Int ?? 0)
         showing = .init(UserDefaults.standard.value(forKey: "showing") as? Int ?? 0)
         font = .init(UserDefaults.standard.value(forKey: "font") as? Int ?? 2)
+        froob = .init(Defaults.froob)
         
         items = provider
             .removeDuplicates()

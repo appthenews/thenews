@@ -1,5 +1,7 @@
 import AppKit
 import Combine
+import StoreKit
+import News
 
 final class Content: NSVisualEffectView {
     private var subs = Set<AnyCancellable>()
@@ -46,10 +48,10 @@ final class Content: NSVisualEffectView {
         flip.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
         
         content.topAnchor.constraint(equalTo: flip.topAnchor, constant: 10).isActive = true
-        content.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 40).isActive = true
-        content.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -40).isActive = true
+        content.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 60).isActive = true
+        content.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -60).isActive = true
         content.widthAnchor.constraint(lessThanOrEqualToConstant: 800).isActive = true
-        content.bottomAnchor.constraint(equalTo: flip.bottomAnchor, constant: -30).isActive = true
+        content.bottomAnchor.constraint(equalTo: flip.bottomAnchor, constant: -40).isActive = true
         
         let paragraphHeader = NSMutableParagraphStyle()
         paragraphHeader.lineBreakMode = .byTruncatingTail
@@ -76,7 +78,7 @@ final class Content: NSVisualEffectView {
         session
             .columns
             .sink {
-                leading.constant = $0 == 2 ? 195 : 40
+                leading.constant = $0 == 2 ? 195 : 60
             }
             .store(in: &subs)
         
@@ -95,11 +97,11 @@ final class Content: NSVisualEffectView {
                         ofSize: 11 + .init(font),
                         weight: .light)
                     attributesTitle.font = NSFont.systemFont(
-                        ofSize: 17 + .init(font),
-                        weight: .regular)
+                        ofSize: 18 + .init(font),
+                        weight: .medium)
                     attributesDescription.font = NSFont.systemFont(
                         ofSize: 14 + .init(font),
-                        weight: .light)
+                        weight: .regular)
                     
                     var stringHeader = AttributedString(item.feed.provider.title, attributes: attributesProvider)
                     stringHeader.append(AttributedString(" — ", attributes: attributesDate))
@@ -120,6 +122,10 @@ final class Content: NSVisualEffectView {
                 } else {
                     header.attributedStringValue = .init()
                     content.stringValue = ""
+                }
+                
+                if Defaults.ready {
+                    SKStoreReviewController.requestReview()
                 }
             }
             .store(in: &subs)
