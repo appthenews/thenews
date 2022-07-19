@@ -2,9 +2,14 @@ import AppKit
 
 extension List {
     struct Appearance {
-        var provider: AttributeContainer
-        var date: AttributeContainer
-        var title: AttributeContainer
+        var provider = NSFont.preferredFont(forTextStyle: .body)
+        var date = NSFont.preferredFont(forTextStyle: .footnote)
+        var title = NSFont.preferredFont(forTextStyle: .footnote)
+        var primary = NSColor.labelColor
+        var secondary = NSColor.secondaryLabelColor
+        var tertiary = NSColor.tertiaryLabelColor
+        let paragraph: NSParagraphStyle
+        let spacing = NSAttributedString(string: "\n\n", attributes: [.font: NSFont.systemFont(ofSize: 4, weight: .regular)])
         
         init() {
             let paragraph = NSMutableParagraphStyle()
@@ -15,10 +20,7 @@ extension List {
             paragraph.usesDefaultHyphenation = false
             paragraph.defaultTabInterval = 0
             paragraph.hyphenationFactor = 0
-            
-            provider = .init([.paragraphStyle: paragraph])
-            date = .init([.paragraphStyle: paragraph])
-            title = .init([.paragraphStyle: paragraph])
+            self.paragraph = paragraph
         }
     }
 }
