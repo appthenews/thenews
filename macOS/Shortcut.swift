@@ -35,15 +35,15 @@ final class Shortcut: NSView {
             .store(in: &subs)
         addSubview(preferences)
         
-        let purchases = Control.Symbol(symbol: "checkmark.seal.fill", size: 16)
-        purchases.toolTip = "Purchases"
-        purchases
+        let sponsor = Control.Symbol(symbol: "arrow.up.heart", size: 16)
+        sponsor.toolTip = "Sponsor"
+        sponsor
             .click
             .sink {
 //                NSPopover().show(Forget(), from: forget, edge: .maxY)
             }
             .store(in: &subs)
-        addSubview(purchases)
+        addSubview(sponsor)
         
         let flip = Flip()
         flip.translatesAutoresizingMaskIntoConstraints = false
@@ -79,10 +79,10 @@ final class Shortcut: NSView {
         title.centerYAnchor.constraint(equalTo: bottomAnchor, constant: -25).isActive = true
         
         preferences.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
-        preferences.rightAnchor.constraint(equalTo: purchases.leftAnchor, constant: -10).isActive = true
+        preferences.rightAnchor.constraint(equalTo: sponsor.leftAnchor, constant: -10).isActive = true
         
-        purchases.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
-        purchases.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        sponsor.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
+        sponsor.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         
         scroll.topAnchor.constraint(equalTo: background.topAnchor, constant: 1).isActive = true
         scroll.leftAnchor.constraint(equalTo: background.leftAnchor).isActive = true
