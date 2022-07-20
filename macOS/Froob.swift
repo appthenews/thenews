@@ -23,7 +23,13 @@ final class Froob: NSView {
         control
             .click
             .sink {
-                NSApp.orderFrontStandardAboutPanel(nil)
+                if let product = product {
+                    Task {
+                        await session.store.purchase(product)
+                    }
+                } else {
+                    session.store.status.value = .error("Unable to connect to the App Store, try again later.")
+                }
             }
             .store(in: &subs)
         addSubview(control)
@@ -55,5 +61,26 @@ final class Froob: NSView {
         
         diclaimer.topAnchor.constraint(equalTo: control.bottomAnchor, constant: 10).isActive = true
         diclaimer.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        session
+            .store
+            .status
+            .sink {
+                switch $0 {
+                case let .error(error):
+                    let alert = NSAlert()
+                    alert.alertStyle = .warning
+                    alert.icon = .init(systemSymbolName: "exclamationmark.triangle", accessibilityDescription: nil)
+                    alert.messageText = "Sponsor"
+                    alert.informativeText = error
+                    
+                    let cont = alert.addButton(withTitle: "OK")
+                    cont.keyEquivalent = "\r"
+                    alert.runModal()
+                default:
+                    break
+                }
+            }
+            .store(in: &subs)
     }
 }

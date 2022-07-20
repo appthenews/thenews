@@ -3,6 +3,10 @@ import Combine
 import News
 
 final class List: NSScrollView {
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
+        true
+    }
+    
     private var appear = Appearance()
     private var subs = Set<AnyCancellable>()
     private let clear = PassthroughSubject<Void, Never>()
@@ -29,7 +33,7 @@ final class List: NSScrollView {
         contentView.postsBoundsChangedNotifications = true
         contentView.postsFrameChangedNotifications = true
         drawsBackground = false
-        addTrackingArea(.init(rect: .zero, options: [.mouseEnteredAndExited, .mouseMoved, .activeInKeyWindow, .inVisibleRect], owner: self))
+        addTrackingArea(.init(rect: .zero, options: [.mouseEnteredAndExited, .mouseMoved, .activeAlways, .inVisibleRect], owner: self))
         
         let clip = CurrentValueSubject<_, Never>(CGRect.zero)
         clip

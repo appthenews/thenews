@@ -27,10 +27,6 @@ final class Text: NSTextField {
         vibrancy
     }
     
-    override func hitTest(_ point: NSPoint) -> NSView? {
-        nil
-    }
-    
     override func acceptsFirstMouse(for: NSEvent?) -> Bool {
         false
     }

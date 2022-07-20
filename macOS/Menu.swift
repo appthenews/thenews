@@ -32,6 +32,8 @@ final class Menu: NSMenu, NSMenuDelegate {
             .separator(),
             .child("Preferences...", #selector(App.showPreferencesWindow), ","),
             .separator(),
+            .child("Sponsor", #selector(App.showSponsor), ","),
+            .separator(),
             .child("Hide", #selector(NSApplication.hide), "h"),
             .child("Hide Others", #selector(NSApplication.hideOtherApplications), "h") {
                 $0.keyEquivalentModifierMask = [.option, .command]

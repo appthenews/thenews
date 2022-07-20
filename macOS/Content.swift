@@ -31,6 +31,9 @@ final class Content: NSVisualEffectView {
         let content = Text(vibrancy: true)
         content.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         content.alignment = .right
+        content.isSelectable = true
+        content.alignment = .justified
+        content.textColor = .labelColor
         flip.addSubview(content)
         
         header.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
@@ -103,6 +106,8 @@ final class Content: NSVisualEffectView {
                         ofSize: 14 + .init(font),
                         weight: .regular)
                     
+                    content.font = attributesDescription.font
+                    
                     var stringHeader = AttributedString(item.feed.provider.title, attributes: attributesProvider)
                     stringHeader.append(AttributedString(" — ", attributes: attributesDate))
                     stringHeader.append(AttributedString(item.date.formatted(.relative(presentation: .named,
@@ -119,13 +124,13 @@ final class Content: NSVisualEffectView {
                     Task {
                         await session.cloud.read(item: item)
                     }
+                    
+                    if Defaults.ready {
+                        SKStoreReviewController.requestReview()
+                    }
                 } else {
                     header.attributedStringValue = .init()
                     content.stringValue = ""
-                }
-                
-                if Defaults.ready {
-                    SKStoreReviewController.requestReview()
                 }
             }
             .store(in: &subs)

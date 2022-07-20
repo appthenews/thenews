@@ -53,6 +53,8 @@
 		CEE81F16288807A700AC1694 /* Froob.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F15288807A700AC1694 /* Froob.swift */; };
 		CEE81F1828880B8500AC1694 /* Control.Prominent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F1728880B8500AC1694 /* Control.Prominent.swift */; };
 		CEE81F1C2888173400AC1694 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F1B2888173400AC1694 /* Store.swift */; };
+		CEE81F1E28883F3F00AC1694 /* Purchased.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F1D28883F3F00AC1694 /* Purchased.swift */; };
+		CEE81F2228884EA400AC1694 /* Sponsor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F2128884EA400AC1694 /* Sponsor.swift */; };
 		CEE9BB3F288578040061886E /* List.Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9BB3E288578040061886E /* List.Appearance.swift */; };
 /* End PBXBuildFile section */
 
@@ -108,6 +110,8 @@
 		CEE81F1728880B8500AC1694 /* Control.Prominent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Control.Prominent.swift; sourceTree = "<group>"; };
 		CEE81F1A288816D300AC1694 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		CEE81F1B2888173400AC1694 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		CEE81F1D28883F3F00AC1694 /* Purchased.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchased.swift; sourceTree = "<group>"; };
+		CEE81F2128884EA400AC1694 /* Sponsor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sponsor.swift; sourceTree = "<group>"; };
 		CEE9BB3E288578040061886E /* List.Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.Appearance.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -185,6 +189,7 @@
 				CE32BDEC2881714C0091FAC7 /* Preferences.Font.swift */,
 				CE19C0E4287701C60045E221 /* Preferences.swift */,
 				CE3EEC6728804336004060A1 /* Preferences.Update.swift */,
+				CEE81F1D28883F3F00AC1694 /* Purchased.swift */,
 				CEC5DFAE2871B5B3008C8E56 /* Separator.swift */,
 				CE34608E28706760001962E7 /* Session.swift */,
 				CE9B657A287ED86700AD0D98 /* ShapeLayer.swift */,
@@ -192,6 +197,7 @@
 				CEDA94862886CA490087776C /* Shortcut.swift */,
 				CE19C0EC287726150045E221 /* Sidebar.Item.swift */,
 				CE34608C28706751001962E7 /* Sidebar.swift */,
+				CEE81F2128884EA400AC1694 /* Sponsor.swift */,
 				CE19C0EA287725330045E221 /* Stack.swift */,
 				CE3C70E52873328200863C22 /* Text.swift */,
 				CE9B6578287ED83D00AD0D98 /* TextLayer.swift */,
@@ -349,6 +355,7 @@
 				CE32BDED2881714C0091FAC7 /* Preferences.Font.swift in Sources */,
 				CE19C0ED287726150045E221 /* Sidebar.Item.swift in Sources */,
 				CEC5DFAD2871B1F9008C8E56 /* Middlebar.swift in Sources */,
+				CEE81F1E28883F3F00AC1694 /* Purchased.swift in Sources */,
 				CED728D3287869E50010A4BC /* List.Info.swift in Sources */,
 				CEDA94872886CA490087776C /* Shortcut.swift in Sources */,
 				CEE81F1C2888173400AC1694 /* Store.swift in Sources */,
@@ -365,6 +372,7 @@
 				CE9B657B287ED86700AD0D98 /* ShapeLayer.swift in Sources */,
 				CE346080287066FD001962E7 /* App.swift in Sources */,
 				CED728D1287869D90010A4BC /* List.Cell.swift in Sources */,
+				CEE81F2228884EA400AC1694 /* Sponsor.swift in Sources */,
 				CE9A1C1D2880155700CB6D44 /* Menu.Link.swift in Sources */,
 				CE19C0E5287701C60045E221 /* Preferences.swift in Sources */,
 				CE19C0EB287725330045E221 /* Stack.swift in Sources */,

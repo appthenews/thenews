@@ -144,5 +144,14 @@ final class Session {
                 }
             }
             .store(in: &subs)
+        
+        store
+            .purchased
+            .sink { [weak self] in
+                self?.froob.value = false
+                ((NSApp as! App).anyWindow() ?? Purchased())
+                    .makeKeyAndOrderFront(nil)
+            }
+            .store(in: &subs)
     }
 }
