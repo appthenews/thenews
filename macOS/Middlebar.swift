@@ -64,8 +64,7 @@ final class Middlebar: NSVisualEffectView {
         trailing.priority = .defaultLow
         trailing.isActive = true
         leading.isActive = true
-        
-        divider.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 20).isActive = true
+
         divider.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         divider.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
@@ -124,6 +123,30 @@ final class Middlebar: NSVisualEffectView {
                 
                 string.append(AttributedString(title, attributes: titleAttributes))
                 count.attributedStringValue = .init(string)
+            }
+            .store(in: &subs)
+        
+        var dividerTop: NSLayoutConstraint?
+        var froob: Froob?
+        
+        session
+            .froob
+            .sink { [weak self] in
+                guard let self = self else { return }
+                
+                dividerTop?.isActive = false
+                froob?.removeFromSuperview()
+                if $0 || true {
+                    froob = Froob()
+                    self.addSubview(froob!)
+                    
+                    froob!.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 20).isActive = true
+                    froob!.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+                    dividerTop = divider.topAnchor.constraint(equalTo: froob!.bottomAnchor, constant: 20)
+                } else {
+                    dividerTop = divider.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 20)
+                }
+                dividerTop!.isActive = true
             }
             .store(in: &subs)
     }
