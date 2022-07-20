@@ -40,7 +40,7 @@ final class Shortcut: NSView {
         sponsor
             .click
             .sink {
-//                NSPopover().show(Forget(), from: forget, edge: .maxY)
+                (NSApp as! App).showSponsor(nil)
             }
             .store(in: &subs)
         addSubview(sponsor)
