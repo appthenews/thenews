@@ -1,9 +1,9 @@
 import Foundation
 
 public struct Defaults {
-    public static var support: Bool {
-        get { UserDefaults.standard.object(forKey: "support") as? Bool ?? false }
-        set { UserDefaults.standard.setValue(newValue, forKey: "support") }
+    public static var sponsor: Bool {
+        get { UserDefaults.standard.object(forKey: "sponsor") as? Bool ?? false }
+        set { UserDefaults.standard.setValue(newValue, forKey: "sponsor") }
     }
     
     public static var ready: Bool {
@@ -16,7 +16,7 @@ public struct Defaults {
     }
     
     public static var froob: Bool {
-        ready && !support
+        ready && !sponsor
     }
     
     private static var created: Date? {

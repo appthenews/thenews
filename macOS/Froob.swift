@@ -1,13 +1,16 @@
 import AppKit
 import Combine
+import StoreKit
 
 final class Froob: NSView {
     private var subs = Set<AnyCancellable>()
     
     required init?(coder: NSCoder) { nil }
-    init() {
+    init(session: Session) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        
+        var product: Product?
         
         let title = Text(vibrancy: true)
         title.stringValue = "Contribute to\nmaintenance\nand improvement."
@@ -27,9 +30,17 @@ final class Froob: NSView {
         
         let diclaimer = Text(vibrancy: true)
         diclaimer.font = .preferredFont(forTextStyle: .footnote)
-        diclaimer.stringValue = "1 time purchase of $300.00"
+        diclaimer.stringValue = "1 time purchase"
         diclaimer.textColor = .secondaryLabelColor
         addSubview(diclaimer)
+        
+        Task {
+            product = await session.store.load(item: .sponsor)
+            
+            if let product = product {
+                diclaimer.stringValue = "1 time purchase of " + product.displayPrice
+            }
+        }
         
         widthAnchor.constraint(equalToConstant: 300).isActive = true
         bottomAnchor.constraint(equalTo: diclaimer.bottomAnchor).isActive = true

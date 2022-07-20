@@ -6,6 +6,7 @@ import News
 
 final class Session {
     let cloud = Cloud<Archive, CKContainer>.new(identifier: "iCloud.thenews")
+    let store = Store()
     let search = CurrentValueSubject<_, Never>("")
     let up = PassthroughSubject<Void, Never>()
     let down = PassthroughSubject<Void, Never>()

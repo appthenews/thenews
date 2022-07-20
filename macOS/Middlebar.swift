@@ -137,7 +137,7 @@ final class Middlebar: NSVisualEffectView {
                 dividerTop?.isActive = false
                 froob?.removeFromSuperview()
                 if $0 || true {
-                    froob = Froob()
+                    froob = Froob(session: session)
                     self.addSubview(froob!)
                     
                     froob!.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 20).isActive = true

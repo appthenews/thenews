@@ -21,10 +21,10 @@ import News
             Window(session: self.session).makeKeyAndOrderFront(nil)
             Defaults.start()
             
-//            Task
-//                .detached {
-//                    await store.launch()
-//                }
+            Task
+                .detached {
+                    await self.session.store.launch()
+                }
         }
     }
     

@@ -1,0 +1,33 @@
+{
+  "identifier" : "C89D55EE",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "8.99",
+      "familyShareable" : false,
+      "internalID" : "AF762FBB",
+      "localizations" : [
+        {
+          "description" : "Contribute to maintenance and improvement.",
+          "displayName" : "Sponsor",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "thenewsapp.sponsor",
+      "referenceName" : "Sponsor",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 2
+  }
+}
