@@ -11,7 +11,7 @@
 			<string>The News URL</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>thenews</string>
+				<string>news</string>
 			</array>
 		</dict>
 	</array>

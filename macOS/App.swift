@@ -34,8 +34,6 @@ import News
         Task {
             await session.cloud.fetch()
             session.notify()
-            
-            self.showSponsor(nil)
         }
     }
     
