@@ -40,6 +40,7 @@ final class Middlebar: NSVisualEffectView {
         let count = Text(vibrancy: true)
         count.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         count.maximumNumberOfLines = 1
+        count.isHidden = true
         addSubview(count)
         
         let divider = Separator()
@@ -49,6 +50,7 @@ final class Middlebar: NSVisualEffectView {
         addSubview(separator)
         
         let list = List(session: session)
+        list.isHidden = true
         addSubview(list)
         
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
@@ -149,6 +151,13 @@ final class Middlebar: NSVisualEffectView {
                 dividerTop!.isActive = true
             }
             .store(in: &subs)
+        
+        session
+            .ready
+            .notify(queue: .main) {
+                count.isHidden = false
+                list.isHidden = false
+            }
     }
     
     override func updateLayer() {

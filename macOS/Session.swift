@@ -18,9 +18,13 @@ final class Session {
     let font: CurrentValueSubject<Int, Never>
     let froob: CurrentValueSubject<Bool, Never>
     let items: AnyPublisher<[Item], Never>
+    let ready = DispatchGroup()
+    private var first = true
     private var subs = Set<AnyCancellable>()
     
     init() {
+        ready.enter()
+        
         let item = CurrentValueSubject<Item?, Never>(nil)
         let provider = CurrentValueSubject<Provider?, Never>(.init(
             rawValue: UserDefaults.standard.value(forKey: "provider") as? UInt8 ?? 0)!)
@@ -153,5 +157,11 @@ final class Session {
                     .makeKeyAndOrderFront(nil)
             }
             .store(in: &subs)
+    }
+    
+    func notify() {
+        guard first else { return }
+        first = false
+        ready.leave()
     }
 }

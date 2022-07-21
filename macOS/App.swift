@@ -16,9 +16,9 @@ import News
     
     func applicationDidFinishLaunching(_: Notification) {
         registerForRemoteNotifications()
-
-        session.cloud.ready.notify(queue: .main) {            
-            Window(session: self.session).makeKeyAndOrderFront(nil)
+        Window(session: self.session).makeKeyAndOrderFront(nil)
+        
+        session.cloud.ready.notify(queue: .main) {
             Defaults.start()
             
             Task
@@ -30,8 +30,10 @@ import News
     
     func applicationDidBecomeActive(_: Notification) {
         session.cloud.pull.send()
+        
         Task {
             await session.cloud.fetch()
+            session.notify()
         }
     }
     

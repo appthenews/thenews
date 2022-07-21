@@ -67,6 +67,7 @@ final class Sidebar: NSVisualEffectView {
         stack.orientation = .vertical
         stack.alignment = .leading
         stack.spacing = 2
+        stack.isHidden = true
         addSubview(stack)
         
         stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
@@ -147,5 +148,11 @@ final class Sidebar: NSVisualEffectView {
                 UserDefaults.standard.set(provider?.rawValue, forKey: "provider")
             }
             .store(in: &subs)
+        
+        session
+            .ready
+            .notify(queue: .main) {
+                stack.isHidden = false
+            }
     }
 }
