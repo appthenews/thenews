@@ -23,6 +23,8 @@ final class Froob: NSView {
         control
             .click
             .sink {
+                guard session.store.status.value == .ready else { return }
+                
                 if let product = product {
                     Task {
                         await session.store.purchase(product)
@@ -34,22 +36,22 @@ final class Froob: NSView {
             .store(in: &subs)
         addSubview(control)
         
-        let diclaimer = Text(vibrancy: true)
-        diclaimer.font = .preferredFont(forTextStyle: .footnote)
-        diclaimer.stringValue = "1 time purchase"
-        diclaimer.textColor = .secondaryLabelColor
-        addSubview(diclaimer)
+        let disclaimer = Text(vibrancy: true)
+        disclaimer.font = .preferredFont(forTextStyle: .footnote)
+        disclaimer.stringValue = "1 time purchase"
+        disclaimer.textColor = .secondaryLabelColor
+        addSubview(disclaimer)
         
         Task {
             product = await session.store.load(item: .sponsor)
             
             if let product = product {
-                diclaimer.stringValue = "1 time purchase of " + product.displayPrice
+                disclaimer.stringValue = "1 time purchase of " + product.displayPrice
             }
         }
         
         widthAnchor.constraint(equalToConstant: 300).isActive = true
-        bottomAnchor.constraint(equalTo: diclaimer.bottomAnchor).isActive = true
+        bottomAnchor.constraint(equalTo: disclaimer.bottomAnchor).isActive = true
         
         title.topAnchor.constraint(equalTo: topAnchor).isActive = true
         title.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -59,8 +61,8 @@ final class Froob: NSView {
         control.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 10).isActive = true
         control.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
-        diclaimer.topAnchor.constraint(equalTo: control.bottomAnchor, constant: 10).isActive = true
-        diclaimer.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        disclaimer.topAnchor.constraint(equalTo: control.bottomAnchor, constant: 10).isActive = true
+        disclaimer.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
         session
             .store

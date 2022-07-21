@@ -6,7 +6,7 @@ extension Control {
         init(title: String) {
             let text = Text(vibrancy: false)
             text.stringValue = title
-            text.font = .systemFont(ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize, weight: .medium)
+            text.font = .systemFont(ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize, weight: .regular)
             text.textColor = .secondaryLabelColor
             
             super.init(layer: true)
@@ -27,7 +27,7 @@ extension Control {
                 .performAsCurrentDrawingAppearance {
                     switch state {
                     case .highlighted, .pressed:
-                        layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.08).cgColor
+                        layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.07).cgColor
                     default:
                         layer!.backgroundColor = .clear
                     }

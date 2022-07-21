@@ -1,11 +1,21 @@
 import AppKit
 import Combine
+import StoreKit
+import News
 
 final class Sponsor: NSWindow {
+    private weak var purchase: Control.Prominent!
+    private weak var disclaimer: Text!
+    private weak var received: Text!
+    private weak var restore: Control.Plain!
+    private var product: Product?
     private var subs = Set<AnyCancellable>()
+    private let session: Session
     
     init(session: Session) {
-        super.init(contentRect: .init(x: 0, y: 0, width: 400, height: 400),
+        self.session = session
+        
+        super.init(contentRect: .init(x: 0, y: 0, width: 440, height: 540),
                    styleMask: [.closable, .titled, .fullSizeContentView], backing: .buffered, defer: true)
         animationBehavior = .alertPanel
         toolbar = .init()
@@ -28,14 +38,15 @@ final class Sponsor: NSWindow {
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
         
-        let string = NSMutableAttributedString()
-        string.append(.init(string: "Fund The News App\n",
+        var string = NSMutableAttributedString()
+        string.append(.init(string: "Fund The News App",
                             attributes: [
                                 .font: NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .title1).pointSize,
                                                          weight: .medium),
                                 .foregroundColor: NSColor.labelColor,
                                 .paragraphStyle: paragraph]))
-        string.append(.init(string: "Contribute to maintenance and\nmaking it available for everyone.",
+        string.append(.init(string: "\n\n", attributes: [.font: NSFont.systemFont(ofSize: 5)]))
+        string.append(.init(string: "Contributes to maintenance and\nmaking it available for everyone.",
                             attributes: [
                                 .font: NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .title3).pointSize,
                                                          weight: .regular),
@@ -45,15 +56,61 @@ final class Sponsor: NSWindow {
         let title = Text(vibrancy: true)
         title.attributedStringValue = string
         content.addSubview(title)
-        
-        let accept = Control.Prominent(title: "OK")
-        accept
+                           
+        let purchase = Control.Prominent(title: "Sponsor")
+        purchase
             .click
             .sink { [weak self] in
-                self?.close()
+                Task { [weak self] in
+                    await self?.pay()
+                }
             }
             .store(in: &subs)
-        content.addSubview(accept)
+        content.addSubview(purchase)
+        purchase.state = .hidden
+        self.purchase = purchase
+        
+        let disclaimer = Text(vibrancy: true)
+        disclaimer.font = .preferredFont(forTextStyle: .body)
+        disclaimer.stringValue = "1 time purchase"
+        disclaimer.textColor = .secondaryLabelColor
+        disclaimer.isHidden = true
+        content.addSubview(disclaimer)
+        self.disclaimer = disclaimer
+        
+        string = NSMutableAttributedString()
+        string.append(.init(string: "Thank you",
+                            attributes: [
+                                .font: NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .title2).pointSize,
+                                                         weight: .regular),
+                                .foregroundColor: NSColor.labelColor,
+                                .paragraphStyle: paragraph]))
+        string.append(.init(string: "\n\n", attributes: [.font: NSFont.systemFont(ofSize: 4)]))
+        string.append(.init(string: "We received\nyour contribution.",
+                            attributes: [
+                                .font: NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .title2).pointSize,
+                                                         weight: .light),
+                                .foregroundColor: NSColor.secondaryLabelColor,
+                                .paragraphStyle: paragraph]))
+        
+        let received = Text(vibrancy: true)
+        received.attributedStringValue = string
+        received.isHidden = true
+        content.addSubview(received)
+        self.received = received
+        
+        let restore = Control.Plain(title: "Restore Purchases")
+        restore.state = .hidden
+        restore
+            .click
+            .sink {
+                Task {
+                    await session.store.restore()
+                }
+            }
+            .store(in: &subs)
+        content.addSubview(restore)
+        self.restore = restore
         
         let cancel = Control.Plain(title: "Cancel")
         cancel
@@ -65,21 +122,66 @@ final class Sponsor: NSWindow {
         content.addSubview(cancel)
         
         image.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
-        image.topAnchor.constraint(equalTo: content.topAnchor, constant: 40).isActive = true
+        image.topAnchor.constraint(equalTo: content.topAnchor, constant: 70).isActive = true
         
-        title.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 30).isActive = true
+        title.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 50).isActive = true
         title.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
-        title.widthAnchor.constraint(lessThanOrEqualToConstant: 300).isActive = true
+        title.widthAnchor.constraint(lessThanOrEqualToConstant: 400).isActive = true
+        
+        purchase.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 20).isActive = true
+        purchase.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
+        purchase.widthAnchor.constraint(equalToConstant: 240).isActive = true
+        
+        disclaimer.topAnchor.constraint(equalTo: purchase.bottomAnchor, constant: 20).isActive = true
+        disclaimer.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
+        
+        received.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 50).isActive = true
+        received.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
+        
+        restore.bottomAnchor.constraint(equalTo: cancel.topAnchor, constant: -1).isActive = true
+        restore.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
+        restore.widthAnchor.constraint(equalToConstant: 190).isActive = true
         
         cancel.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -40).isActive = true
         cancel.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
-        cancel.widthAnchor.constraint(equalToConstant: 160).isActive = true
+        cancel.widthAnchor.constraint(equalToConstant: 190).isActive = true
+
+        session
+            .store
+            .status
+            .sink { [weak self] in
+                switch $0 {
+                case .ready:
+                    Task { [weak self] in
+                        await self?.refresh()
+                    }
+                case let .error(error):
+                    let alert = NSAlert()
+                    alert.alertStyle = .warning
+                    alert.icon = .init(systemSymbolName: "exclamationmark.triangle", accessibilityDescription: nil)
+                    alert.messageText = "Sponsor"
+                    alert.informativeText = error
+                    
+                    let cont = alert.addButton(withTitle: "OK")
+                    cont.keyEquivalent = "\r"
+                    alert.runModal()
+                default:
+                    break
+                }
+            }
+            .store(in: &subs)
     }
     
     override func keyDown(with: NSEvent) {
         switch with.keyCode {
         case 36:
-            close()
+            if Defaults.sponsor {
+                close()
+            } else {
+                Task {
+                    await pay()
+                }
+            }
         default:
             super.keyDown(with: with)
         }
@@ -88,80 +190,35 @@ final class Sponsor: NSWindow {
     override func cancelOperation(_: Any?) {
         close()
     }
+    
+    @MainActor private func pay() async {
+        guard
+            session.store.status.value == .ready,
+            let product = product
+        else { return }
+        
+        await session.store.purchase(product)
+    }
+    
+    @MainActor private func refresh() async {
+        if Defaults.sponsor {
+            purchase.state = .hidden
+            disclaimer.isHidden = true
+            received.isHidden = false
+            restore.state = .hidden
+        } else {
+            purchase.state = .on
+            disclaimer.isHidden = false
+            received.isHidden = true
+            restore.state = .on
+
+            if product == nil {
+                product = await session.store.load(item: .sponsor)
+
+                if let product = product {
+                    disclaimer.stringValue = "1 time purchase of " + product.displayPrice
+                }
+            }
+        }
+    }
 }
-
-
-/*
- var product: Product?
- 
- let title = Text(vibrancy: true)
- title.stringValue = "Contribute to\nmaintenance\nand improvement."
- title.font = .systemFont(ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize, weight: .regular)
- title.textColor = .labelColor
- title.alignment = .center
- addSubview(title)
- 
- let control = Control.Prominent(title: "Sponsor")
- control
-     .click
-     .sink {
-         if let product = product {
-             Task {
-                 await session.store.purchase(product)
-             }
-         } else {
-             session.store.status.value = .error("Unable to connect to the App Store, try again later.")
-         }
-     }
-     .store(in: &subs)
- addSubview(control)
- 
- let diclaimer = Text(vibrancy: true)
- diclaimer.font = .preferredFont(forTextStyle: .footnote)
- diclaimer.stringValue = "1 time purchase"
- diclaimer.textColor = .secondaryLabelColor
- addSubview(diclaimer)
- 
- Task {
-     product = await session.store.load(item: .sponsor)
-     
-     if let product = product {
-         diclaimer.stringValue = "1 time purchase of " + product.displayPrice
-     }
- }
- 
- widthAnchor.constraint(equalToConstant: 300).isActive = true
- bottomAnchor.constraint(equalTo: diclaimer.bottomAnchor).isActive = true
- 
- title.topAnchor.constraint(equalTo: topAnchor).isActive = true
- title.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
- title.widthAnchor.constraint(lessThanOrEqualToConstant: 200).isActive = true
- 
- control.widthAnchor.constraint(equalToConstant: 160).isActive = true
- control.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 10).isActive = true
- control.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
- 
- diclaimer.topAnchor.constraint(equalTo: control.bottomAnchor, constant: 10).isActive = true
- diclaimer.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
- 
- session
-     .store
-     .status
-     .sink {
-         switch $0 {
-         case let .error(error):
-             let alert = NSAlert()
-             alert.alertStyle = .warning
-             alert.icon = .init(systemSymbolName: "exclamationmark.triangle", accessibilityDescription: nil)
-             alert.messageText = "Sponsor"
-             alert.informativeText = error
-             
-             let cont = alert.addButton(withTitle: "OK")
-             cont.keyEquivalent = "\r"
-             alert.runModal()
-         default:
-             break
-         }
-     }
-     .store(in: &subs)
- */
