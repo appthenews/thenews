@@ -34,10 +34,13 @@ struct Fetcher {
         guard (response as? HTTPURLResponse)?.statusCode == 200, !data.isEmpty
         else { throw NSError(domain: "", code: 0) }
         
-        return try parse(feed: feed, data: data, synched: synched)
+        return try await parse(feed: feed, data: data, synched: synched)
     }
+}
     
-    func parse(feed: Feed, data: Data, synched: Set<String>) throws -> (ids: Set<String>, items: Set<Item>) {
+#if os(macOS)
+extension Fetcher {
+    func parse(feed: Feed, data: Data, synched: Set<String>) async throws -> (ids: Set<String>, items: Set<Item>) {
         let document = try XMLDocument(data: data)
         
         let result: [(id: String, item: Item)] =
@@ -53,3 +56,153 @@ struct Fetcher {
         return (ids: .init(result.map(\.id)), items: .init(result.map(\.item)))
     }
 }
+
+private extension XMLNode {
+    func item(feed: Feed, strategy: Date.ParseStrategy, synched: Set<String>) -> (id: String, item: Item)? {
+        guard
+            name == "item",
+            let guid = self["guid"]?.max8,
+            !synched.contains(guid),
+            let description = content,
+            let title = self["title"]?.max8,
+            let pubDate = self["pubDate"],
+            let link = self["link"]?.max8,
+            let date = try? Date(pubDate, strategy: strategy)
+        else { return nil }
+        return (id: guid,
+                item: .init(feed: feed,
+                            title: title,
+                            description: description,
+                            link: link,
+                            date: date,
+                            synched: .now,
+                            status: .new))
+    }
+    
+    private var content: String? {
+        guard let description = self["description"] else { return nil }
+        let wrapped = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><xml>" + description + "</xml>"
+        guard let xml = try? XMLDocument(data: .init(wrapped.utf8), options: .documentTidyXML) else { return nil }
+        return xml
+            .rootDocument?
+            .children?
+            .first?
+            .children
+            .flatMap {
+                $0.compactMap(\.stringValue)
+            }?
+            .joined(separator: "\n\n")
+    }
+    
+    private subscript(_ name: String) -> String? {
+        children?
+            .first { $0.name == name }?
+            .stringValue
+    }
+}
+
+#else
+extension Fetcher {
+    func parse(feed: Feed, data: Data, synched: Set<String>) async throws -> (ids: Set<String>, items: Set<Item>) {
+        try await Parser(feed: feed, strategy: date, synched: synched).parse(data: data)
+    }
+}
+
+private final class Parser: NSObject, XMLParserDelegate {
+    private var finished: (() -> Void)?
+    private var fail: ((Error) -> Void)?
+    private var ids = Set<String>()
+    private var items = Set<Item>()
+    private var item: [String : String]?
+    private var element: String?
+    private let synched: Set<String>
+    private let strategy: Date.ParseStrategy
+    private let feed: Feed
+    
+    init(feed: Feed, strategy: Date.ParseStrategy, synched: Set<String>) {
+        self.feed = feed
+        self.strategy = strategy
+        self.synched = synched
+    }
+    
+    func parse(data: Data) async throws -> (ids: Set<String>, items: Set<Item>) {
+        try await withUnsafeThrowingContinuation { [weak self] continuation in
+            let xml = XMLParser(data: data)
+            
+            self?.finished = { [weak self] in
+                xml.delegate = nil
+                
+                guard
+                    let ids = self?.ids,
+                    let items = self?.items
+                else { return }
+                continuation
+                    .resume(returning: (ids, items))
+            }
+            
+            self?.fail = {
+                xml.delegate = self
+                continuation.resume(throwing: $0)
+            }
+            
+            xml.delegate = self
+            xml.parse()
+        }
+    }
+    
+    func parserDidEndDocument(_: XMLParser) {
+        finished?()
+    }
+    
+    func parser(_: XMLParser, parseErrorOccurred: Error) {
+        fail?(parseErrorOccurred)
+    }
+    
+    func parser(_: XMLParser, validationErrorOccurred: Error) {
+        fail?(validationErrorOccurred)
+    }
+    
+    func parser(_: XMLParser, didStartElement: String, namespaceURI: String?, qualifiedName: String?, attributes: [String : String] = [:]) {
+        element = ""
+        guard didStartElement == "item" else { return }
+        item = [:]
+    }
+    
+    func parser(_: XMLParser, didEndElement: String, namespaceURI: String?, qualifiedName: String?) {
+        if didEndElement == "item" {
+            if let item = item {
+                self.item = nil
+                
+                guard
+                    let guid = item["guid"]?.max8,
+                    !synched.contains(guid),
+                    let description = item["description"],
+                    let title = item["title"]?.max8,
+                    let pubDate = item["pubDate"],
+                    let link = item["link"]?.max8,
+                    let date = try? Date(pubDate, strategy: strategy)
+                else { return }
+                ids.insert(guid)
+                items.insert(.init(feed: feed,
+                                   title: title,
+                                   description: description,
+                                   link: link,
+                                   date: date,
+                                   synched: .now,
+                                   status: .new))
+            }
+        } else if item != nil, let element = element {
+            item![didEndElement] = element
+            self.element = nil
+        }
+    }
+    
+    func parser(_: XMLParser, foundCharacters: String) {
+        element? += foundCharacters
+    }
+    
+    deinit {
+        print("gone")
+    }
+}
+#endif

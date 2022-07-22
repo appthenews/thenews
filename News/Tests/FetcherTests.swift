@@ -10,8 +10,8 @@ final class FetchTests: XCTestCase {
         data = .init(xml.utf8)
     }
     
-    func testParse() throws {
-        let result = try fetcher.parse(feed: .theLocalInternational, data: data, synched: [])
+    func testParse() async throws {
+        let result = try await fetcher.parse(feed: .theLocalInternational, data: data, synched: [])
         XCTAssertEqual(20, result.ids.count)
         XCTAssertEqual(20, result.items.count)
         XCTAssertTrue(result.ids.contains("https://www.spiegel.de/international/world/a-visit-to-volodymyr-zelenskyy-s-hometown-kryvyi-rih-city-of-steel-a-95aa1a79-905c-462f-aa02-c61b103321f8"))
@@ -19,9 +19,9 @@ final class FetchTests: XCTestCase {
         XCTAssertTrue(result.items.contains { $0.link == "https://www.spiegel.de/international/world/a-visit-to-volodymyr-zelenskyy-s-hometown-kryvyi-rih-city-of-steel-a-95aa1a79-905c-462f-aa02-c61b103321f8#ref=rss" })
     }
     
-    func testFilter() throws {
+    func testFilter() async throws {
         let id = "https://www.spiegel.de/international/world/a-visit-to-volodymyr-zelenskyy-s-hometown-kryvyi-rih-city-of-steel-a-95aa1a79-905c-462f-aa02-c61b103321f8"
-        let result = try fetcher.parse(feed: .derSpiegelInternational, data: data, synched: [id])
+        let result = try await fetcher.parse(feed: .derSpiegelInternational, data: data, synched: [id])
         XCTAssertEqual(19, result.ids.count)
         XCTAssertEqual(19, result.items.count)
         XCTAssertFalse(result.ids.contains(id))
@@ -29,7 +29,7 @@ final class FetchTests: XCTestCase {
     }
     
     func testCap() async throws {
-        let result = try fetcher.parse(feed: .derSpiegelInternational, data: data, synched: [])
+        let result = try await fetcher.parse(feed: .derSpiegelInternational, data: data, synched: [])
         var archive = Archive()
         archive.update(feed: .derSpiegelInternational, date: .now, ids: result.ids, items: result.items)
         archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
