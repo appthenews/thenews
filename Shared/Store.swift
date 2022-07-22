@@ -54,6 +54,21 @@ final actor Store {
             default:
                 status.send(.ready)
             }
+        } catch let error as StoreKitError {
+            switch error {
+            case .userCancelled:
+                break
+            case .notEntitled:
+                status.send(.error("Can't purchase at this moment"))
+            case .notAvailableInStorefront:
+                status.send(.error("Product not available"))
+            case let .networkError(error):
+                status.send(.error(error.localizedDescription))
+            case let .systemError(error):
+                status.send(.error(error.localizedDescription))
+            default:
+                status.send(.error("Unknown error, try again later"))
+            }
         } catch let error {
             status.send(.error(error.localizedDescription))
         }

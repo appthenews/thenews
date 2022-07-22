@@ -15,7 +15,7 @@ final class Sponsor: NSWindow {
     init(session: Session) {
         self.session = session
         
-        super.init(contentRect: .init(x: 0, y: 0, width: 440, height: 540),
+        super.init(contentRect: .init(x: 0, y: 0, width: 440, height: 480),
                    styleMask: [.closable, .titled, .fullSizeContentView], backing: .buffered, defer: true)
         animationBehavior = .alertPanel
         toolbar = .init()
@@ -112,15 +112,6 @@ final class Sponsor: NSWindow {
         content.addSubview(restore)
         self.restore = restore
         
-        let cancel = Control.Plain(title: "Cancel")
-        cancel
-            .click
-            .sink { [weak self] in
-                self?.close()
-            }
-            .store(in: &subs)
-        content.addSubview(cancel)
-        
         image.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
         image.topAnchor.constraint(equalTo: content.topAnchor, constant: 70).isActive = true
         
@@ -138,17 +129,14 @@ final class Sponsor: NSWindow {
         received.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 50).isActive = true
         received.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
         
-        restore.bottomAnchor.constraint(equalTo: cancel.topAnchor, constant: -1).isActive = true
+        restore.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -40).isActive = true
         restore.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
         restore.widthAnchor.constraint(equalToConstant: 190).isActive = true
-        
-        cancel.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -40).isActive = true
-        cancel.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
-        cancel.widthAnchor.constraint(equalToConstant: 190).isActive = true
 
         session
             .store
             .status
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 switch $0 {
                 case .ready:
