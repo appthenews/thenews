@@ -1,10 +1,16 @@
 import SwiftUI
 
-@main
-struct iOSApp: SwiftUI.App {
+@main struct iOSApp: SwiftUI.App {
+    @StateObject private var session = Session()
+    
     var body: some Scene {
         WindowGroup {
-            Circle()
+            NavigationView {
+                Circle()
+                Rectangle()
+                Circle()
+            }
+            .navigationViewStyle(.columns)
         }
     }
 }
