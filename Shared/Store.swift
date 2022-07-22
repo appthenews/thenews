@@ -54,8 +54,8 @@ final actor Store {
             default:
                 status.send(.ready)
             }
-        } catch let error as StoreKitError {
-            switch error {
+        } catch let storeError as StoreKitError {
+            switch storeError {
             case .userCancelled:
                 break
             case .notEntitled:
@@ -69,7 +69,7 @@ final actor Store {
             default:
                 status.send(.error("Unknown error, try again later"))
             }
-        } catch let error {
+        } catch {
             status.send(.error(error.localizedDescription))
         }
     }

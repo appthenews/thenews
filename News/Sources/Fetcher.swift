@@ -133,13 +133,15 @@ private final class Parser: NSObject, XMLParserDelegate {
             self?.finished = { [weak self] in
                 xml.delegate = nil
                 
-                guard let self = self else { fatalError() }
+                guard let self = self else { return }
                 
                 for item in self.completed {
                     guard
                         let guid = item["guid"]?.max8,
                         !self.synched.contains(guid),
-                        let description = item["description"],
+                        let raw = item["description"],
+                        let description = try? await Content().parse(
+                            data: .init(("<xml>" + raw + "</xml>").utf8)),
                         let title = item["title"]?.max8,
                         let pubDate = item["pubDate"],
                         let link = item["link"]?.max8,
@@ -149,7 +151,9 @@ private final class Parser: NSObject, XMLParserDelegate {
                     self.ids.insert(guid)
                     self.items.insert(.init(feed: self.feed,
                                             title: title,
-                                            description: description,
+                                            description: description
+                        .replacingOccurrences(of: "\n", with: "\n\n")
+                        .trimmingCharacters(in: .whitespacesAndNewlines),
                                             link: link,
                                             date: date,
                                             synched: .now,
@@ -161,7 +165,7 @@ private final class Parser: NSObject, XMLParserDelegate {
             }
             
             self?.fail = {
-                xml.delegate = self
+                xml.delegate = nil
                 continuation.resume(throwing: $0)
             }
             
@@ -223,18 +227,31 @@ private final class Content: NSObject, XMLParserDelegate {
             let xml = XMLParser(data: data)
             self?.finished = { [weak self] in
                 xml.delegate = nil
+                self?.fail = nil
+                self?.finished = nil
+                
                 guard let element = self?.element else { return }
                 continuation
                     .resume(returning: element)
+                print("finish")
             }
             
-            self?.fail = {
-                xml.delegate = self
-                continuation.resume(throwing: $0)
+            self?.fail = { [weak self] in
+                xml.delegate = nil
+                self?.fail = nil
+                self?.finished = nil
+                xml.abortParsing()
+
+                continuation
+                    .resume(throwing: $0)
             }
             
             xml.delegate = self
             xml.parse()
+            
+            if let error = xml.parserError {
+                self?.fail?(error)
+            }
         }
     }
     
@@ -242,22 +259,12 @@ private final class Content: NSObject, XMLParserDelegate {
         finished?()
     }
     
-    func parser(_ parser: XMLParser, parseErrorOccurred: Error) {
+    func parser(_: XMLParser, parseErrorOccurred: Error) {
         fail?(parseErrorOccurred)
-        parser.abortParsing()
     }
     
-    func parser(_ parser: XMLParser, validationErrorOccurred: Error) {
+    func parser(_: XMLParser, validationErrorOccurred: Error) {
         fail?(validationErrorOccurred)
-        parser.abortParsing()
-    }
-    
-    func parser(_: XMLParser, didStartElement: String, namespaceURI: String?, qualifiedName: String?, attributes: [String : String] = [:]) {
-
-    }
-    
-    func parser(_: XMLParser, didEndElement: String, namespaceURI: String?, qualifiedName: String?) {
-        
     }
     
     func parser(_: XMLParser, foundCharacters: String) {
