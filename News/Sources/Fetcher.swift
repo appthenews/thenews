@@ -105,11 +105,11 @@ private extension XMLNode {
 #else
 extension Fetcher {
     func parse(feed: Feed, data: Data, synched: Set<String>) async throws -> (ids: Set<String>, items: Set<Item>) {
-        try await Parser(feed: feed, strategy: date, synched: synched).parse(data: data)
+        try await Parser2(feed: feed, strategy: date, synched: synched).parse(data: data)
     }
 }
 
-private final class Parser: NSObject, XMLParserDelegate {
+private final class Parser2: NSObject, XMLParserDelegate {
     private var finished: (() async -> Void)?
     private var fail: ((Error) -> Void)?
     private var ids = Set<String>()
@@ -140,8 +140,7 @@ private final class Parser: NSObject, XMLParserDelegate {
                         let guid = item["guid"]?.max8,
                         !self.synched.contains(guid),
                         let raw = item["description"],
-                        let description = try? await Content().parse(
-                            data: .init(("<xml>" + raw + "</xml>").utf8)),
+                        let description = try? await Parser(html: raw).result,
                         let title = item["title"]?.max8,
                         let pubDate = item["pubDate"],
                         let link = item["link"]?.max8,
@@ -151,9 +150,7 @@ private final class Parser: NSObject, XMLParserDelegate {
                     self.ids.insert(guid)
                     self.items.insert(.init(feed: self.feed,
                                             title: title,
-                                            description: description
-                        .replacingOccurrences(of: "\n", with: "\n\n")
-                        .trimmingCharacters(in: .whitespacesAndNewlines),
+                                            description: description.replacingOccurrences(of: "\n", with: "\n\n"),
                                             link: link,
                                             date: date,
                                             synched: .now,
@@ -214,65 +211,6 @@ private final class Parser: NSObject, XMLParserDelegate {
     
     deinit {
         print("xml gone")
-    }
-}
-
-private final class Content: NSObject, XMLParserDelegate {
-    private var finished: (() -> Void)?
-    private var fail: ((Error) -> Void)?
-    private var element = ""
-    
-    func parse(data: Data) async throws -> String {
-        try await withUnsafeThrowingContinuation { [weak self] continuation in
-            let xml = XMLParser(data: data)
-            self?.finished = { [weak self] in
-                xml.delegate = nil
-                self?.fail = nil
-                self?.finished = nil
-                
-                guard let element = self?.element else { return }
-                continuation
-                    .resume(returning: element)
-                print("finish")
-            }
-            
-            self?.fail = { [weak self] in
-                xml.delegate = nil
-                self?.fail = nil
-                self?.finished = nil
-                xml.abortParsing()
-
-                continuation
-                    .resume(throwing: $0)
-            }
-            
-            xml.delegate = self
-            xml.parse()
-            
-            if let error = xml.parserError {
-                self?.fail?(error)
-            }
-        }
-    }
-    
-    func parserDidEndDocument(_: XMLParser) {
-        finished?()
-    }
-    
-    func parser(_: XMLParser, parseErrorOccurred: Error) {
-        fail?(parseErrorOccurred)
-    }
-    
-    func parser(_: XMLParser, validationErrorOccurred: Error) {
-        fail?(validationErrorOccurred)
-    }
-    
-    func parser(_: XMLParser, foundCharacters: String) {
-        element += foundCharacters
-    }
-    
-    deinit {
-        print("contnet gone")
     }
 }
 #endif

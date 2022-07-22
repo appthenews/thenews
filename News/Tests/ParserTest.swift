@@ -1,7 +1,7 @@
 import XCTest
 @testable import News
 
-final class XMLNodeTests: XCTestCase {
+final class ParserTest: XCTestCase {
     private var fetcher: Fetcher!
     private var data: Data!
     
@@ -13,6 +13,36 @@ final class XMLNodeTests: XCTestCase {
     func testParse() async throws {
         let result = try await fetcher.parse(feed: .theLocalInternational, data: data, synched: []).items.first
         XCTAssertEqual("Reuters revealed that Germany and Qatar have hit difficulties in talks over long-term liquefied natural gas (LNG) supply deals amid differences over […]\n\nThe post Reuters reveals Germany, Qatar at odds over terms in talks on LNG supply deal appeared first on Reuters News Agency.", result?.description)
+    }
+    
+    func testA() async throws {
+        var string = "<!DOCTYPE html> <html> <body> <h1>My First Heading</h1> <p>My first paragraph.</p> </body> </html>"
+        var result = try await Parser(html: string).result
+        XCTAssertEqual("My First Heading My first paragraph.", result)
+        
+        string = "LCD Soundsystem was the musical project of producer <a href='http://www.last.fm/music/James+Murphy' class='bbcode_artist'>James Murphy</a>, co-founder of <a href='http://www.last.fm/tag/dance-punk' class='bbcode_tag' rel='tag'>dance-punk</a> label <a href='http://www.last.fm/label/DFA' class='bbcode_label'>DFA</a> Records. Formed in 2001 in New York City, New York, United States, the music of LCD Soundsystem can also be described as a mix of <a href='http://www.last.fm/tag/alternative%20dance' class='bbcode_tag' rel='tag'>alternative dance</a> and <a href='http://www.last.fm/tag/post%20punk' class='bbcode_tag' rel='tag'>post punk</a>, along with elements of <a href='http://www.last.fm/tag/disco' class='bbcode_tag' rel='tag'>disco</a> and other styles. <br />"
+        result = try await Parser(html: string).result
+        XCTAssertEqual("LCD Soundsystem was the musical project of producer James Murphy, co-founder of dance-punk label DFA Records. Formed in 2001 in New York City, New York, United States, the music of LCD Soundsystem can also be described as a mix of alternative dance and post punk, along with elements of disco and other styles.", result)
+        
+        string = "my html <a href=\"\">link text</a>"
+        result = try await Parser(html: string).result
+        XCTAssertEqual("my html link text", result)
+        
+        string = ""
+        result = try await Parser(html: string).result
+        XCTAssertEqual("", result)
+        
+        string = "hello"
+        result = try await Parser(html: string).result
+        XCTAssertEqual("hello", result)
+        
+        string = "hello\nworld"
+        result = try await Parser(html: string).result
+        XCTAssertEqual("hello\nworld", result)
+        
+        string = "hello<br>world"
+        result = try await Parser(html: string).result
+        XCTAssertEqual("hello\nworld", result)
     }
 }
 
