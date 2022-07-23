@@ -8,34 +8,31 @@ import SwiftUI
         WindowGroup {
             TabView(selection: $selection) {
                 NavigationView {
-                    Circle()
+                    Settings(session: session)
                     Rectangle()
                 }
                 .navigationViewStyle(.columns)
                 .tabItem {
                     Label("Settings", systemImage: "slider.horizontal.3")
-                        .symbolRenderingMode(.hierarchical)
                 }
                 .tag(0)
                 NavigationView {
-                    Circle()
-                    Rectangle()
-                    Circle()
+                    Feeds(session: session)
+                    Articles(session: session)
+                    Article(session: session)
                 }
                 .navigationViewStyle(.columns)
                 .tabItem {
-                    Label("News", systemImage: "newspaper")
-                        .symbolRenderingMode(.hierarchical)
+                    Label("News", image: "Icon")
                 }
                 .tag(1)
                 NavigationView {
-                    Circle()
-                    Rectangle()
+                    Recent(session: session)
+                    Article(session: session)
                 }
                 .navigationViewStyle(.columns)
                 .tabItem {
                     Label("Recent", systemImage: "clock")
-                        .symbolRenderingMode(.hierarchical)
                 }
                 .tag(2)
             }
