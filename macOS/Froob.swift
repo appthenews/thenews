@@ -67,6 +67,7 @@ final class Froob: NSView {
         session
             .store
             .status
+            .receive(on: DispatchQueue.main)
             .sink {
                 switch $0 {
                 case let .error(error):

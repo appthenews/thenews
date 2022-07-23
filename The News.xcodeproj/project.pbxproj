@@ -70,6 +70,7 @@
 		CEF6E07F288C1773006BDB70 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF6E07E288C1773006BDB70 /* StoreKit.framework */; };
 		CEF6E081288C1778006BDB70 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF6E080288C1778006BDB70 /* StoreKit.framework */; };
 		CEF6E083288C17A5006BDB70 /* App.Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E082288C17A5006BDB70 /* App.Delegate.swift */; };
+		CEF6E085288C1B6A006BDB70 /* Feeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E084288C1B6A006BDB70 /* Feeds.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -141,6 +142,7 @@
 		CEF6E07E288C1773006BDB70 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.5.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		CEF6E080288C1778006BDB70 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CEF6E082288C17A5006BDB70 /* App.Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.Delegate.swift; sourceTree = "<group>"; };
+		CEF6E084288C1B6A006BDB70 /* Feeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feeds.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,6 +253,7 @@
 				CEF6E082288C17A5006BDB70 /* App.Delegate.swift */,
 				CE346096287067D2001962E7 /* App.swift */,
 				CEF6E074288C160C006BDB70 /* Content.swift */,
+				CEF6E084288C1B6A006BDB70 /* Feeds.swift */,
 				CEF6E072288C132A006BDB70 /* Middlebar.swift */,
 				CEF6E076288C1669006BDB70 /* Recent.swift */,
 				CE53F80A288AB3C100C91444 /* Session.swift */,
@@ -445,6 +448,7 @@
 				CEF6E071288C11CD006BDB70 /* Sidebar.swift in Sources */,
 				CEF6E083288C17A5006BDB70 /* App.Delegate.swift in Sources */,
 				CEF6E079288C169A006BDB70 /* Settings.swift in Sources */,
+				CEF6E085288C1B6A006BDB70 /* Feeds.swift in Sources */,
 				CEF6E077288C1669006BDB70 /* Recent.swift in Sources */,
 				CEF6E075288C160C006BDB70 /* Content.swift in Sources */,
 			);

@@ -9,33 +9,19 @@ import News
     var body: some Scene {
         WindowGroup {
             TabView(selection: $selection) {
-                NavigationView {
-                    Settings(session: delegate.session)
+                settings
+                    .navigationViewStyle(.stack)
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    news
+                        .navigationViewStyle(.columns)
+                    recent
+                        .navigationViewStyle(.columns)
+                } else {
+                    news
+                        .navigationViewStyle(.stack)
+                    recent
+                        .navigationViewStyle(.stack)
                 }
-                .navigationViewStyle(.stack)
-                .tabItem {
-                    Label("Settings", systemImage: "slider.horizontal.3")
-                }
-                .tag(0)
-                NavigationView {
-                    Sidebar(session: delegate.session)
-                    Middlebar(session: delegate.session)
-                    Content(session: delegate.session)
-                }
-                .navigationViewStyle(.columns)
-                .tabItem {
-                    Label("News", image: "Icon")
-                }
-                .tag(1)
-                NavigationView {
-                    Recent(session: delegate.session)
-                    Content(session: delegate.session)
-                }
-                .navigationViewStyle(.columns)
-                .tabItem {
-                    Label("Recent", systemImage: "clock")
-                }
-                .tag(2)
             }
             .task {
                 delegate.session.cloud.ready.notify(queue: .main) {
@@ -62,5 +48,38 @@ import News
                 break
             }
         }
+    }
+    
+    private var settings: some View {
+        NavigationView {
+            Settings(session: delegate.session)
+        }
+        .tabItem {
+            Label("Settings", systemImage: "slider.horizontal.3")
+        }
+        .tag(0)
+    }
+    
+    private var news: some View {
+        NavigationView {
+            Sidebar(session: delegate.session)
+            Middlebar(session: delegate.session)
+            Content(session: delegate.session)
+        }
+        .tabItem {
+            Label("News", image: "Icon")
+        }
+        .tag(1)
+    }
+    
+    private var recent: some View {
+        NavigationView {
+            Recent(session: delegate.session)
+            Content(session: delegate.session)
+        }
+        .tabItem {
+            Label("Recent", systemImage: "clock")
+        }
+        .tag(2)
     }
 }
