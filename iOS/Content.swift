@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Article: View {
+struct Content: View {
     @ObservedObject var session: Session
     
     var body: some View {

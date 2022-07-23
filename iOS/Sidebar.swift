@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Articles: View {
+struct Sidebar: View {
     @ObservedObject var session: Session
     
     var body: some View {
@@ -8,7 +8,7 @@ struct Articles: View {
             
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("Articles")
+        .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.large)
     }
 }
