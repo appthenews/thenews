@@ -44,6 +44,26 @@ final class CloudTests: XCTestCase {
         XCTAssertEqual(1, items.count)
     }
     
+    func testBookmarkedAndRead() async {
+        var item = Item(feed: .reutersInternational,
+                         title: "lk",
+                         description: "fgh",
+                         link: "asd",
+                         date: .now,
+                         synched: .now,
+                         status: .new)
+        await cloud.add(item: item)
+        item = await cloud.model.items.first!
+        await cloud.bookmark(item: item)
+        item = await cloud.model.items.first!
+        await cloud.read(item: item)
+        
+        item = await cloud.model.items.first!
+        let items = await cloud.model.items
+        XCTAssertEqual(.bookmarked, item.status)
+        XCTAssertEqual(1, items.count)
+    }
+    
     func testDelete() async {
         let item = Item(feed: .reutersInternational,
                         title: "lk",

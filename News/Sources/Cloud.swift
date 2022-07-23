@@ -39,10 +39,12 @@ extension Cloud where Output == Archive {
     }
     
     public func read(item: Item) async {
-        model.items = model
-            .items
-            .removing(item)
-            .inserting(item.read)
+        if item.status == .new {
+            model.items = model
+                .items
+                .removing(item)
+                .inserting(item.read)
+        }
         
         model.history = .init((item.link + model
             .history
