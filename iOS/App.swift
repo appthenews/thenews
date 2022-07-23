@@ -1,6 +1,6 @@
 import SwiftUI
 
-@main struct iOSApp: SwiftUI.App {
+@main struct App: SwiftUI.App {
     @StateObject private var session = Session()
     @State private var selection = 1
     
