@@ -1,4 +1,5 @@
 import SwiftUI
+import News
 
 struct Feeds: View {
     @ObservedObject var session: Session
@@ -6,24 +7,24 @@ struct Feeds: View {
     
     var body: some View {
         List {
-            Section("The Guardian") {
+            Section(Provider.theGuardian.title) {
                 Toggle("World", isOn: $theGuardianWorld)
                 Toggle("Germany", isOn: $theGuardianWorld)
             }
             .headerProminence(.increased)
             
-            Section("Reuters") {
+            Section(Provider.reuters.title) {
                 Toggle("International", isOn: $theGuardianWorld)
                 Toggle("Europe", isOn: $theGuardianWorld)
             }
             .headerProminence(.increased)
             
-            Section("Der Spiegel") {
+            Section(Provider.derSpiegel.title) {
                 Toggle("International", isOn: $theGuardianWorld)
             }
             .headerProminence(.increased)
 
-            Section("The Local") {
+            Section(Provider.theLocal.title) {
                 Toggle("International", isOn: $theGuardianWorld)
                 Toggle("Germany", isOn: $theGuardianWorld)
             }
@@ -31,7 +32,6 @@ struct Feeds: View {
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
         .listStyle(.insetGrouped)
-        .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.large)
     }
 }
