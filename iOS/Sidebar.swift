@@ -5,14 +5,15 @@ struct Sidebar: View {
     @ObservedObject var session: Session
     @State private var providers = Set<Provider>()
     @State private var feeds = false
+    @State private var recents = Provider.allCases.reduce(into: [:]) { $0[$1] = 0 }
     
     var body: some View {
         List {
             provider(provider: .all)
             provider(provider: .theGuardian)
-            NavigationLink(Provider.reuters.title, destination: Circle())
-            NavigationLink(Provider.derSpiegel.title, destination: Circle())
-            NavigationLink(Provider.theLocal.title, destination: Circle())
+            provider(provider: .reuters)
+            provider(provider: .derSpiegel)
+            provider(provider: .theLocal)
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Feeds")
@@ -20,7 +21,7 @@ struct Sidebar: View {
         .sheet(isPresented: $feeds) {
             NavigationView {
                 Feeds(session: session)
-                    .navigationTitle("Select your Feeds")
+                    .navigationTitle("Select your feeds")
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button("Done") {
@@ -31,33 +32,50 @@ struct Sidebar: View {
             }
             .navigationViewStyle(.stack)
         }
-        .onReceive(session.cloud) {
-            providers = $0.preferences.providers
+        .onReceive(session.cloud) { model in
+            providers = model.preferences.providers
             
             if providers.isEmpty {
                 feeds = true
             }
+            
+            recents = Provider
+                .allCases
+                .reduce(into: [:]) { result, provider in
+                    if provider == .all || providers.contains(provider) {
+                        result[provider] = model
+                            .items(provider: provider)
+                            .filter(\.recent)
+                            .count
+                    } else {
+                        result[provider] = 0
+                    }
+                }
         }
     }
     
-    private func provider(provider: Provider) -> some View {
-        NavigationLink(destination: Circle()) {
-            HStack(spacing: 0) {
-                Text(provider.title)
-                    .font(.body.weight(.medium))
-                Spacer()
-                ZStack {
-                    Capsule()
-                        .fill(Color.accentColor)
-                    Text("34")
-                        .font(.footnote.weight(.medium))
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .padding(.vertical, 5)
+    @ViewBuilder private func provider(provider: Provider) -> some View {
+        if provider == .all || providers.contains(provider) {
+            NavigationLink(destination: Circle()) {
+                HStack(spacing: 0) {
+                    Text(provider.title)
+                        .font(.body.weight(.medium))
+                    Spacer()
+                    if recents[provider]! > 0 {
+                        ZStack {
+                            Capsule()
+                                .fill(Color.accentColor)
+                            Text(recents[provider]!.formatted())
+                                .font(.footnote.monospacedDigit().weight(.semibold))
+                                .foregroundColor(.white)
+                                .padding(.horizontal)
+                                .padding(.vertical, 5)
+                        }
+                        .fixedSize()
+                    }
                 }
-                .fixedSize()
+                .padding(.vertical, 10)
             }
-            .padding(.vertical, 8)
         }
     }
 }

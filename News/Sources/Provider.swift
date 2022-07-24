@@ -1,4 +1,4 @@
-public enum Provider: UInt8 {
+public enum Provider: UInt8, CaseIterable {
     case
     all,
     theGuardian,
