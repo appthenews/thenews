@@ -74,8 +74,6 @@ struct Content: View {
                     .first {
                         $0.link == link
                     }
-                
-                print(item!.status)
             }
         } else {
             Image("Icon")
