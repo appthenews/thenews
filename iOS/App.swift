@@ -5,6 +5,7 @@ import News
     @State private var selection = 1
     @Environment(\.scenePhase) private var phase
     @UIApplicationDelegateAdaptor(Delegate.self) private var delegate
+    @AppStorage("reader") private var reader = false
     
     var body: some Scene {
         WindowGroup {
@@ -23,6 +24,7 @@ import News
                         .navigationViewStyle(.stack)
                 }
             }
+            .tint(reader ? Color("Text") : .accentColor)
             .task {
                 delegate.session.cloud.ready.notify(queue: .main) {
                     delegate.session.cloud.pull.send()

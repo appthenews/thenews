@@ -31,7 +31,7 @@ struct Settings: View {
             NavigationLink("Update", destination: Update(session: session))
                 .font(.callout)
             
-            NavigationLink("Text", destination: Circle())
+            NavigationLink("Reading", destination: Reading())
                 .font(.callout)
         }
         .headerProminence(.increased)
