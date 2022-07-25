@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct Content: View {
-    @ObservedObject var session: Session
+    let session: Session
     
     var body: some View {
         VStack {

@@ -63,7 +63,7 @@ import News
     private var news: some View {
         NavigationView {
             Sidebar(session: delegate.session)
-            Middlebar(session: delegate.session)
+            Middlebar(session: delegate.session, provider: nil)
             Content(session: delegate.session)
         }
         .tabItem {

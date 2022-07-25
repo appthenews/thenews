@@ -2,7 +2,7 @@ import SwiftUI
 import News
 
 struct Feeds: View {
-    @ObservedObject var session: Session
+    let session: Session
     @State private var feeds = Feed.allCases.map { _ in false }
     
     var body: some View {

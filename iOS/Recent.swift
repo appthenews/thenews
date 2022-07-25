@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct Recent: View {
-    @ObservedObject var session: Session
+    let session: Session
     
     var body: some View {
         List {

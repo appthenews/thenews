@@ -2,7 +2,7 @@ import SwiftUI
 import News
 
 struct Sidebar: View {
-    @ObservedObject var session: Session
+    let session: Session
     @State private var providers = Set<Provider>()
     @State private var feeds = false
     @State private var recents = Provider.allCases.reduce(into: [:]) { $0[$1] = 0 }
@@ -56,17 +56,17 @@ struct Sidebar: View {
     
     @ViewBuilder private func provider(provider: Provider) -> some View {
         if provider == .all || providers.contains(provider) {
-            NavigationLink(destination: Circle()) {
+            NavigationLink(destination: Middlebar(session: session, provider: provider)) {
                 HStack(spacing: 0) {
-                    Text(provider.title)
+                    Text(verbatim: provider.title)
                         .font(.body.weight(.medium))
                     Spacer()
                     if recents[provider]! > 0 {
                         ZStack {
                             Capsule()
                                 .fill(Color.accentColor)
-                            Text(recents[provider]!.formatted())
-                                .font(.footnote.monospacedDigit().weight(.semibold))
+                            Text(verbatim: recents[provider]!.formatted())
+                                .font(.footnote.monospacedDigit().weight(.bold))
                                 .foregroundColor(.white)
                                 .padding(.horizontal)
                                 .padding(.vertical, 5)
