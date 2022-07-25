@@ -33,6 +33,9 @@ struct Feeds: View {
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
         .listStyle(.insetGrouped)
         .navigationBarTitleDisplayMode(.large)
+        .onReceive(session.cloud) { model in
+            feeds = Feed.allCases.map { model.preferences.feeds[$0] ?? false }
+        }
     }
     
     private func feed(feed: Feed) -> some View {

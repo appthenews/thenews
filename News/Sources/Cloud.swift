@@ -20,13 +20,14 @@ extension Cloud where Output == Archive {
     }
     
     public func toggle(feed: Feed, value: Bool) async {
+        guard model.preferences.feeds[feed] != value else { return }
         model.preferences.feeds[feed] = value
-        
         await fetch()
         await stream()
     }
     
     public func fetch(interval: Interval) async {
+        guard model.preferences.fetch != interval else { return }
         model.preferences.fetch = interval
         
         await fetch()
@@ -34,6 +35,7 @@ extension Cloud where Output == Archive {
     }
     
     public func clean(interval: Interval) async {
+        guard model.preferences.clean != interval else { return }
         model.preferences.clean = interval
         await stream()
     }
