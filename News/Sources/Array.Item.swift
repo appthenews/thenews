@@ -13,8 +13,6 @@ extension Array where Element == Item {
             !components
                 .filter { filter in
                     item.title.localizedCaseInsensitiveContains(filter)
-                    || item.description.localizedCaseInsensitiveContains(filter)
-                    || item.link.localizedCaseInsensitiveContains(filter)
                 }
                 .isEmpty
         }

@@ -46,7 +46,7 @@ final class ItemTests: XCTestCase {
         
         XCTAssertTrue(items.filter(search: "lol").isEmpty)
         XCTAssertEqual(1, items.filter(search: "sg").count)
-        XCTAssertEqual(2, items.filter(search: "g").count)
+        XCTAssertEqual(1, items.filter(search: "g").count)
         XCTAssertEqual(2, items.filter(search: "").count)
     }
 }
