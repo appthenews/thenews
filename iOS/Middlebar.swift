@@ -19,14 +19,16 @@ struct Middlebar: View {
         .navigationBarTitleDisplayMode(.large)
         .onReceive(session.cloud) {
             if let provider = provider {
-                articles = $0.items(provider: provider).sorted()
+                articles = $0
+                    .items(provider: provider)
+                    .sorted()
             }
         }
     }
     
     private func link(article: Item) -> some View {
-        NavigationLink(destination: Circle()) {
-            HStack {
+        NavigationLink(destination: Content(session: session, provider: provider, item: article)) {
+            HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 6) {
                     if provider == .all {
                         Text(verbatim: article.feed.provider.title)
@@ -48,9 +50,12 @@ struct Middlebar: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-                Circle()
-                    .fill(Color.accentColor)
-                    .frame(width: 10, height: 10)
+                ZStack {
+                    Circle()
+                        .fill(Color.accentColor)
+                        .frame(width: 10, height: 10)
+                }
+                .frame(width: 30)
             }
             .padding(.vertical, 14)
         }
