@@ -4,8 +4,10 @@ import News
 struct Middlebar: View {
     let session: Session
     let provider: Provider?
-    @State private var articles = [Item]()
+    @State private var items = [Item]()
     @State private var search = ""
+    @State private var filters = false
+    @AppStorage("showing") private var showing = 0
     
     var body: some View {
         List {
@@ -17,11 +19,40 @@ struct Middlebar: View {
         .searchable(text: $search)
         .navigationTitle(provider?.title ?? "")
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    filters.toggle()
+                    
+                    if !filters {
+                        showing = 0
+                    }
+                } label: {
+                    Image(systemName: filters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                        .font(.system(size: 18, weight: .regular))
+                        .contentShape(Rectangle())
+                        .frame(width: 36, height: 36)
+                }
+            }
+            ToolbarItem(placement: .bottomBar) {
+                if filters {
+                    Picker("Showing", selection: $showing) {
+                        Text(verbatim: "All")
+                            .tag(0)
+                        Text(verbatim: "Not read")
+                            .tag(1)
+                        Text(verbatim: "Bookmarks")
+                            .tag(2)
+                    }
+                    .pickerStyle(.segmented)
+                    .padding(.bottom)
+                }
+            }
+        }
         .onReceive(session.cloud) {
             if let provider = provider {
-                articles = $0
+                items = $0
                     .items(provider: provider)
-                    .sorted()
             }
         }
     }
@@ -57,7 +88,7 @@ struct Middlebar: View {
                         if article.recent {
                             Circle()
                                 .fill(Color.accentColor)
-                                .frame(width: 10, height: 10)
+                                .frame(width: 8, height: 8)
                         }
                     case .bookmarked:
                         Image(systemName: "bookmark.fill")
@@ -73,5 +104,21 @@ struct Middlebar: View {
             }
             .padding(.vertical, 14)
         }
+    }
+    
+    private var articles: [Item] {
+        items
+            .filter { element in
+                switch showing {
+                case 0:
+                    return true
+                case 1:
+                    return element.status == .new
+                default:
+                    return element.status == .bookmarked
+                }
+            }
+            .filter(search: search)
+            .sorted()
     }
 }
