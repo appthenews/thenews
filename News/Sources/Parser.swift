@@ -84,8 +84,4 @@ final class Parser: NSObject, XMLParserDelegate {
     func parser(_: XMLParser, foundCharacters: String) {
         content += foundCharacters
     }
-    
-    deinit {
-        print("contnet gone")
-    }
 }

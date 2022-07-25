@@ -111,8 +111,4 @@ final class XML: NSObject, XMLParserDelegate {
     func parser(_: XMLParser, foundCharacters: String) {
         element += foundCharacters
     }
-    
-    deinit {
-        print("xml gone")
-    }
 }

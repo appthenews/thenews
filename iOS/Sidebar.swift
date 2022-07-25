@@ -65,10 +65,10 @@ struct Sidebar: View {
                         ZStack {
                             Capsule()
                                 .fill(Color.accentColor)
-                            Text(verbatim: recents[provider]!.formatted())
+                            Text(recents[provider]!, format: .number)
                                 .font(.footnote.monospacedDigit().weight(.bold))
                                 .foregroundColor(.white)
-                                .padding(.horizontal)
+                                .padding(.horizontal, 11)
                                 .padding(.vertical, 5)
                         }
                         .fixedSize()
