@@ -64,7 +64,7 @@ public struct Archive: Arch {
         var data = data
         self.timestamp = timestamp
         
-        if false && version == Self.version {
+        if version == Self.version {
             preferences = .init(data: &data)
             feeds = (0 ..< .init(data.number() as UInt8)).reduce(into: [:]) { result, _ in
                 result[.init(rawValue: data.number())!] = data.date()

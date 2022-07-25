@@ -9,8 +9,6 @@ final class Parser: NSObject, XMLParserDelegate {
     init(html: String) async throws {
         super.init()
         
-        debugPrint(html)
-        
         result = try await withUnsafeThrowingContinuation { [weak self] continuation in
             let clean = html
                 .replacingOccurrences(of: "<br><br>",
@@ -19,20 +17,23 @@ final class Parser: NSObject, XMLParserDelegate {
                 .replacingOccurrences(of: "<hr><hr>",
                                       with: "<hr>",
                                       options: .caseInsensitive)
-                .replacingOccurrences(of: "<p><p>",
-                                      with: "<p>",
-                                      options: .caseInsensitive)
                 .replacingOccurrences(of: "<br>",
                                       with: "\n",
                                       options: .caseInsensitive)
                 .replacingOccurrences(of: "<hr>",
                                       with: "\n",
                                       options: .caseInsensitive)
-                .replacingOccurrences(of: "<jkllkj>",
-                                      with: "\n\n\n",
+                .replacingOccurrences(of: "<p>",
+                                      with: "",
+                                      options: .caseInsensitive)
+                .replacingOccurrences(of: "</p>",
+                                      with: "\n",
                                       options: .caseInsensitive)
                 .replacingOccurrences(of: "<li>",
-                                      with: "\n\n\n",
+                                      with: "\n",
+                                      options: .caseInsensitive)
+                .replacingOccurrences(of: "\n\n",
+                                      with: "\n",
                                       options: .caseInsensitive)
             
             let xml = XMLParser(data: .init(("<xml>" + clean + "</xml>").utf8))
