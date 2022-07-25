@@ -2,6 +2,7 @@ import AppKit
 import Combine
 import CloudKit
 import Archivable
+import StoreKit
 import News
 
 final class Session {
@@ -20,6 +21,7 @@ final class Session {
     let items: AnyPublisher<[Item], Never>
     let ready = DispatchGroup()
     private var first = true
+    private var reviewed = false
     private var subs = Set<AnyCancellable>()
     
     init() {
@@ -163,5 +165,12 @@ final class Session {
         guard first else { return }
         first = false
         ready.leave()
+    }
+    
+    func review() {
+        if Defaults.ready && !reviewed {
+            SKStoreReviewController.requestReview()
+            reviewed = true
+        }
     }
 }

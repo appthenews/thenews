@@ -1,6 +1,5 @@
 import AppKit
 import Combine
-import StoreKit
 import News
 
 final class Content: NSVisualEffectView {
@@ -137,9 +136,7 @@ final class Content: NSVisualEffectView {
                         await session.cloud.read(item: item)
                     }
                     
-                    if Defaults.ready {
-                        SKStoreReviewController.requestReview()
-                    }
+                    session.review()
                 } else {
                     header.attributedStringValue = .init()
                     description.stringValue = ""
