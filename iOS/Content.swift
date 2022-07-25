@@ -33,6 +33,7 @@ struct Content: View {
                         .font(.body.weight(.regular))
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                .textSelection(.enabled)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                 .padding(22)
             }

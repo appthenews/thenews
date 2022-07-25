@@ -51,11 +51,24 @@ struct Middlebar: View {
                 }
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                 ZStack {
-                    Circle()
-                        .fill(Color.accentColor)
-                        .frame(width: 10, height: 10)
+                    switch article.status {
+                    case .new:
+                        if article.recent {
+                            Circle()
+                                .fill(Color.accentColor)
+                                .frame(width: 10, height: 10)
+                        }
+                    case .bookmarked:
+                        Image(systemName: "bookmark.fill")
+                            .font(.system(size: 16, weight: .light))
+                            .foregroundStyle(.secondary)
+                            .symbolRenderingMode(.hierarchical)
+                    default:
+                        EmptyView()
+                    }
                 }
-                .frame(width: 30)
+                .frame(width: 24)
+                .padding(.leading, 6)
             }
             .padding(.vertical, 14)
         }
