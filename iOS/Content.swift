@@ -39,6 +39,7 @@ struct Content: View {
             .navigationBarTitleDisplayMode(.inline)
         } else {
             Image("Icon")
+                .foregroundStyle(.secondary)
         }
     }
 }

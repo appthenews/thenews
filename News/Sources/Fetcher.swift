@@ -31,6 +31,8 @@ struct Fetcher {
     func fetch(feed: Feed, synched: Set<String>) async throws -> (ids: Set<String>, items: Set<Item>) {
         let (data, response) = try await session.data(from: feed.url)
         
+        debugPrint(String(decoding: data, as: UTF8.self))
+        
         guard (response as? HTTPURLResponse)?.statusCode == 200, !data.isEmpty
         else { throw NSError(domain: "", code: 0) }
         
