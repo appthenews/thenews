@@ -30,25 +30,26 @@ struct Middlebar: View {
         NavigationLink(destination: Content(session: session, link: article.link, provider: provider)) {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 6) {
-                    if provider == .all {
-                        Text(verbatim: article.feed.provider.title)
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                        + Text(verbatim: " — ")
-                            .font(.footnote.weight(.light))
-                            .foregroundColor(.secondary)
-                        + Text(article.date, format: .relative(presentation: .named, unitsStyle: .wide))
-                            .font(.footnote.weight(.light))
-                            .foregroundColor(.secondary)
-                    } else {
-                        Text(verbatim: article.date.formatted(.relative(presentation: .named, unitsStyle: .wide)).capitalized)
-                            .font(.footnote.weight(.light))
-                            .foregroundColor(.secondary)
+                    Group {
+                        if provider == .all {
+                            Text(verbatim: article.feed.provider.title)
+                                .font(.footnote)
+                            + Text(verbatim: " — ")
+                                .font(.footnote.weight(.light))
+                            + Text(article.date, format: .relative(presentation: .named, unitsStyle: .wide))
+                                .font(.footnote.weight(.light))
+                        } else {
+                            Text(verbatim: article.date.formatted(.relative(presentation: .named, unitsStyle: .wide)).capitalized)
+                                .font(.footnote.weight(.light))
+                        }
                     }
+                    .foregroundStyle(article.status == .new ? .secondary : .tertiary)
                     Text(verbatim: article.title)
                         .font(.callout)
+                        .foregroundStyle(article.status == .new ? .primary : .tertiary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                 ZStack {
                     switch article.status {
@@ -60,7 +61,7 @@ struct Middlebar: View {
                         }
                     case .bookmarked:
                         Image(systemName: "bookmark.fill")
-                            .font(.system(size: 16, weight: .light))
+                            .font(.system(size: 14, weight: .light))
                             .foregroundStyle(.secondary)
                             .symbolRenderingMode(.hierarchical)
                     default:

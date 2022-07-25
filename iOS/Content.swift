@@ -6,6 +6,8 @@ struct Content: View {
     let link: String?
     let provider: Provider?
     @State private var item: Item?
+    @State private var delete = false
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         if let link = link, let provider = provider {
@@ -38,6 +40,9 @@ struct Content: View {
                     .textSelection(.enabled)
                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                     .padding(22)
+                    .task {
+                        await session.cloud.read(item: item)
+                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -45,11 +50,23 @@ struct Content: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     if let item = item {
                         button(symbol: "trash") {
+                            delete = true
+                        }
+                        .confirmationDialog("Delete article?", isPresented: $delete) {
+                            Button("Delete", role: .destructive) {
+                                Task {
+                                    await session.cloud.delete(item: item)
+                                    dismiss()
+                                }
+                            }
                             
+                            Button("Cancel", role: .cancel) {
+                                delete = false
+                            }
                         }
                         
                         button(symbol: "square.and.arrow.up") {
-                            
+                            UIApplication.shared.share(URL(string: item.link)!)
                         }
                         
                         button(symbol: item.status == .bookmarked ? "bookmark.fill" : "bookmark") {
@@ -62,8 +79,10 @@ struct Content: View {
                             }
                         }
                         
-                        button(image: "IconSmall") {
-                            
+                        Link(destination: .init(string: item.link)!) {
+                            Image("IconSmall")
+                                .contentShape(Rectangle())
+                                .frame(width: 34, height: 40)
                         }
                     }
                 }
@@ -88,14 +107,6 @@ struct Content: View {
                 .symbolRenderingMode(.hierarchical)
                 .contentShape(Rectangle())
                 .frame(width: 30, height: 40)
-        }
-    }
-    
-    private func button(image: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(image)
-                .contentShape(Rectangle())
-                .frame(width: 34, height: 40)
         }
     }
 }
