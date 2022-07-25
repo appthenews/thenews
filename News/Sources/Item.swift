@@ -72,14 +72,6 @@ public struct Item: Storable, Hashable, Comparable {
               status: .bookmarked)
     }
     
-    public func hash(into: inout Hasher) {
-        into.combine(link)
-    }
-    
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.link == rhs.link
-    }
-    
     public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.date > rhs.date
     }

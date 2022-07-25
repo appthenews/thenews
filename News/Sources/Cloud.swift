@@ -64,15 +64,30 @@ extension Cloud where Output == Archive {
         guard item.status != .bookmarked else { return }
         model.items = model
             .items
-            .removing(item)
+            .filter {
+                $0.link != item.link
+            }
             .inserting(item.bookmarked)
+        await stream()
+    }
+    
+    public func unbookmark(item: Item) async {
+        guard item.status == .bookmarked else { return }
+        model.items = model
+            .items
+            .filter {
+                $0.link != item.link
+            }
+            .inserting(item.read)
         await stream()
     }
     
     public func delete(item: Item) async {
         model.items = model
             .items
-            .removing(item)
+            .filter {
+                $0.link != item.link
+            }
         await stream()
     }
 }

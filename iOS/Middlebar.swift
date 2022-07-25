@@ -27,7 +27,7 @@ struct Middlebar: View {
     }
     
     private func link(article: Item) -> some View {
-        NavigationLink(destination: Content(session: session, provider: provider, item: article)) {
+        NavigationLink(destination: Content(session: session, link: article.link, provider: provider)) {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 6) {
                     if provider == .all {

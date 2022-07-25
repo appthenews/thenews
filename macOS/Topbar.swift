@@ -75,7 +75,7 @@ final class Topbar: NSView {
                 guard let item = session.item.value else { return }
                 Task {
                     if item.status == .bookmarked {
-                        await session.cloud.read(item: item)
+                        await session.cloud.unbookmark(item: item)
                     } else {
                         await session.cloud.bookmark(item: item)
                     }
