@@ -15,12 +15,12 @@ import News
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     news
                         .navigationViewStyle(.columns)
-                    recent
+                    recents
                         .navigationViewStyle(.columns)
                 } else {
                     news
                         .navigationViewStyle(.stack)
-                    recent
+                    recents
                         .navigationViewStyle(.stack)
                 }
             }
@@ -74,13 +74,13 @@ import News
         .tag(1)
     }
     
-    private var recent: some View {
+    private var recents: some View {
         NavigationView {
-            Recent(session: session)
+            Recents(session: session)
             Content(session: session, link: nil, provider: nil)
         }
         .tabItem {
-            Label("Recent", systemImage: "clock")
+            Label("Recents", systemImage: "clock")
         }
         .tag(2)
     }

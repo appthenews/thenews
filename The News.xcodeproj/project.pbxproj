@@ -67,7 +67,7 @@
 		CEF6E071288C11CD006BDB70 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E070288C11CD006BDB70 /* Sidebar.swift */; };
 		CEF6E073288C132A006BDB70 /* Middlebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E072288C132A006BDB70 /* Middlebar.swift */; };
 		CEF6E075288C160C006BDB70 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E074288C160C006BDB70 /* Content.swift */; };
-		CEF6E077288C1669006BDB70 /* Recent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E076288C1669006BDB70 /* Recent.swift */; };
+		CEF6E077288C1669006BDB70 /* Recents.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E076288C1669006BDB70 /* Recents.swift */; };
 		CEF6E079288C169A006BDB70 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E078288C169A006BDB70 /* Settings.swift */; };
 		CEF6E07A288C1710006BDB70 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F1B2888173400AC1694 /* Store.swift */; };
 		CEF6E07D288C1753006BDB70 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF6E07C288C1753006BDB70 /* CloudKit.framework */; };
@@ -143,7 +143,7 @@
 		CEF6E070288C11CD006BDB70 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		CEF6E072288C132A006BDB70 /* Middlebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Middlebar.swift; sourceTree = "<group>"; };
 		CEF6E074288C160C006BDB70 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
-		CEF6E076288C1669006BDB70 /* Recent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recent.swift; sourceTree = "<group>"; };
+		CEF6E076288C1669006BDB70 /* Recents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recents.swift; sourceTree = "<group>"; };
 		CEF6E078288C169A006BDB70 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CEF6E07B288C174B006BDB70 /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		CEF6E07C288C1753006BDB70 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.5.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -263,7 +263,7 @@
 				CEF6E074288C160C006BDB70 /* Content.swift */,
 				CEF6E084288C1B6A006BDB70 /* Feeds.swift */,
 				CEF6E072288C132A006BDB70 /* Middlebar.swift */,
-				CEF6E076288C1669006BDB70 /* Recent.swift */,
+				CEF6E076288C1669006BDB70 /* Recents.swift */,
 				CE53F80A288AB3C100C91444 /* Session.swift */,
 				CE76D786288EFE15004AA314 /* Settings.Reading.swift */,
 				CEF6E078288C169A006BDB70 /* Settings.swift */,
@@ -465,7 +465,7 @@
 				CEF6E083288C17A5006BDB70 /* App.Delegate.swift in Sources */,
 				CEF6E079288C169A006BDB70 /* Settings.swift in Sources */,
 				CEF6E085288C1B6A006BDB70 /* Feeds.swift in Sources */,
-				CEF6E077288C1669006BDB70 /* Recent.swift in Sources */,
+				CEF6E077288C1669006BDB70 /* Recents.swift in Sources */,
 				CEF6E075288C160C006BDB70 /* Content.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

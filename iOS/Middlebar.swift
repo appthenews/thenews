@@ -92,7 +92,7 @@ struct Middlebar: View {
                     }
                     
                     Text(verbatim: article.title)
-                        .font(.callout)
+                        .font(.system(size: UIFont.preferredFont(forTextStyle: .callout).pointSize + session.font, weight: .regular))
                         .foregroundColor(session.reader
                                          ? article.status == .new ? .accentColor : .init(.tertiaryLabel)
                                          : article.status == .new ? .primary : .init(.tertiaryLabel))

@@ -10,11 +10,11 @@ struct Content: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        if let link = link, let provider = provider {
+        if let link = link {
             ScrollView {
                 if let item = item {
                     VStack(alignment: .leading, spacing: 0) {
-                        if provider == .all {
+                        if provider == nil || provider == .all {
                             Text(verbatim: item.feed.provider.title)
                                 .font(.callout)
                                 .foregroundColor(session.reader ? .accentColor : .secondary)
@@ -31,20 +31,23 @@ struct Content: View {
                         }
                         
                         Text(verbatim: item.title)
-                            .font(.title2.weight(.medium))
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .title2).pointSize + session.font, weight: .medium))
                             .foregroundColor(session.reader ? .accentColor : .primary)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding(.vertical, 22)
                         Text(verbatim: item.description)
-                            .font(.body.weight(.regular))
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize + session.font, weight: .regular))
                             .foregroundColor(session.reader ? .accentColor : .primary)
                             .fixedSize(horizontal: false, vertical: true)
+                            .padding(.bottom, 10)
                     }
                     .textSelection(.enabled)
                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                     .padding(22)
                     .task {
-                        await session.cloud.read(item: item)
+                        if provider != nil {
+                            await session.cloud.read(item: item)
+                        }
                     }
                 }
             }
@@ -92,11 +95,19 @@ struct Content: View {
                 }
             }
             .onReceive(session.cloud) {
-                item = $0
-                    .items(provider: provider)
-                    .first {
-                        $0.link == link
-                    }
+                if let provider = provider {
+                    item = $0
+                        .items(provider: provider)
+                        .first {
+                            $0.link == link
+                        }
+                } else {
+                    item = $0
+                        .recents
+                        .first {
+                            $0.link == link
+                        }
+                }
             }
         } else {
             Image("Icon")
