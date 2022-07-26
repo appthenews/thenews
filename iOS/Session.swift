@@ -1,8 +1,9 @@
-import Foundation
+import UIKit
 import CloudKit
+import StoreKit
+import Combine
 import Archivable
 import News
-import UIKit
 
 final class Session: ObservableObject {
     @Published var reader: Bool {
@@ -20,6 +21,8 @@ final class Session: ObservableObject {
     
     let cloud = Cloud<Archive, CKContainer>.new(identifier: "iCloud.thenews")
     let store = Store()
+    let previous = PassthroughSubject<Void, Never>()
+    let next = PassthroughSubject<Void, Never>()
     
     init() {
         reader = UserDefaults.standard.value(forKey: "reader") as? Bool ?? false

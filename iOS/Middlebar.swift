@@ -11,16 +11,34 @@ struct Middlebar: View {
     @AppStorage("showing") private var showing = 0
     
     var body: some View {
-        List {
-            Section(provider == nil ? "" : articles.count.formatted() + (articles.count == 1 ? " article" : " articles")) {
-                ForEach(articles, id: \.link, content: link(article:))
+        ScrollViewReader { proxy in
+            List {
+                Section(provider == nil ? "" : articles.count.formatted() + (articles.count == 1 ? " article" : " articles")) {
+                    ForEach(articles, id: \.link, content: link(article:))
+                }
+            }
+            .listStyle(.plain)
+            .searchable(text: $search)
+            .navigationTitle(provider?.title ?? "")
+            .navigationBarTitleDisplayMode(.large)
+            .background(session.reader ? .init("Background") : Color.clear)
+            .onReceive(session.previous) {
+                
+            }
+            .onReceive(session.next) {
+                if let selection = selection {
+                    let articles = articles
+                    articles
+                        .firstIndex {
+                            $0.link == selection
+                        }
+                        .map {
+                            self.selection = articles[$0 + 1].link
+                            proxy.scrollTo(self.selection, anchor: .center)
+                        }
+                }
             }
         }
-        .listStyle(.plain)
-        .searchable(text: $search)
-        .navigationTitle(provider?.title ?? "")
-        .navigationBarTitleDisplayMode(.large)
-        .background(session.reader ? .init("Background") : Color.clear)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
@@ -125,6 +143,7 @@ struct Middlebar: View {
         .listRowBackground(session.reader
                            ? selection == article.link ? nil : Color.clear
                            : nil)
+        .id(article.link)
     }
     
     private var articles: [Item] {

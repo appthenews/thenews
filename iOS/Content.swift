@@ -14,6 +14,38 @@ struct Content: View {
             ScrollView {
                 if let item = item {
                     VStack(alignment: .leading, spacing: 0) {
+                        HStack(spacing: 20) {
+                            Spacer()
+                            
+                            button(symbol: "trash", size: 18) {
+                                delete = true
+                            }
+                            .confirmationDialog("Delete article?", isPresented: $delete) {
+                                Button("Delete", role: .destructive) {
+                                    Task {
+                                        await session.cloud.delete(item: item)
+                                        dismiss()
+                                    }
+                                }
+                                
+                                Button("Cancel", role: .cancel) {
+                                    delete = false
+                                }
+                            }
+                            
+                            Link(destination: .init(string: item.link)!) {
+                                Text("Full article")
+                                    .font(.callout.weight(.medium))
+                            }
+                            .buttonStyle(.borderedProminent)
+                            
+                            button(symbol: "square.and.arrow.up", size: 18) {
+                                UIApplication.shared.share(URL(string: item.link)!)
+                            }
+                            Spacer()
+                        }
+                        .padding(.bottom)
+                        
                         if provider == nil || provider == .all {
                             Text(verbatim: item.feed.provider.title)
                                 .font(.callout)
@@ -56,27 +88,7 @@ struct Content: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     if let item = item {
-                        button(symbol: "trash") {
-                            delete = true
-                        }
-                        .confirmationDialog("Delete article?", isPresented: $delete) {
-                            Button("Delete", role: .destructive) {
-                                Task {
-                                    await session.cloud.delete(item: item)
-                                    dismiss()
-                                }
-                            }
-                            
-                            Button("Cancel", role: .cancel) {
-                                delete = false
-                            }
-                        }
-                        
-                        button(symbol: "square.and.arrow.up") {
-                            UIApplication.shared.share(URL(string: item.link)!)
-                        }
-                        
-                        button(symbol: item.status == .bookmarked ? "bookmark.fill" : "bookmark") {
+                        button(symbol: item.status == .bookmarked ? "bookmark.fill" : "bookmark", size: 14) {
                             Task {
                                 if item.status == .bookmarked {
                                     await session.cloud.unbookmark(item: item)
@@ -86,10 +98,9 @@ struct Content: View {
                             }
                         }
                         
-                        Link(destination: .init(string: item.link)!) {
-                            Image("IconSmall")
-                                .contentShape(Rectangle())
-                                .frame(width: 34, height: 40)
+                        if provider != nil {
+                            button(symbol: "chevron.up", size: 18, action: session.previous.send)
+                            button(symbol: "chevron.down", size: 18, action: session.next.send)
                         }
                     }
                 }
@@ -115,13 +126,13 @@ struct Content: View {
         }
     }
     
-    private func button(symbol: String, action: @escaping () -> Void) -> some View {
+    private func button(symbol: String, size: CGFloat, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: symbol)
-                .font(.system(size: 14, weight: .regular))
+                .font(.system(size: size, weight: .regular))
                 .symbolRenderingMode(.hierarchical)
                 .contentShape(Rectangle())
-                .frame(width: 30, height: 40)
+                .frame(width: 44, height: 44)
         }
     }
 }
