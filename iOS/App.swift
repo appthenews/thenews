@@ -80,7 +80,7 @@ import News
             Recent(session: session, link: nil)
         }
         .tabItem {
-            Label("Recents", systemImage: "clock")
+            Label("Recents", systemImage: "clock.arrow.circlepath")
         }
         .tag(2)
     }
