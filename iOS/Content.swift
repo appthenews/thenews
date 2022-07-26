@@ -2,12 +2,11 @@ import SwiftUI
 import News
 
 struct Content: View {
-    let session: Session
+    @ObservedObject var session: Session
     let link: String?
     let provider: Provider?
     @State private var item: Item?
     @State private var delete = false
-    @AppStorage("reader") private var reader = false
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -18,27 +17,27 @@ struct Content: View {
                         if provider == .all {
                             Text(verbatim: item.feed.provider.title)
                                 .font(.callout)
-                                .foregroundColor(reader ? Color("Text") : .secondary)
+                                .foregroundColor(session.reader ? .init("Text") : .secondary)
                             + Text(verbatim: " — ")
                                 .font(.callout.weight(.light))
-                                .foregroundColor(reader ? Color("Text") : .secondary)
+                                .foregroundColor(session.reader ? .init("Text") : .secondary)
                             + Text(item.date, format: .relative(presentation: .named, unitsStyle: .wide))
                                 .font(.callout.weight(.light))
-                                .foregroundColor(reader ? Color("Text") : .secondary)
+                                .foregroundColor(session.reader ? .init("Text") : .secondary)
                         } else {
                             Text(verbatim: item.date.formatted(.relative(presentation: .named, unitsStyle: .wide)).capitalized)
                                 .font(.callout.weight(.light))
-                                .foregroundColor(reader ? Color("Text") : .secondary)
+                                .foregroundColor(session.reader ? .init("Text") : .secondary)
                         }
                         
                         Text(verbatim: item.title)
                             .font(.title2.weight(.medium))
-                            .foregroundColor(reader ? Color("Text") : .primary)
+                            .foregroundColor(session.reader ? .init("Text") : .primary)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding(.vertical, 22)
                         Text(verbatim: item.description)
                             .font(.body.weight(.regular))
-                            .foregroundColor(reader ? Color("Text") : .primary)
+                            .foregroundColor(session.reader ? .init("Text") : .primary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     .textSelection(.enabled)
@@ -50,7 +49,7 @@ struct Content: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .background(reader ? Color("Background") : Color.clear)
+            .background(session.reader ? .init("Background") : Color.clear)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     if let item = item {
