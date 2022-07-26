@@ -2,10 +2,11 @@ import SwiftUI
 import News
 
 struct Sidebar: View {
-    let session: Session
+    @ObservedObject var session: Session
     @State private var providers = Set<Provider>()
     @State private var feeds = false
     @State private var recents = Provider.allCases.reduce(into: [:]) { $0[$1] = 0 }
+    @State private var selection: Provider?
     
     var body: some View {
         List {
@@ -15,9 +16,10 @@ struct Sidebar: View {
             provider(provider: .derSpiegel)
             provider(provider: .theLocal)
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
         .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.large)
+        .background(session.reader ? .init("Background") : Color.clear)
         .sheet(isPresented: $feeds) {
             NavigationView {
                 Feeds(session: session)
@@ -56,9 +58,12 @@ struct Sidebar: View {
     
     @ViewBuilder private func provider(provider: Provider) -> some View {
         if provider == .all || providers.contains(provider) {
-            NavigationLink(destination: Middlebar(session: session, provider: provider)) {
+            NavigationLink(tag: provider, selection: $selection) {
+                Middlebar(session: session, provider: provider)
+            } label: {
                 HStack(spacing: 0) {
                     Text(verbatim: provider.title)
+                        .foregroundColor(session.reader ? .accentColor : .primary)
                         .font(.body.weight(.medium))
                     Spacer()
                     if recents[provider]! > 0 {
@@ -67,7 +72,7 @@ struct Sidebar: View {
                                 .fill(Color.accentColor)
                             Text(recents[provider]!, format: .number)
                                 .font(.footnote.monospacedDigit().weight(.bold))
-                                .foregroundColor(.white)
+                                .foregroundColor(session.reader ? .init("Background") : .white)
                                 .padding(.horizontal, 11)
                                 .padding(.vertical, 5)
                         }
@@ -76,6 +81,9 @@ struct Sidebar: View {
                 }
                 .padding(.vertical, 10)
             }
+            .listRowBackground(session.reader
+                               ? selection == provider ? nil : Color.clear
+                               : nil)
         }
     }
 }

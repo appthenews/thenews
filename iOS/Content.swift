@@ -17,27 +17,27 @@ struct Content: View {
                         if provider == .all {
                             Text(verbatim: item.feed.provider.title)
                                 .font(.callout)
-                                .foregroundColor(session.reader ? .init("Text") : .secondary)
+                                .foregroundColor(session.reader ? .accentColor : .secondary)
                             + Text(verbatim: " — ")
                                 .font(.callout.weight(.light))
-                                .foregroundColor(session.reader ? .init("Text") : .secondary)
+                                .foregroundColor(session.reader ? .accentColor : .secondary)
                             + Text(item.date, format: .relative(presentation: .named, unitsStyle: .wide))
                                 .font(.callout.weight(.light))
-                                .foregroundColor(session.reader ? .init("Text") : .secondary)
+                                .foregroundColor(session.reader ? .accentColor : .secondary)
                         } else {
                             Text(verbatim: item.date.formatted(.relative(presentation: .named, unitsStyle: .wide)).capitalized)
                                 .font(.callout.weight(.light))
-                                .foregroundColor(session.reader ? .init("Text") : .secondary)
+                                .foregroundColor(session.reader ? .accentColor : .secondary)
                         }
                         
                         Text(verbatim: item.title)
                             .font(.title2.weight(.medium))
-                            .foregroundColor(session.reader ? .init("Text") : .primary)
+                            .foregroundColor(session.reader ? .accentColor : .primary)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding(.vertical, 22)
                         Text(verbatim: item.description)
                             .font(.body.weight(.regular))
-                            .foregroundColor(session.reader ? .init("Text") : .primary)
+                            .foregroundColor(session.reader ? .accentColor : .primary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     .textSelection(.enabled)

@@ -2,11 +2,12 @@ import SwiftUI
 import News
 
 struct Middlebar: View {
-    let session: Session
+    @ObservedObject var session: Session
     let provider: Provider?
     @State private var items = [Item]()
     @State private var search = ""
     @State private var filters = false
+    @State private var selection: String?
     @AppStorage("showing") private var showing = 0
     
     var body: some View {
@@ -19,6 +20,7 @@ struct Middlebar: View {
         .searchable(text: $search)
         .navigationTitle(provider?.title ?? "")
         .navigationBarTitleDisplayMode(.large)
+        .background(session.reader ? .init("Background") : Color.clear)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
@@ -34,7 +36,7 @@ struct Middlebar: View {
                         .frame(width: 36, height: 36)
                 }
             }
-            ToolbarItem(placement: .bottomBar) {
+            ToolbarItem(placement: .navigation) {
                 if filters {
                     Picker("Showing", selection: $showing) {
                         Text(verbatim: "All")
@@ -45,7 +47,6 @@ struct Middlebar: View {
                             .tag(2)
                     }
                     .pickerStyle(.segmented)
-                    .padding(.bottom)
                 }
             }
         }
@@ -55,29 +56,46 @@ struct Middlebar: View {
                     .items(provider: provider)
             }
         }
+        .task {
+            filters = showing != 0
+        }
     }
     
     private func link(article: Item) -> some View {
-        NavigationLink(destination: Content(session: session, link: article.link, provider: provider)) {
+        NavigationLink(tag: article.link, selection: $selection) {
+            Content(session: session, link: article.link, provider: provider)
+        } label: {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 6) {
-                    Group {
-                        if provider == .all {
-                            Text(verbatim: article.feed.provider.title)
-                                .font(.footnote)
-                            + Text(verbatim: " — ")
-                                .font(.footnote.weight(.light))
-                            + Text(article.date, format: .relative(presentation: .named, unitsStyle: .wide))
-                                .font(.footnote.weight(.light))
-                        } else {
-                            Text(verbatim: article.date.formatted(.relative(presentation: .named, unitsStyle: .wide)).capitalized)
-                                .font(.footnote.weight(.light))
-                        }
+                    if provider == .all {
+                        Text(verbatim: article.feed.provider.title)
+                            .foregroundColor(session.reader
+                                             ? article.status == .new ? .accentColor : .init(.tertiaryLabel)
+                                             : article.status == .new ? .secondary : .init(.tertiaryLabel))
+                            .font(.footnote)
+                        + Text(verbatim: " — ")
+                            .foregroundColor(session.reader
+                                             ? article.status == .new ? .accentColor : .init(.tertiaryLabel)
+                                             : article.status == .new ? .secondary : .init(.tertiaryLabel))
+                            .font(.footnote.weight(.light))
+                        + Text(article.date, format: .relative(presentation: .named, unitsStyle: .wide))
+                            .foregroundColor(session.reader
+                                             ? article.status == .new ? .accentColor : .init(.tertiaryLabel)
+                                             : article.status == .new ? .secondary : .init(.tertiaryLabel))
+                            .font(.footnote.weight(.light))
+                    } else {
+                        Text(verbatim: article.date.formatted(.relative(presentation: .named, unitsStyle: .wide)).capitalized)
+                            .foregroundColor(session.reader
+                                             ? article.status == .new ? .accentColor : .init(.tertiaryLabel)
+                                             : article.status == .new ? .secondary : .init(.tertiaryLabel))
+                            .font(.footnote.weight(.light))
                     }
-                    .foregroundStyle(article.status == .new ? .secondary : .tertiary)
+                    
                     Text(verbatim: article.title)
                         .font(.callout)
-                        .foregroundStyle(article.status == .new ? .primary : .tertiary)
+                        .foregroundColor(session.reader
+                                         ? article.status == .new ? .accentColor : .init(.tertiaryLabel)
+                                         : article.status == .new ? .primary : .init(.tertiaryLabel))
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 
@@ -104,6 +122,9 @@ struct Middlebar: View {
             }
             .padding(.vertical, 14)
         }
+        .listRowBackground(session.reader
+                           ? selection == article.link ? nil : Color.clear
+                           : nil)
     }
     
     private var articles: [Item] {

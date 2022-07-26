@@ -2,6 +2,7 @@ import SwiftUI
 import News
 
 @main struct App: SwiftUI.App {
+    @StateObject private var session = Session()
     @State private var selection = 1
     @Environment(\.scenePhase) private var phase
     @UIApplicationDelegateAdaptor(Delegate.self) private var delegate
@@ -23,15 +24,16 @@ import News
                         .navigationViewStyle(.stack)
                 }
             }
-            .tint(delegate.session.reader ? .init("Text") : .accentColor)
+            .accentColor(session.reader ? .init("Text") : .init("AccentColor"))
             .task {
-                delegate.session.cloud.ready.notify(queue: .main) {
-                    delegate.session.cloud.pull.send()
+                delegate.session = session
+                session.cloud.ready.notify(queue: .main) {
+                    session.cloud.pull.send()
                     Defaults.start()
                     
                     Task
                         .detached {
-                            await delegate.session.store.launch()
+                            await session.store.launch()
                         }
                 }
             }
@@ -39,11 +41,10 @@ import News
         .onChange(of: phase) {
             switch $0 {
             case .active:
-                delegate.session.cloud.pull.send()
+                session.cloud.pull.send()
                 
                 Task {
-                    await delegate.session.cloud.fetch()
-//                    session.notify()
+                    await session.cloud.fetch()
                 }
             default:
                 break
@@ -53,7 +54,7 @@ import News
     
     private var settings: some View {
         NavigationView {
-            Settings(session: delegate.session)
+            Settings(session: session)
         }
         .tabItem {
             Label("Settings", systemImage: "slider.horizontal.3")
@@ -63,9 +64,9 @@ import News
     
     private var news: some View {
         NavigationView {
-            Sidebar(session: delegate.session)
-            Middlebar(session: delegate.session, provider: nil)
-            Content(session: delegate.session, link: nil, provider: nil)
+            Sidebar(session: session)
+            Middlebar(session: session, provider: nil)
+            Content(session: session, link: nil, provider: nil)
         }
         .tabItem {
             Label("News", image: "Icon")
@@ -75,8 +76,8 @@ import News
     
     private var recent: some View {
         NavigationView {
-            Recent(session: delegate.session)
-            Content(session: delegate.session, link: nil, provider: nil)
+            Recent(session: session)
+            Content(session: session, link: nil, provider: nil)
         }
         .tabItem {
             Label("Recent", systemImage: "clock")
