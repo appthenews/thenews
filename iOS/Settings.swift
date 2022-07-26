@@ -60,7 +60,7 @@ struct Settings: View {
             
             Link(destination: .init(string: "https://appthenews.github.io/about")!) {
                 HStack {
-                    Text("appthenews.github.io/about")
+                    Text(verbatim: "appthenews.github.io/about")
                         .foregroundColor(.primary)
                         .font(.footnote.weight(.regular))
                     

@@ -65,8 +65,8 @@ import News
     private var news: some View {
         NavigationView {
             Sidebar(session: session)
-            Middlebar(session: session, provider: nil)
-            Content(session: session, link: nil, provider: nil)
+            Middlebar(session: session)
+            Content(session: session)
         }
         .tabItem {
             Label("News", image: "Icon")
@@ -77,7 +77,7 @@ import News
     private var recents: some View {
         NavigationView {
             Recents(session: session)
-            Content(session: session, link: nil, provider: nil)
+            Recent(session: session, link: nil)
         }
         .tabItem {
             Label("Recents", systemImage: "clock")

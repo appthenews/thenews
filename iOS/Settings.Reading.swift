@@ -22,11 +22,11 @@ extension Settings {
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     } minimumValueLabel: {
-                        Text("A")
+                        Text(verbatim: "A")
                             .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize, weight: .medium))
                             .foregroundStyle(.secondary)
                     } maximumValueLabel: {
-                        Text("A")
+                        Text(verbatim: "A")
                             .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize + 10, weight: .medium))
                             .foregroundStyle(.secondary)
                     }

@@ -13,6 +13,7 @@
 		CE19C0EB287725330045E221 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19C0EA287725330045E221 /* Stack.swift */; };
 		CE19C0ED287726150045E221 /* Sidebar.Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19C0EC287726150045E221 /* Sidebar.Item.swift */; };
 		CE1CE2082888536D0027B7B5 /* Control.Plain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CE2072888536D0027B7B5 /* Control.Plain.swift */; };
+		CE2B6E4A289010F80058C83A /* Recent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2B6E49289010F80058C83A /* Recent.swift */; };
 		CE32BDED2881714C0091FAC7 /* Preferences.Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE32BDEC2881714C0091FAC7 /* Preferences.Font.swift */; };
 		CE346080287066FD001962E7 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE34607F287066FD001962E7 /* App.swift */; };
 		CE346082287066FD001962E7 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE346081287066FD001962E7 /* Window.swift */; };
@@ -84,6 +85,7 @@
 		CE19C0EA287725330045E221 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		CE19C0EC287726150045E221 /* Sidebar.Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.Item.swift; sourceTree = "<group>"; };
 		CE1CE2072888536D0027B7B5 /* Control.Plain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Control.Plain.swift; sourceTree = "<group>"; };
+		CE2B6E49289010F80058C83A /* Recent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recent.swift; sourceTree = "<group>"; };
 		CE32BDEC2881714C0091FAC7 /* Preferences.Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.Font.swift; sourceTree = "<group>"; };
 		CE346077287065D9001962E7 /* News */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = News; sourceTree = "<group>"; };
 		CE34607C287066FD001962E7 /* The News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The News.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -263,6 +265,7 @@
 				CEF6E074288C160C006BDB70 /* Content.swift */,
 				CEF6E084288C1B6A006BDB70 /* Feeds.swift */,
 				CEF6E072288C132A006BDB70 /* Middlebar.swift */,
+				CE2B6E49289010F80058C83A /* Recent.swift */,
 				CEF6E076288C1669006BDB70 /* Recents.swift */,
 				CE53F80A288AB3C100C91444 /* Session.swift */,
 				CE76D786288EFE15004AA314 /* Settings.Reading.swift */,
@@ -466,6 +469,7 @@
 				CEF6E079288C169A006BDB70 /* Settings.swift in Sources */,
 				CEF6E085288C1B6A006BDB70 /* Feeds.swift in Sources */,
 				CEF6E077288C1669006BDB70 /* Recents.swift in Sources */,
+				CE2B6E4A289010F80058C83A /* Recent.swift in Sources */,
 				CEF6E075288C160C006BDB70 /* Content.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

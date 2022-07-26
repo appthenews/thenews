@@ -17,14 +17,14 @@ struct Recents: View {
                     items = $0.recents
                 }
                 .onAppear {
-                    proxy.scrollTo(items.first, anchor: .top)
+                    proxy.scrollTo(items.first?.link, anchor: .top)
                 }
         }
     }
     
     private func link(article: Item) -> some View {
         NavigationLink(tag: article.link, selection: $selection) {
-            Content(session: session, link: article.link, provider: nil)
+            Recent(session: session, link: article.link)
         } label: {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 6) {
@@ -60,8 +60,10 @@ struct Recents: View {
             .padding(.vertical, 14)
         }
         .listRowBackground(session.reader
-                           ? selection == article.link ? nil : Color.clear
+                           ? selection == article.link
+                                ? .accentColor.opacity(0.15)
+                                : Color.clear
                            : nil)
-        .id(article)
+        .id(article.link)
     }
 }

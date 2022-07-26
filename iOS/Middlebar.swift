@@ -3,60 +3,57 @@ import News
 
 struct Middlebar: View {
     @ObservedObject var session: Session
-    let provider: Provider?
-    @State private var items = [Item]()
-    @State private var search = ""
-    @State private var filters = false
-    @State private var selection: String?
-    @AppStorage("showing") private var showing = 0
     
     var body: some View {
+        NavigationLink(destination: Content(session: session), tag: true, selection: .init(get: {
+            session.item != nil
+        }, set: {
+            if $0 != true {
+                session.item = nil
+            }
+        })) {
+            
+        }
+        
         ScrollViewReader { proxy in
             List {
-                Section(provider == nil ? "" : articles.count.formatted() + (articles.count == 1 ? " article" : " articles")) {
-                    ForEach(articles, id: \.link, content: link(article:))
-                }
+                Text(verbatim: session.provider == nil
+                     ? ""
+                     : session.articles.count.formatted() + (session.articles.count == 1
+                                                             ? " article"
+                                                             : " articles"))
+                .font(.callout.monospacedDigit())
+                .foregroundColor(session.reader ? .accentColor : .secondary)
+                .listRowBackground(Color.clear)
+                .listSectionSeparator(.hidden)
+                
+                ForEach(session.articles, id: \.link, content: link(article:))
             }
             .listStyle(.plain)
-            .searchable(text: $search)
-            .navigationTitle(provider?.title ?? "")
+            .searchable(text: $session.search)
+            .navigationTitle(session.provider?.title ?? "")
             .navigationBarTitleDisplayMode(.large)
             .background(session.reader ? .init("Background") : Color.clear)
-            .onReceive(session.previous) {
-                
-            }
-            .onReceive(session.next) {
-                if let selection = selection {
-                    let articles = articles
-                    articles
-                        .firstIndex {
-                            $0.link == selection
-                        }
-                        .map {
-                            self.selection = articles[$0 + 1].link
-                            proxy.scrollTo(self.selection, anchor: .center)
-                        }
-                }
+            .onAppear {
+                proxy.scrollTo(session.item?.link, anchor: .center)
             }
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    filters.toggle()
-                    
-                    if !filters {
-                        showing = 0
-                    }
+                    session.filters.toggle()
                 } label: {
-                    Image(systemName: filters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                    Image(systemName: session.filters
+                          ? "line.3.horizontal.decrease.circle.fill"
+                          : "line.3.horizontal.decrease.circle")
                         .font(.system(size: 18, weight: .regular))
                         .contentShape(Rectangle())
                         .frame(width: 36, height: 36)
                 }
             }
             ToolbarItem(placement: .navigation) {
-                if filters {
-                    Picker("Showing", selection: $showing) {
+                if session.filters {
+                    Picker("Showing", selection: $session.showing) {
                         Text(verbatim: "All")
                             .tag(0)
                         Text(verbatim: "Not read")
@@ -68,24 +65,15 @@ struct Middlebar: View {
                 }
             }
         }
-        .onReceive(session.cloud) {
-            if let provider = provider {
-                items = $0
-                    .items(provider: provider)
-            }
-        }
-        .task {
-            filters = showing != 0
-        }
     }
     
     private func link(article: Item) -> some View {
-        NavigationLink(tag: article.link, selection: $selection) {
-            Content(session: session, link: article.link, provider: provider)
+        Button {
+            session.item = article
         } label: {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 6) {
-                    if provider == .all {
+                    if session.provider == .all {
                         Text(verbatim: article.feed.provider.title)
                             .foregroundColor(session.reader
                                              ? article.status == .new ? .accentColor : .init(.tertiaryLabel)
@@ -141,24 +129,10 @@ struct Middlebar: View {
             .padding(.vertical, 14)
         }
         .listRowBackground(session.reader
-                           ? selection == article.link ? nil : Color.clear
+                           ? session.item?.link == article.link
+                                ? .accentColor.opacity(0.15)
+                                : Color.clear
                            : nil)
         .id(article.link)
-    }
-    
-    private var articles: [Item] {
-        items
-            .filter { element in
-                switch showing {
-                case 0:
-                    return true
-                case 1:
-                    return element.status == .new
-                default:
-                    return element.status == .bookmarked
-                }
-            }
-            .filter(search: search)
-            .sorted()
     }
 }

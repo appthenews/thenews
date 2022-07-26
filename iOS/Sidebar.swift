@@ -6,7 +6,6 @@ struct Sidebar: View {
     @State private var providers = Set<Provider>()
     @State private var feeds = false
     @State private var recents = Provider.allCases.reduce(into: [:]) { $0[$1] = 0 }
-    @State private var selection: Provider?
     
     var body: some View {
         List {
@@ -58,8 +57,8 @@ struct Sidebar: View {
     
     @ViewBuilder private func provider(provider: Provider) -> some View {
         if provider == .all || providers.contains(provider) {
-            NavigationLink(tag: provider, selection: $selection) {
-                Middlebar(session: session, provider: provider)
+            NavigationLink(tag: provider, selection: $session.provider) {
+                Middlebar(session: session)
             } label: {
                 HStack(spacing: 0) {
                     Text(verbatim: provider.title)
@@ -79,10 +78,12 @@ struct Sidebar: View {
                         .fixedSize()
                     }
                 }
-                .padding(.vertical, 10)
+                .padding(.vertical, 15)
             }
             .listRowBackground(session.reader
-                               ? selection == provider ? nil : Color.clear
+                               ? session.provider == provider
+                                    ? .accentColor.opacity(0.15)
+                                    : Color.clear
                                : nil)
         }
     }
