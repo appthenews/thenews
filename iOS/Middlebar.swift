@@ -148,7 +148,9 @@ struct Middlebar: View {
                            ? session.item?.link == article.link || selection == article.link
                                 ? .accentColor.opacity(0.15)
                                 : Color.clear
-                           : nil)
+                           : selection == article.link
+                               ? .primary.opacity(0.1)
+                               : Color.clear)
         .id(article.link)
     }
 }

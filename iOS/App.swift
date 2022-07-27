@@ -3,6 +3,7 @@ import News
 
 @main struct App: SwiftUI.App {
     @StateObject private var session = Session()
+    @State private var purchased = false
     @Environment(\.scenePhase) private var phase
     @UIApplicationDelegateAdaptor(Delegate.self) private var delegate
     
@@ -21,7 +22,14 @@ import News
                 recents
                     .navigationViewStyle(.stack)
             }
+            .sheet(isPresented: $purchased) {
+                Sheet(rootView: Purchased())
+            }
             .accentColor(session.reader ? .init("Text") : .init("AccentColor"))
+            .onReceive(session.store.purchased) {
+                session.froob = false
+                purchased = true
+            }
             .task {
                 delegate.session = session
                 session.cloud.ready.notify(queue: .main) {
