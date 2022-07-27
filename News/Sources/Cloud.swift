@@ -57,7 +57,7 @@ extension Cloud where Output == Archive {
                 }
                 return false
             })
-        .prefix(10))
+        .prefix(30))
         
         await stream()
     }

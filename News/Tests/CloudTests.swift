@@ -179,7 +179,7 @@ final class CloudTests: XCTestCase {
     func testRecentsLimit10() async {
         await cloud.toggle(.reutersInternational, true)
         
-        let items = (0 ... 15)
+        let items = (0 ... 40)
             .map {
                 Item(feed: .reutersInternational,
                                 title: "lk",
@@ -195,7 +195,7 @@ final class CloudTests: XCTestCase {
         }
         
         let recents = await cloud.model.recents
-        XCTAssertEqual(10, recents.count)
+        XCTAssertEqual(30, recents.count)
     }
     
     func testRecentsCleanDeleted() async {
