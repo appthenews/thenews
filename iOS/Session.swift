@@ -61,7 +61,7 @@ final class Session: ObservableObject {
         font = UserDefaults.standard.value(forKey: "font") as? Double ?? 0
         showing = UserDefaults.standard.value(forKey: "showing") as? Int ?? 0
         filters = UserDefaults.standard.value(forKey: "showing") as? Int != 0
-        
+
         accent()
         
         cloud

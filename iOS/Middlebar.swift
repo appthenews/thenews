@@ -3,6 +3,7 @@ import News
 
 struct Middlebar: View {
     @ObservedObject var session: Session
+    @State private var selection: String?
     
     var body: some View {
         NavigationLink(destination: Content(session: session), tag: true, selection: .init(get: {
@@ -132,12 +133,19 @@ struct Middlebar: View {
                         .foregroundColor(article.status == .new ? .init(.tertiaryLabel) : .init(.quaternaryLabel))
                 }
                 .frame(width: 16)
-                .padding(.leading, 6)
+                .padding(.leading, 8)
             }
             .padding(.vertical, 14)
         }
+        .buttonStyle(Listed {
+            if $0 {
+                selection = article.link
+            } else if selection == article.link {
+                selection = nil
+            }
+        })
         .listRowBackground(session.reader
-                           ? session.item?.link == article.link
+                           ? session.item?.link == article.link || selection == article.link
                                 ? .accentColor.opacity(0.15)
                                 : Color.clear
                            : nil)

@@ -23,42 +23,62 @@ struct Recents: View {
     }
     
     private func link(article: Item) -> some View {
-        NavigationLink(tag: article.link, selection: $selection) {
-            Recent(session: session, link: article.link)
-        } label: {
-            HStack(spacing: 0) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(verbatim: article.feed.provider.title)
-                        .foregroundColor(session.reader ? .accentColor : .secondary)
-                        .font(.footnote)
-                    + Text(verbatim: " — ")
-                        .foregroundColor(session.reader ? .accentColor : .secondary)
-                        .font(.footnote.weight(.light))
-                    + Text(article.date, format: .relative(presentation: .named, unitsStyle: .wide))
-                        .foregroundColor(session.reader ? .accentColor : .secondary)
-                        .font(.footnote.weight(.light))
-                    Text(verbatim: article.title)
-                        .font(.system(size: UIFont.preferredFont(forTextStyle: .callout).pointSize + session.font, weight: .regular))
-                        .foregroundColor(session.reader ? .accentColor : .primary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-                ZStack {
-                    switch article.status {
-                    case .bookmarked:
-                        Image(systemName: "bookmark.fill")
-                            .font(.system(size: 14, weight: .light))
-                            .foregroundStyle(.secondary)
-                            .symbolRenderingMode(.hierarchical)
-                    default:
-                        EmptyView()
+        Button {
+            selection = article.link
+            session.tab = 1
+            
+            if session.item?.link != article.link {
+                if session.provider == article.feed.provider || session.provider == .all {
+                    session.item = article
+                } else if session.provider == nil {
+                    session.provider = article.feed.provider
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                        session.item = article
+                    }
+                } else {
+                    session.provider = nil
+                
+                    if session.item != nil {
+                        session.item = nil
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
+                        session.provider = article.feed.provider
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+                        session.item = article
                     }
                 }
-                .frame(width: 24)
-                .padding(.leading, 6)
             }
-            .padding(.vertical, 14)
+        } label: {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(verbatim: article.feed.provider.title)
+                    .foregroundColor(session.reader ? .accentColor : .secondary)
+                    .font(.footnote)
+                + Text(verbatim: " — ")
+                    .foregroundColor(session.reader ? .accentColor : .secondary)
+                    .font(.footnote.weight(.light))
+                + Text(article.date, format: .relative(presentation: .named, unitsStyle: .wide))
+                    .foregroundColor(session.reader ? .accentColor : .secondary)
+                    .font(.footnote.weight(.light))
+                Text(verbatim: article.title)
+                    .font(.system(size: UIFont.preferredFont(forTextStyle: .callout).pointSize, weight: .regular))
+                    .kerning(0.5)
+                    .foregroundColor(session.reader ? .accentColor : .primary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+            .padding(.vertical, 6)
         }
+        .buttonStyle(Listed {
+            if $0 {
+                selection = article.link
+            } else if selection == article.link {
+                selection = nil
+            }
+        })
         .listRowBackground(session.reader
                            ? selection == article.link
                                 ? .accentColor.opacity(0.15)

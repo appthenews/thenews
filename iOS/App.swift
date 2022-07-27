@@ -14,14 +14,12 @@ import News
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     news
                         .navigationViewStyle(.columns)
-                    recents
-                        .navigationViewStyle(.columns)
                 } else {
                     news
                         .navigationViewStyle(.stack)
-                    recents
-                        .navigationViewStyle(.stack)
                 }
+                recents
+                    .navigationViewStyle(.stack)
             }
             .accentColor(session.reader ? .init("Text") : .init("AccentColor"))
             .task {
@@ -76,7 +74,6 @@ import News
     private var recents: some View {
         NavigationView {
             Recents(session: session)
-            Recent(session: session, link: nil)
         }
         .tabItem {
             Label("Recents", systemImage: "clock.arrow.circlepath")
