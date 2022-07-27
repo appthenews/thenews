@@ -70,6 +70,10 @@ struct Content: View {
                         Spacer()
                     }
                     .padding(.vertical, 10)
+                    
+                    if session.froob {
+                        Froob(session: session)
+                    }
                 }
                 .textSelection(.enabled)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)

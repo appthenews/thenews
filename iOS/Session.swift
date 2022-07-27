@@ -47,6 +47,7 @@ final class Session: ObservableObject {
         }
     }
     
+    @Published var froob: Bool
     @Published var tab = 1
     @Published var provider: Provider?
     @Published var search = ""
@@ -61,7 +62,8 @@ final class Session: ObservableObject {
         font = UserDefaults.standard.value(forKey: "font") as? Double ?? 0
         showing = UserDefaults.standard.value(forKey: "showing") as? Int ?? 0
         filters = UserDefaults.standard.value(forKey: "showing") as? Int != 0
-
+        froob = .init(Defaults.froob)
+        
         accent()
         
         cloud

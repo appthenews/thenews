@@ -135,7 +135,7 @@ struct Middlebar: View {
                 .frame(width: 16)
                 .padding(.leading, 8)
             }
-            .padding(.vertical, 14)
+            .padding(.vertical, 10)
         }
         .buttonStyle(Listed {
             if $0 {
