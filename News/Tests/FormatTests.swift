@@ -11,7 +11,7 @@ final class FormatTest: XCTestCase {
 Critics of Kais Saied fear he will rip up democracy that emerged from 2011 revolution
 Tunisians have begun voting in a referendum on a new constitution that critics of the president fear will dismantle the democracy that emerged from a 2011 revolution by handing him nearly total power.
 The vote is being held on the first anniversary of Kais Saied’s ousting of an elected parliament, when he established emergency rule and began governing by fiat.
- Continue reading...
+Continue reading...
 """, result)
     }
     
@@ -30,7 +30,7 @@ Officials have been working to relocate the animals since 2020, after India’s 
 The move coincides with the nation’s 75th Independence Day, celebrating cheetahs as an important part of India’s cultural heritage.
 India’s environment minister, Bhupender Yadav, tweeted: “Completing 75 glorious years of Independence with restoring the fastest terrestrial flagship species, the cheetah, in India, will rekindle the ecological dynamics of the landscape.”
 He added: “Cheetah reintroduction in India has a larger goal of re-establishing ecological function in Indian grasslands that was lost due to extinction of Asiatic cheetah. This is in conformity with IUCN guidelines on conservation translocations.”
- Continue reading...
+Continue reading...
 """, result)
     }
     

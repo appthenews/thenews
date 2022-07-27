@@ -7,7 +7,7 @@ final class ParserTest: XCTestCase {
         XCTAssertEqual("Reuters revealed that Germany and Qatar have hit difficulties in talks over long-term liquefied natural gas (LNG) supply deals amid differences over […]\n\nThe post Reuters reveals Germany, Qatar at odds over terms in talks on LNG supply deal appeared first on Reuters News Agency.", result?.description)
     }
     
-    func testA() async throws {
+    func testSpacialCases() async throws {
         var string = "<html> <body> <h1>My First Heading</h1> <p>My first paragraph.</p> </body> </html>"
         var result = try await Parser(html: string).result
         XCTAssertEqual("My First Heading My first paragraph.", result)
@@ -35,7 +35,21 @@ final class ParserTest: XCTestCase {
         string = "hello<br>world"
         result = try await Parser(html: string).result
         XCTAssertEqual("hello\nworld", result)
+        
+        string = """
+<p>Brad Beddoes tells inquest he thought there were only two people in the car and told relative the investigation was ‘completed’</p><ul><li>Get our <a href=\"https://www.theguardian.com/technology/ng-interactive/2018/may/15/the-guardian-app?CMP=cvau_sfl\">free news app</a>, <a href=\"https://www.theguardian.com/world/guardian-australia-morning-mail/2014/jun/24/-sp-guardian-australias-morning-mail-subscribe-by-email?CMP=cvau_sfl\">morning email briefing</a> and <a href=\"https://www.theguardian.com/australia-news/series/full-story?CMP=cvau_sfl\">daily news podcast</a></li></ul><p>A senior detective has told an inquest examining the drowning death of Gordon Copeland he believed he had done his “absolute best” to locate the missing 22-year-old but he didn’t have all the relevant information.</p><p>On Wednesday the inquest was told Copeland’s family waited for hours in the Moree police station trying to get further information about his whereabouts only to be told the investigation was “completed”.</p><p><a href=\"https://www.theguardian.com/world/guardian-australia-morning-mail/2014/jun/24/-sp-guardian-australias-morning-mail-subscribe-by-email?CMP=copyembed\">Sign up to receive an email with the top stories from Guardian Australia every morning</a></p> <a href=\"https://www.theguardian.com/australia-news/2022/jul/27/gordon-copeland-inquest-detective-says-he-did-his-absolute-best-but-didnt-have-all-information\">Continue reading...</a>
+"""
+        result = try await Parser(html: string).result
+        XCTAssertEqual("""
+Brad Beddoes tells inquest he thought there were only two people in the car and told relative the investigation was ‘completed’
+Get our free news app, morning email briefing and daily news podcastA senior detective has told an inquest examining the drowning death of Gordon Copeland he believed he had done his “absolute best” to locate the missing 22-year-old but he didn’t have all the relevant information.
+On Wednesday the inquest was told Copeland’s family waited for hours in the Moree police station trying to get further information about his whereabouts only to be told the investigation was “completed”.
+Sign up to receive an email with the top stories from Guardian Australia every morning
+Continue reading...
+""", result)
     }
+    
+    
 }
 
 private let xml = """
