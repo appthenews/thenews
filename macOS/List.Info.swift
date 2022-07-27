@@ -40,14 +40,16 @@ extension List {
                                     .foregroundColor: item.status == .new
                                     ? appearance.primary
                                     : appearance.tertiary,
-                                    .paragraphStyle: appearance.paragraph]))
+                                    .paragraphStyle: appearance.paragraph,
+                                    .kern: 0.5]))
             let height = string.boundingRect(
                 with: .init(width: 240,
                             height: CGFloat.greatestFiniteMagnitude),
                 options: [
                     .usesFontLeading,
                     .usesLineFragmentOrigin,
-                        .usesDeviceMetrics])
+                    .truncatesLastVisibleLine,
+                    .usesDeviceMetrics])
                 .height
             
             rect = .init(x: 0, y: y, width: 310, height: ceil(height) + 30)

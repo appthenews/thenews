@@ -54,6 +54,9 @@ extension List {
             label.frame = .init(x: 15, y: 15, width: 240, height: 0)
             label.contentsScale = NSScreen.main?.backingScaleFactor ?? 2
             label.isWrapped = true
+            label.allowsFontSubpixelQuantization = true
+            label.masksToBounds = true
+            label.allowsEdgeAntialiasing = false
             vibrant.layer!.addSublayer(label)
             self.label = label
             

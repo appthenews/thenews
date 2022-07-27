@@ -20,6 +20,9 @@ extension List {
             paragraph.usesDefaultHyphenation = false
             paragraph.defaultTabInterval = 0
             paragraph.hyphenationFactor = 0
+            paragraph.lineSpacing = 1
+            paragraph.minimumLineHeight = 1
+            paragraph.maximumLineHeight = 100
             self.paragraph = paragraph
         }
     }

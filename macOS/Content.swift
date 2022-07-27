@@ -111,26 +111,31 @@ final class Content: NSVisualEffectView {
             }
             .sink { item, font in
                 if let item = item {
-                    title.font = .systemFont(ofSize: 18 + .init(font), weight: .medium)
-                    description.font = .systemFont(ofSize: 14 + .init(font), weight: .regular)
-                    
                     let string = NSMutableAttributedString()
                     string.append(.init(string: item.feed.provider.title,
                                         attributes: [
                                             .font: NSFont.systemFont(ofSize: 11 + .init(font), weight: .light),
                                             .foregroundColor: NSColor.secondaryLabelColor,
                                             .paragraphStyle: paragraph]))
-                string.append(.init(string: " – " + item
-                    .date
-                    .formatted(.relative(presentation: .named, unitsStyle: .wide)),
+                    string.append(.init(string: " – " + item
+                        .date
+                        .formatted(.relative(presentation: .named, unitsStyle: .wide)),
                                         attributes: [
                                             .font: NSFont.systemFont(ofSize: 11 + .init(font), weight: .light),
                                             .foregroundColor: NSColor.tertiaryLabelColor,
                                             .paragraphStyle: paragraph]))
-
+                    
                     header.attributedStringValue = string
-                    title.stringValue = item.title
-                    description.stringValue = item.description
+                    
+                    title.attributedStringValue = .init(
+                        string: item.title,
+                        attributes: [.font: NSFont.systemFont(ofSize: 18 + .init(font), weight: .medium),
+                                     .kern: 1])
+                    
+                    description.attributedStringValue = .init(
+                        string: item.description,
+                        attributes: [.font: NSFont.systemFont(ofSize: 14 + .init(font), weight: .regular),
+                                     .kern: 1])
                     
                     Task {
                         await session.cloud.read(item: item)
@@ -139,7 +144,8 @@ final class Content: NSVisualEffectView {
                     session.review()
                 } else {
                     header.attributedStringValue = .init()
-                    description.stringValue = ""
+                    title.attributedStringValue = .init()
+                    description.attributedStringValue = .init()
                 }
             }
             .store(in: &subs)
