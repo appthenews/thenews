@@ -47,6 +47,7 @@ final class Session: ObservableObject {
         }
     }
     
+    @Published var tab = 1
     @Published var provider: Provider?
     @Published var search = ""
     @Published private(set) var articles = [Item]()

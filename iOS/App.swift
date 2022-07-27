@@ -3,13 +3,12 @@ import News
 
 @main struct App: SwiftUI.App {
     @StateObject private var session = Session()
-    @State private var selection = 1
     @Environment(\.scenePhase) private var phase
     @UIApplicationDelegateAdaptor(Delegate.self) private var delegate
     
     var body: some Scene {
         WindowGroup {
-            TabView(selection: $selection) {
+            TabView(selection: $session.tab) {
                 settings
                     .navigationViewStyle(.stack)
                 if UIDevice.current.userInterfaceIdiom == .pad {
