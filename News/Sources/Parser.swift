@@ -32,6 +32,9 @@ final class Parser: NSObject, XMLParserDelegate {
                 .replacingOccurrences(of: "<li>",
                                       with: "\n",
                                       options: .caseInsensitive)
+                .replacingOccurrences(of: "</li>",
+                                      with: "",
+                                      options: .caseInsensitive)
                 .replacingOccurrences(of: "\n\n",
                                       with: "\n",
                                       options: .caseInsensitive)
