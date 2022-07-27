@@ -16,7 +16,7 @@ struct Settings: View {
     
     private var purchases: some View {
         Section("In-App Purchases") {
-            NavigationLink("Sponsor", destination: Circle())
+            NavigationLink("Sponsor", destination: Sponsor(session: session))
                 .font(.callout)
         }
         .headerProminence(.increased)
