@@ -72,7 +72,7 @@ struct Middlebar: View {
             session.item = article
         } label: {
             HStack(spacing: 0) {
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 4) {
                     if session.provider == .all {
                         Text(verbatim: article.feed.provider.title)
                             .foregroundColor(session.reader
@@ -99,31 +99,39 @@ struct Middlebar: View {
                     
                     Text(verbatim: article.title)
                         .font(.system(size: UIFont.preferredFont(forTextStyle: .callout).pointSize + session.font, weight: .regular))
+                        .kerning(0.5)
                         .foregroundColor(session.reader
                                          ? article.status == .new ? .accentColor : .init(.tertiaryLabel)
                                          : article.status == .new ? .primary : .init(.tertiaryLabel))
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+                
                 ZStack {
-                    switch article.status {
-                    case .new:
-                        if article.recent {
-                            Circle()
-                                .fill(Color.accentColor)
-                                .frame(width: 8, height: 8)
+                    VStack {
+                        switch article.status {
+                        case .new:
+                            if article.recent {
+                                Circle()
+                                    .fill(Color.accentColor)
+                                    .frame(width: 8, height: 8)
+                            }
+                        case .bookmarked:
+                            Image(systemName: "bookmark.fill")
+                                .font(.system(size: 13, weight: .light))
+                                .foregroundColor(session.reader ? .accentColor : .secondary)
+                                .symbolRenderingMode(.hierarchical)
+                        default:
+                            EmptyView()
                         }
-                    case .bookmarked:
-                        Image(systemName: "bookmark.fill")
-                            .font(.system(size: 14, weight: .light))
-                            .foregroundStyle(.secondary)
-                            .symbolRenderingMode(.hierarchical)
-                    default:
-                        EmptyView()
+                        Spacer()
                     }
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(article.status == .new ? .init(.tertiaryLabel) : .init(.quaternaryLabel))
                 }
-                .frame(width: 24)
+                .frame(width: 16)
                 .padding(.leading, 6)
             }
             .padding(.vertical, 14)
