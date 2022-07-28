@@ -40,6 +40,9 @@ struct Content: View {
                     tools(item: item)
                 }
             }
+            .task {
+                session.review()
+            }
         } else {
             Image("Icon")
                 .foregroundStyle(.secondary)
