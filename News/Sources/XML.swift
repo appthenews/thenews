@@ -49,8 +49,6 @@ final class XML: NSObject, XMLParserDelegate {
             }
             
             self?.fail = { [weak self] in
-                fatalError()
-                #warning("here")
                 xml.delegate = nil
                 self?.fail = nil
                 self?.finished = nil
