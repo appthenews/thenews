@@ -55,8 +55,6 @@ final class Parser: NSObject, XMLParserDelegate {
             }
             
             self?.fail = { [weak self] in
-                #warning("test only")
-                fatalError()
                 xml.delegate = nil
                 self?.fail = nil
                 self?.finished = nil
