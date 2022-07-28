@@ -39,7 +39,7 @@ struct Settings: View {
     
     private var app: some View {
         Section("The News") {
-            NavigationLink("About", destination: Circle())
+            NavigationLink("About", destination: About())
                 .font(.callout)
             
             Button {
