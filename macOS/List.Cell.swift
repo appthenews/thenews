@@ -15,12 +15,12 @@ extension List {
                 label.frame.size.height = info.rect.height - 30
                 
                 if info.recent {
-                    recent.frame.origin.y = (info.rect.height - 14) / 2
+                    recent.frame.origin.y = info.rect.height - 30
                     recent.isHidden = false
                     bookmark.isHidden = true
                 } else if info.item.status == .bookmarked {
                     recent.isHidden = true
-                    bookmark.frame.origin.y = (info.rect.height - 30) / 2
+                    bookmark.frame.origin.y = info.rect.height - 40
                     bookmark.isHidden = false
                 } else {
                     recent.isHidden = true
@@ -67,11 +67,11 @@ extension List {
             recent.fillColor = NSColor.controlAccentColor.cgColor
             self.recent = recent
             
-            let bookmark = NSImageView(image: .init(systemSymbolName: "bookmark", accessibilityDescription: nil) ?? .init())
+            let bookmark = NSImageView(image: .init(systemSymbolName: "bookmark.fill", accessibilityDescription: nil) ?? .init())
             bookmark.isHidden = true
             bookmark.frame = .init(x: 260, y: 0, width: 30, height: 30)
-            bookmark.symbolConfiguration = .init(pointSize: 15, weight: .regular)
-                .applying(.init(hierarchicalColor: .secondaryLabelColor))
+            bookmark.symbolConfiguration = .init(pointSize: 12, weight: .regular)
+                .applying(.init(hierarchicalColor: .tertiaryLabelColor))
             vibrant.addSubview(bookmark)
             self.bookmark = bookmark
             
