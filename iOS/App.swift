@@ -65,7 +65,13 @@ import News
                 
                 Task {
                     await session.cloud.fetch()
-                    session.loading = false
+                    
+                    if session.loading {
+                        session.loading = false
+                        if UIDevice.current.userInterfaceIdiom == .pad  {
+                            session.provider = .all
+                        }
+                    }
                 }
             default:
                 break

@@ -9,7 +9,7 @@ struct Recents: View {
     
     var body: some View {
         ScrollViewReader { proxy in
-            if items.isEmpty {
+            if session.loading || items.isEmpty {
                 ZStack {
                     Image("Logo")
                         .foregroundStyle(.quaternary)

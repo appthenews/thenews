@@ -16,52 +16,63 @@ struct Middlebar: View {
         
         ScrollViewReader { proxy in
             List {
-                if session.filters {
-                    Picker("Showing", selection: $session.showing) {
-                        Text(verbatim: "All")
-                            .tag(0)
-                        Text(verbatim: "Not read")
-                            .tag(1)
-                        Text(verbatim: "Bookmarks")
-                            .tag(2)
+                if session.loading {
+                    Loading()
+                } else {
+                    if session.filters {
+                        Picker("Showing", selection: $session.showing) {
+                            Text(verbatim: "All")
+                                .tag(0)
+                            Text(verbatim: "Not read")
+                                .tag(1)
+                            Text(verbatim: "Bookmarks")
+                                .tag(2)
+                        }
+                        .pickerStyle(.segmented)
+                        .listRowBackground(Color.clear)
+                        .listSectionSeparator(.hidden)
                     }
-                    .pickerStyle(.segmented)
+                    
+                    Text(verbatim: session.provider == nil
+                         ? ""
+                         : session.articles.count.formatted() + (session.articles.count == 1
+                                                                 ? " article"
+                                                                 : " articles"))
+                    .font(.callout.monospacedDigit())
+                    .foregroundColor(session.reader ? .accentColor : .secondary)
                     .listRowBackground(Color.clear)
                     .listSectionSeparator(.hidden)
+                    
+                    ForEach(session.articles, id: \.link, content: link(article:))
                 }
-                
-                Text(verbatim: session.provider == nil
-                     ? ""
-                     : session.articles.count.formatted() + (session.articles.count == 1
-                                                             ? " article"
-                                                             : " articles"))
-                .font(.callout.monospacedDigit())
-                .foregroundColor(session.reader ? .accentColor : .secondary)
-                .listRowBackground(Color.clear)
-                .listSectionSeparator(.hidden)
-                
-                ForEach(session.articles, id: \.link, content: link(article:))
             }
             .listStyle(.plain)
             .searchable(text: $session.search)
             .navigationTitle(session.provider?.title ?? "")
             .navigationBarTitleDisplayMode(.large)
             .background(session.reader ? .init("Background") : Color.clear)
+            .onChange(of: session.item) { item in
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    proxy.scrollTo(item?.link, anchor: .center)
+                }
+            }
             .onAppear {
                 proxy.scrollTo(session.item?.link, anchor: .center)
             }
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    session.filters.toggle()
-                } label: {
-                    Image(systemName: session.filters
-                          ? "line.3.horizontal.decrease.circle.fill"
-                          : "line.3.horizontal.decrease.circle")
-                        .font(.system(size: 18, weight: .regular))
-                        .contentShape(Rectangle())
-                        .frame(width: 36, height: 36)
+                if !session.loading {
+                    Button {
+                        session.filters.toggle()
+                    } label: {
+                        Image(systemName: session.filters
+                              ? "line.3.horizontal.decrease.circle.fill"
+                              : "line.3.horizontal.decrease.circle")
+                            .font(.system(size: 18, weight: .regular))
+                            .contentShape(Rectangle())
+                            .frame(width: 36, height: 36)
+                    }
                 }
             }
         }
@@ -148,7 +159,7 @@ struct Middlebar: View {
                            ? session.item?.link == article.link || selection == article.link
                                 ? .accentColor.opacity(0.15)
                                 : Color.clear
-                           : selection == article.link
+                           : session.item?.link == article.link || selection == article.link
                                ? .primary.opacity(0.1)
                                : Color.clear)
         .id(article.link)

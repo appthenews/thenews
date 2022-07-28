@@ -73,6 +73,8 @@ public struct Item: Storable, Hashable, Comparable {
     }
     
     public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.date > rhs.date
+        lhs.date == rhs.date
+        ? lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending
+        : lhs.date > rhs.date
     }
 }

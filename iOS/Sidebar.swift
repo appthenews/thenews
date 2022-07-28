@@ -10,20 +10,7 @@ struct Sidebar: View {
     var body: some View {
         List {
             if session.loading {
-                VStack {
-                    Image(systemName: "cloud.bolt")
-                        .font(.system(size: 60, weight: .ultraLight))
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(.tertiary)
-                    Text("Fetching news...")
-                        .font(.callout)
-                        .foregroundStyle(.tertiary)
-                }
-                .frame(maxWidth: .greatestFiniteMagnitude)
-                .padding(.top, 150)
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
-                .listSectionSeparator(.hidden)
+                Loading()
             } else {
                 provider(provider: .all)
                 provider(provider: .theGuardian)

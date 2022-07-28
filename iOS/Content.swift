@@ -50,6 +50,7 @@ struct Content: View {
                     .foregroundColor(.primary)
             }
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
+            .background(session.reader ? .init("Background") : Color.clear)
         }
     }
     

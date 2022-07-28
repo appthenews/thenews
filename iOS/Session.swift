@@ -112,10 +112,6 @@ final class Session: ObservableObject {
                 }
                 .removeDuplicates()
                 .assign(to: &$item)
-        
-        if UIDevice.current.userInterfaceIdiom == .pad  {
-//            provider = .all
-        }
     }
     
     func previous() {
