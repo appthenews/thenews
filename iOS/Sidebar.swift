@@ -96,6 +96,7 @@ struct Sidebar: View {
                     }
                 }
                 .padding(.vertical, 15)
+                .contentShape(Rectangle())
             }
             .listRowBackground(session.reader
                                ? session.provider == provider

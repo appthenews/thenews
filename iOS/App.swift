@@ -11,16 +11,31 @@ import News
         WindowGroup {
             TabView(selection: $session.tab) {
                 settings
-                    .navigationViewStyle(.stack)
+                
                 if UIDevice.current.userInterfaceIdiom == .pad {
-                    news
-                        .navigationViewStyle(.columns)
+                    NavigationView {
+                        Sidebar(session: session)
+                        Middlebar(session: session)
+                        Content(session: session)
+                    }
+                    .navigationViewStyle(.columns)
+                    .tabItem {
+                        Label("News", image: "Icon")
+                    }
+                    .tag(1)
                 } else {
-                    news
-                        .navigationViewStyle(.stack)
-                }
-                recents
+                    NavigationView {
+                        Sidebar(session: session)
+                    }
                     .navigationViewStyle(.stack)
+                    .tabItem {
+                        Label("News", image: "Icon")
+                    }
+                    .tag(1)
+                }
+                
+                recents
+                    
             }
             .sheet(isPresented: $purchased) {
                 Sheet(rootView: Purchased())
@@ -62,28 +77,18 @@ import News
         NavigationView {
             Settings(session: session)
         }
+        .navigationViewStyle(.stack)
         .tabItem {
             Label("Settings", systemImage: "slider.horizontal.3")
         }
         .tag(0)
     }
     
-    private var news: some View {
-        NavigationView {
-            Sidebar(session: session)
-            Middlebar(session: session)
-            Content(session: session)
-        }
-        .tabItem {
-            Label("News", image: "Icon")
-        }
-        .tag(1)
-    }
-    
     private var recents: some View {
         NavigationView {
             Recents(session: session)
         }
+        .navigationViewStyle(.stack)
         .tabItem {
             Label("Recents", systemImage: "clock.arrow.circlepath")
         }

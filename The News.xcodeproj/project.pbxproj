@@ -37,6 +37,7 @@
 		CE76D785288EF5E8004AA314 /* Settings.Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76D784288EF5E8004AA314 /* Settings.Update.swift */; };
 		CE76D787288EFE15004AA314 /* Settings.Reading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76D786288EFE15004AA314 /* Settings.Reading.swift */; };
 		CE81882E2892B927003016EE /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE81882D2892B927003016EE /* About.swift */; };
+		CE8188302892C18E003016EE /* UISplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE81882F2892C18E003016EE /* UISplitViewController.swift */; };
 		CE839F6928917A3400313219 /* Sponsor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE839F6828917A3400313219 /* Sponsor.swift */; };
 		CE839F6B289183ED00313219 /* Purchased.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE839F6A289183ED00313219 /* Purchased.swift */; };
 		CE9A1C1B2880154600CB6D44 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9A1C1A2880154600CB6D44 /* Menu.swift */; };
@@ -117,6 +118,7 @@
 		CE76D784288EF5E8004AA314 /* Settings.Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.Update.swift; sourceTree = "<group>"; };
 		CE76D786288EFE15004AA314 /* Settings.Reading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.Reading.swift; sourceTree = "<group>"; };
 		CE81882D2892B927003016EE /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
+		CE81882F2892C18E003016EE /* UISplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISplitViewController.swift; sourceTree = "<group>"; };
 		CE839F6828917A3400313219 /* Sponsor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sponsor.swift; sourceTree = "<group>"; };
 		CE839F6A289183ED00313219 /* Purchased.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchased.swift; sourceTree = "<group>"; };
 		CE9A1C1A2880154600CB6D44 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
@@ -268,10 +270,10 @@
 				CEF6E07B288C174B006BDB70 /* iOS.entitlements */,
 				CE53F809288AB09700C91444 /* Info.plist */,
 				CE53F80E288AB78A00C91444 /* Launch Screen.storyboard */,
+				CE81882D2892B927003016EE /* About.swift */,
 				CEF6E082288C17A5006BDB70 /* App.Delegate.swift */,
 				CE346096287067D2001962E7 /* App.swift */,
 				CEF6E074288C160C006BDB70 /* Content.swift */,
-				CE81882D2892B927003016EE /* About.swift */,
 				CEF6E084288C1B6A006BDB70 /* Feeds.swift */,
 				CEAC22B2289172470099A162 /* Froob.swift */,
 				CEAC22B0289169F10099A162 /* Listed.swift */,
@@ -286,6 +288,7 @@
 				CEF6E070288C11CD006BDB70 /* Sidebar.swift */,
 				CE839F6828917A3400313219 /* Sponsor.swift */,
 				CE76D77E288EDD7D004AA314 /* UIApplication.swift */,
+				CE81882F2892C18E003016EE /* UISplitViewController.swift */,
 				CE34609A287067D3001962E7 /* Assets.xcassets */,
 			);
 			path = iOS;
@@ -483,6 +486,7 @@
 				CEF6E083288C17A5006BDB70 /* App.Delegate.swift in Sources */,
 				CEF6E079288C169A006BDB70 /* Settings.swift in Sources */,
 				CEF6E085288C1B6A006BDB70 /* Feeds.swift in Sources */,
+				CE8188302892C18E003016EE /* UISplitViewController.swift in Sources */,
 				CEF6E077288C1669006BDB70 /* Recents.swift in Sources */,
 				CE81882E2892B927003016EE /* About.swift in Sources */,
 				CEAC22B3289172470099A162 /* Froob.swift in Sources */,

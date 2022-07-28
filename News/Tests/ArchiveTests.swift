@@ -20,7 +20,6 @@ final class ArchiveTests: XCTestCase {
         archive.preferences.feeds[.theLocalGermany] = true
         archive.update(feed: .theLocalInternational,
                        date: .now,
-                       ids: ["hello", "world"],
                        items: [.init(feed: .reutersInternational,
                                      title: "lorem",
                                      description: "billy idol",
@@ -37,10 +36,9 @@ final class ArchiveTests: XCTestCase {
         XCTAssertFalse(archive.preferences.feeds[.theLocalInternational]!)
         XCTAssertEqual(0, archive.feeds[.reutersInternational]!.timestamp)
         XCTAssertGreaterThanOrEqual(archive.feeds[.theLocalInternational]!.timestamp, date.timestamp)
-        XCTAssertEqual(2, archive.ids.count)
+        XCTAssertEqual(1, archive.links.count)
         XCTAssertEqual(1, archive.items.count)
-        XCTAssertTrue(archive.ids.contains("hello"))
-        XCTAssertTrue(archive.ids.contains("world"))
+        XCTAssertTrue(archive.links.contains("eyes without a face"))
         XCTAssertEqual(.reutersInternational, archive.items.first?.feed)
         XCTAssertEqual(article, archive.items.first?.date)
         XCTAssertEqual(synched, archive.items.first?.synched)
@@ -61,14 +59,13 @@ final class ArchiveTests: XCTestCase {
         
         archive.update(feed: .theLocalGermany,
                        date: Calendar.current.date(byAdding: .hour, value: -2, to: .now)!,
-                       ids: [],
                        items: [])
         XCTAssertEqual([.theLocalInternational], archive.fetchable)
         
         archive.preferences.fetch = .hour
         XCTAssertEqual([.theLocalGermany, .theLocalInternational], archive.fetchable)
         
-        archive.update(feed: .theLocalInternational, date: .now, ids: [], items: [])
+        archive.update(feed: .theLocalInternational, date: .now, items: [])
         XCTAssertEqual([.theLocalGermany], archive.fetchable)
     }
     
@@ -78,7 +75,6 @@ final class ArchiveTests: XCTestCase {
         
         archive.update(feed: .reutersEurope,
                        date: .now,
-                       ids: [],
                        items: [.init(feed: .reutersEurope,
                                      title: "asd",
                                      description: "dfg",
@@ -125,7 +121,6 @@ final class ArchiveTests: XCTestCase {
     func testClean() {
         archive.update(feed: .theLocalInternational,
                        date: .now,
-                       ids: ["hello"],
                        items: [.init(feed: .theLocalGermany,
                                      title: "asd",
                                      description: "rtg",
@@ -134,12 +129,11 @@ final class ArchiveTests: XCTestCase {
                                      synched: Calendar.current.date(byAdding: .hour, value: -3, to: .now)!,
                                      status: .new)])
         
-        XCTAssertEqual(1, archive.ids.count)
+        XCTAssertEqual(1, archive.links.count)
         XCTAssertEqual(1, archive.items.count)
         
         archive.update(feed: .theLocalGermany,
                        date: .now,
-                       ids: [],
                        items: [.init(feed: .reutersEurope,
                                      title: "jj",
                                      description: "uu",
@@ -150,13 +144,13 @@ final class ArchiveTests: XCTestCase {
         
         archive.clean()
         
-        XCTAssertEqual(1, archive.ids.count)
+        XCTAssertEqual(2, archive.links.count)
         XCTAssertEqual(2, archive.items.count)
         
         archive.preferences.clean = .hours3
         archive.clean()
         
-        XCTAssertEqual(1, archive.ids.count)
+        XCTAssertEqual(2, archive.links.count)
         XCTAssertEqual(1, archive.items.count)
         XCTAssertEqual("jj", archive.items.first?.title)
     }
@@ -175,5 +169,31 @@ final class ArchiveTests: XCTestCase {
         archive.clean()
         
         XCTAssertEqual(1, archive.items.count)
+    }
+    
+    func testUpdate() {
+        archive.update(feed: .theLocalInternational,
+                       date: .now,
+                       items: [.init(feed: .reutersInternational,
+                                     title: "lorem",
+                                     description: "billy idol",
+                                     link: "eyes without a face",
+                                     date: .now,
+                                     synched: .now,
+                                     status: .new)])
+        XCTAssertEqual(1, archive.items.count)
+        XCTAssertEqual(1, archive.links.count)
+        
+        archive.update(feed: .theLocalInternational,
+                       date: .now,
+                       items: [.init(feed: .reutersEurope,
+                                     title: "ipsum",
+                                     description: "total",
+                                     link: "eyes without a face",
+                                     date: .distantPast,
+                                     synched: .distantPast,
+                                     status: .bookmarked)])
+        XCTAssertEqual(1, archive.items.count)
+        XCTAssertEqual(1, archive.links.count)
     }
 }

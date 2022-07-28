@@ -9,36 +9,24 @@ final class FetchTests: XCTestCase {
     }
     
     func testParse1() async throws {
-        let result = try await fetcher.parse(feed: .theLocalInternational, data: .init(xml1.utf8), synched: [])
-        XCTAssertEqual(20, result.ids.count)
-        XCTAssertEqual(20, result.items.count)
-        XCTAssertTrue(result.ids.contains("https://www.spiegel.de/international/world/a-visit-to-volodymyr-zelenskyy-s-hometown-kryvyi-rih-city-of-steel-a-95aa1a79-905c-462f-aa02-c61b103321f8"))
-        XCTAssertEqual(.theLocalInternational, result.items.first?.feed)
-        XCTAssertTrue(result.items.contains { $0.link == "https://www.spiegel.de/international/world/a-visit-to-volodymyr-zelenskyy-s-hometown-kryvyi-rih-city-of-steel-a-95aa1a79-905c-462f-aa02-c61b103321f8#ref=rss" })
-    }
-    
-    func testFilter() async throws {
-        let id = "https://www.spiegel.de/international/world/a-visit-to-volodymyr-zelenskyy-s-hometown-kryvyi-rih-city-of-steel-a-95aa1a79-905c-462f-aa02-c61b103321f8"
-        let result = try await fetcher.parse(feed: .derSpiegelInternational, data: .init(xml1.utf8), synched: [id])
-        XCTAssertEqual(19, result.ids.count)
-        XCTAssertEqual(19, result.items.count)
-        XCTAssertFalse(result.ids.contains(id))
-        XCTAssertFalse(result.items.contains { $0.link == "https://www.spiegel.de/international/world/a-visit-to-volodymyr-zelenskyy-s-hometown-kryvyi-rih-city-of-steel-a-95aa1a79-905c-462f-aa02-c61b103321f8#ref=rss" })
+        let result = try await fetcher.parse(feed: .theLocalInternational, data: .init(xml1.utf8))
+        XCTAssertEqual(20, result.count)
+        XCTAssertEqual(.theLocalInternational, result.first?.feed)
+        XCTAssertTrue(result.contains { $0.link == "https://www.spiegel.de/international/world/a-visit-to-volodymyr-zelenskyy-s-hometown-kryvyi-rih-city-of-steel-a-95aa1a79-905c-462f-aa02-c61b103321f8#ref=rss" })
     }
     
     func testCap() async throws {
-        let result = try await fetcher.parse(feed: .derSpiegelInternational, data: .init(xml1.utf8), synched: [])
+        let result = try await fetcher.parse(feed: .derSpiegelInternational, data: .init(xml1.utf8))
         var archive = Archive()
-        archive.update(feed: .derSpiegelInternational, date: .now, ids: result.ids, items: result.items)
+        archive.update(feed: .derSpiegelInternational, date: .now, items: result)
         archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
-        XCTAssertEqual(20, archive.ids.count)
+        XCTAssertEqual(20, archive.links.count)
         XCTAssertEqual(20, archive.items.count)
     }
     
     func testParse2() async throws {
-        let result = try await fetcher.parse(feed: .theLocalInternational, data: .init(xml2.utf8), synched: [])
-        XCTAssertEqual(1, result.ids.count)
-        XCTAssertEqual(1, result.items.count)
+        let result = try await fetcher.parse(feed: .theLocalInternational, data: .init(xml2.utf8))
+        XCTAssertEqual(1, result.count)
     }
 }
 

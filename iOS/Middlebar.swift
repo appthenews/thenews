@@ -12,12 +12,24 @@ struct Middlebar: View {
             if $0 != true {
                 session.item = nil
             }
-        })) {
-            
-        }
+        })) { }
         
         ScrollViewReader { proxy in
             List {
+                if session.filters {
+                    Picker("Showing", selection: $session.showing) {
+                        Text(verbatim: "All")
+                            .tag(0)
+                        Text(verbatim: "Not read")
+                            .tag(1)
+                        Text(verbatim: "Bookmarks")
+                            .tag(2)
+                    }
+                    .pickerStyle(.segmented)
+                    .listRowBackground(Color.clear)
+                    .listSectionSeparator(.hidden)
+                }
+                
                 Text(verbatim: session.provider == nil
                      ? ""
                      : session.articles.count.formatted() + (session.articles.count == 1
@@ -50,19 +62,6 @@ struct Middlebar: View {
                         .font(.system(size: 18, weight: .regular))
                         .contentShape(Rectangle())
                         .frame(width: 36, height: 36)
-                }
-            }
-            ToolbarItem(placement: .navigation) {
-                if session.filters {
-                    Picker("Showing", selection: $session.showing) {
-                        Text(verbatim: "All")
-                            .tag(0)
-                        Text(verbatim: "Not read")
-                            .tag(1)
-                        Text(verbatim: "Bookmarks")
-                            .tag(2)
-                    }
-                    .pickerStyle(.segmented)
                 }
             }
         }

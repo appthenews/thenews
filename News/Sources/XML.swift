@@ -1,24 +1,20 @@
 import Foundation
 
 final class XML: NSObject, XMLParserDelegate {
-    private(set) var ids = Set<String>()
     private(set) var items = Set<Item>()
     private var finished: (() async -> Void)?
     private var fail: ((Error) -> Void)?
     private var item: [String : String]?
     private var element = ""
     private var completed = [[String : String]]()
-    private let synched: Set<String>
     private let strategy: Date.ParseStrategy
     private let feed: Feed
     
     init(feed: Feed,
          strategy: Date.ParseStrategy,
-         synched: Set<String>,
          data: Data) async throws {
         self.feed = feed
         self.strategy = strategy
-        self.synched = synched
         
         super.init()
         
@@ -33,8 +29,6 @@ final class XML: NSObject, XMLParserDelegate {
                 
                 for item in self.completed {
                     guard
-                        let guid = item["guid"]?.max8,
-                        !self.synched.contains(guid),
                         let raw = item["description"],
                         let description = try? await Parser(html: raw).result,
                         let title = item["title"]?.max8,
@@ -42,8 +36,6 @@ final class XML: NSObject, XMLParserDelegate {
                         let link = item["link"]?.max8,
                         let date = try? Date(pubDate, strategy: self.strategy)
                     else { continue }
-                    
-                    self.ids.insert(guid)
                     self.items.insert(.init(feed: self.feed,
                                             title: title,
                                             description: description.replacingOccurrences(of: "\n", with: "\n\n"),
@@ -57,6 +49,8 @@ final class XML: NSObject, XMLParserDelegate {
             }
             
             self?.fail = { [weak self] in
+                fatalError()
+                #warning("here")
                 xml.delegate = nil
                 self?.fail = nil
                 self?.finished = nil

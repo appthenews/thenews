@@ -5,7 +5,7 @@ public struct Archive: Arch {
     public var timestamp: UInt32
     public internal(set) var preferences: Preferences
     private(set) var feeds: [Feed : Date]
-    private(set) var ids: Set<String>
+    private(set) var links: Set<String>
     var items: Set<Item>
     var history: [String]
     
@@ -28,7 +28,7 @@ public struct Archive: Arch {
                 .adding($1.key.rawValue)
                 .adding($1.value)
         })
-        .adding(collection: UInt32.self, strings: UInt8.self, items: ids)
+        .adding(collection: UInt32.self, strings: UInt8.self, items: links)
         .adding(size: UInt16.self, collection: items)
         .adding(collection: UInt8.self, strings: UInt8.self, items: history)
     }
@@ -55,7 +55,7 @@ public struct Archive: Arch {
         timestamp = 0
         preferences = .init()
         feeds = Feed.synch
-        ids = []
+        links = []
         items = []
         history = []
     }
@@ -69,13 +69,13 @@ public struct Archive: Arch {
             feeds = (0 ..< .init(data.number() as UInt8)).reduce(into: [:]) { result, _ in
                 result[.init(rawValue: data.number())!] = data.date()
             }
-            ids = .init(data.items(collection: UInt32.self, strings: UInt8.self))
+            links = .init(data.items(collection: UInt32.self, strings: UInt8.self))
             items = .init(data.collection(size: UInt16.self))
             history = .init(data.items(collection: UInt8.self, strings: UInt8.self))
         } else {
             preferences = .init()
             feeds = Feed.synch
-            ids = []
+            links = []
             items = []
             history = []
         }
@@ -96,9 +96,12 @@ public struct Archive: Arch {
             }
     }
     
-    mutating func update(feed: Feed, date: Date, ids: Set<String>, items: Set<Item>) {
+    mutating func update(feed: Feed, date: Date, items: Set<Item>) {
         feeds[feed] = date
-        self.ids = self.ids.union(ids)
-        self.items = self.items.union(items)
+        for item in items {
+            guard !links.contains(item.link) else { continue }
+            links.insert(item.link)
+            self.items.insert(item)
+        }
     }
 }

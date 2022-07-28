@@ -59,11 +59,12 @@ final class Session: ObservableObject {
     private var subs = Set<AnyCancellable>()
     
     init() {
+        let showing = UserDefaults.standard.value(forKey: "showing") as? Int ?? 0
         reader = UserDefaults.standard.value(forKey: "reader") as? Bool ?? false
         font = UserDefaults.standard.value(forKey: "font") as? Double ?? 0
-        showing = UserDefaults.standard.value(forKey: "showing") as? Int ?? 0
-        filters = UserDefaults.standard.value(forKey: "showing") as? Int != 0
+        filters = showing != 0
         froob = .init(Defaults.froob)
+        self.showing = showing
         
         accent()
         
@@ -111,6 +112,10 @@ final class Session: ObservableObject {
                 }
                 .removeDuplicates()
                 .assign(to: &$item)
+        
+        if UIDevice.current.userInterfaceIdiom == .pad  {
+//            provider = .all
+        }
     }
     
     func previous() {

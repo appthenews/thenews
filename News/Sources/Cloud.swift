@@ -10,8 +10,7 @@ extension Cloud where Output == Archive {
                 
                 let fetcher = Fetcher()
                 for feed in fetchable {
-                    let result = try await fetcher.fetch(feed: feed, synched: model.ids)
-                    model.update(feed: feed, date: .now, ids: result.ids, items: result.items)
+                    model.update(feed: feed, date: .now, items: try await fetcher.fetch(feed: feed))
                 }
                 
                 await stream()

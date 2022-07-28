@@ -105,6 +105,7 @@ struct Recents: View {
             }
             .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
             .padding(.vertical, 6)
+            .contentShape(Rectangle())
         }
         .buttonStyle(Listed {
             if $0 {

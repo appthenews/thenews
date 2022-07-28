@@ -44,8 +44,12 @@ struct Content: View {
                 session.review()
             }
         } else {
-            Image("Icon")
-                .foregroundStyle(.secondary)
+            ZStack {
+                Image("Logo")
+                    .foregroundStyle(.quaternary)
+                    .foregroundColor(.primary)
+            }
+            .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
         }
     }
     
