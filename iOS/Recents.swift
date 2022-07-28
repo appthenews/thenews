@@ -73,10 +73,6 @@ struct Recents: View {
                 } else {
                     session.provider = nil
                 
-                    if session.item != nil {
-                        session.item = nil
-                    }
-                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
                         session.provider = article.feed.provider
                     }
@@ -110,17 +106,11 @@ struct Recents: View {
         .buttonStyle(Listed {
             if $0 {
                 selection = article.link
-            } else if selection == article.link {
+            } else {
                 selection = nil
             }
         })
-        .listRowBackground(session.reader
-                           ? selection == article.link
-                                ? .accentColor.opacity(0.15)
-                                : Color.clear
-                           : selection == article.link
-                               ? .primary.opacity(0.1)
-                               : Color.clear)
+        .listRowBackground(selection == article.link ? .accentColor.opacity(0.15) : Color.clear)
         .id(article.link)
     }
 }

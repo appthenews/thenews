@@ -85,11 +85,9 @@ struct Sidebar: View {
                 .padding(.vertical, 15)
                 .contentShape(Rectangle())
             }
-            .listRowBackground(session.reader
-                               ? session.provider == provider
-                                    ? .accentColor.opacity(0.15)
-                                    : Color.clear
-                               : nil)
+            .listRowBackground(session.provider == provider
+                               ? .accentColor.opacity(0.15)
+                               : Color.clear)
         }
     }
 }

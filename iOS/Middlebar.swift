@@ -155,13 +155,9 @@ struct Middlebar: View {
                 selection = nil
             }
         })
-        .listRowBackground(session.reader
-                           ? session.item?.link == article.link || selection == article.link
-                                ? .accentColor.opacity(0.15)
-                                : Color.clear
-                           : session.item?.link == article.link || selection == article.link
-                               ? .primary.opacity(0.1)
-                               : Color.clear)
+        .listRowBackground(session.item?.link == article.link || selection == article.link
+                           ? .accentColor.opacity(0.15)
+                           : Color.clear)
         .id(article.link)
     }
 }
