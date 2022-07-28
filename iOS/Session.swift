@@ -51,10 +51,11 @@ final class Session: ObservableObject {
     @Published var tab = 1
     @Published var provider: Provider?
     @Published var search = ""
+    @Published var loading = true
     @Published private(set) var articles = [Item]()
-    
     let cloud = Cloud<Archive, CKContainer>.new(identifier: "iCloud.thenews")
     let store = Store()
+    private var reviewed = false
     private var subs = Set<AnyCancellable>()
     
     init() {
@@ -141,6 +142,13 @@ final class Session: ObservableObject {
                         item = articles.first
                     }
                 }
+        }
+    }
+    
+    func review() {
+        if Defaults.ready && !reviewed {
+            UIApplication.shared.review()
+            reviewed = true
         }
     }
     
