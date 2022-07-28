@@ -257,6 +257,21 @@ final class CloudTests: XCTestCase {
         XCTAssertEqual(1, history.count)
         XCTAssertEqual(history.first, items[3].link)
     }
+    
+    func testClearRecents() async {
+        await cloud.toggle(.reutersInternational, true)
+        await cloud.read(item: .init(feed: .reutersInternational,
+                                     title: "lk",
+                                     description: "fgh",
+                                     link: "asd",
+                                     date: .now,
+                                     synched: .now,
+                                     status: .new))
+        
+        await cloud.clear()
+        let recents = await cloud.model.recents
+        XCTAssertTrue(recents.isEmpty)
+    }
 }
 
 private extension Cloud where Output == Archive {

@@ -58,9 +58,7 @@ struct Content: View {
                                 }
                             }
                             
-                            Button("Cancel", role: .cancel) {
-                                delete = false
-                            }
+                            Button("Cancel", role: .cancel) { }
                         }
                         
                         button(symbol: "square.and.arrow.up", size: 18) {

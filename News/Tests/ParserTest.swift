@@ -42,14 +42,13 @@ final class ParserTest: XCTestCase {
         result = try await Parser(html: string).result
         XCTAssertEqual("""
 Brad Beddoes tells inquest he thought there were only two people in the car and told relative the investigation was ‘completed’
-Get our free news app, morning email briefing and daily news podcastA senior detective has told an inquest examining the drowning death of Gordon Copeland he believed he had done his “absolute best” to locate the missing 22-year-old but he didn’t have all the relevant information.
+Get our free news app, morning email briefing and daily news podcast
+A senior detective has told an inquest examining the drowning death of Gordon Copeland he believed he had done his “absolute best” to locate the missing 22-year-old but he didn’t have all the relevant information.
 On Wednesday the inquest was told Copeland’s family waited for hours in the Moree police station trying to get further information about his whereabouts only to be told the investigation was “completed”.
 Sign up to receive an email with the top stories from Guardian Australia every morning
 Continue reading...
 """, result)
     }
-    
-    
 }
 
 private let xml = """

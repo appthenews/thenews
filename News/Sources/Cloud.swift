@@ -92,4 +92,10 @@ extension Cloud where Output == Archive {
             }
         await stream()
     }
+    
+    public func clear() async {
+        guard !model.history.isEmpty else { return }
+        model.history = []
+        await stream()
+    }
 }

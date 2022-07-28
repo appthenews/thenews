@@ -5,20 +5,54 @@ struct Recents: View {
     @ObservedObject var session: Session
     @State private var items = [Item]()
     @State private var selection: String?
+    @State private var clear = false
     
     var body: some View {
         ScrollViewReader { proxy in
-            List(items, id: \.link, rowContent: link(article:))
-                .listStyle(.plain)
-                .navigationTitle("Recents")
-                .navigationBarTitleDisplayMode(.large)
-                .background(session.reader ? .init("Background") : Color.clear)
-                .onReceive(session.cloud) {
-                    items = $0.recents
+            if items.isEmpty {
+                ZStack {
+                    Image("Logo")
+                        .foregroundStyle(.quaternary)
+                        .foregroundColor(.primary)
                 }
-                .onAppear {
-                    proxy.scrollTo(items.first?.link, anchor: .top)
+                .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
+            } else {
+                List(items, id: \.link, rowContent: link(article:))
+                    .listStyle(.plain)
+                    .onAppear {
+                        proxy.scrollTo(items.first?.link, anchor: .top)
+                    }
+            }
+        }
+        .animation(.easeInOut(duration: 0.4), value: items)
+        .navigationTitle("Recents")
+        .navigationBarTitleDisplayMode(.large)
+        .background(session.reader ? .init("Background") : Color.clear)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(role: .destructive) {
+                    guard !items.isEmpty else { return }
+                    clear = true
+                } label: {
+                    Label("Clear", systemImage: "trash")
+                        .font(.callout)
+                        .foregroundStyle(items.isEmpty ? .tertiary : .primary)
+                        .foregroundColor(session.reader ? .accentColor : .pink)
                 }
+                disabled(items.isEmpty)
+            }
+        }
+        .confirmationDialog("Clear recents?", isPresented: $clear) {
+            Button("Clear", role: .destructive) {
+                Task {
+                    await session.cloud.clear()
+                }
+            }
+            
+            Button("Cancel", role: .cancel) { }
+        }
+        .onReceive(session.cloud) {
+            items = $0.recents
         }
     }
     
