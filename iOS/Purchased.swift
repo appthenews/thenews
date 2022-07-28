@@ -24,7 +24,7 @@ struct Purchased: View {
                 dismiss()
             } label: {
                 Text("OK")
-                    .font(.body.weight(.medium))
+                    .font(.body.weight(.bold))
                     .padding(.horizontal)
                     .frame(minWidth: 140, minHeight: 30)
             }

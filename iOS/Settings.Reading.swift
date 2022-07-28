@@ -23,7 +23,7 @@ extension Settings {
                             .foregroundStyle(.secondary)
                     } minimumValueLabel: {
                         Text(verbatim: "A")
-                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize, weight: .medium))
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 2, weight: .medium))
                             .foregroundStyle(.secondary)
                     } maximumValueLabel: {
                         Text(verbatim: "A")

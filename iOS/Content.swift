@@ -117,6 +117,8 @@ struct Content: View {
                     .font(.callout.weight(.medium))
             }
             .buttonStyle(.borderedProminent)
+            .tint(.accentColor)
+            .foregroundColor(session.reader ? .init("Background") : .white)
             
             button(symbol: "trash", size: 18) {
                 delete = true

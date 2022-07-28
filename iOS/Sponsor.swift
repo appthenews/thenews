@@ -2,7 +2,7 @@ import SwiftUI
 import StoreKit
 
 struct Sponsor: View {
-    let session: Session
+    @ObservedObject var session: Session
     @State private var product: Product?
     @State private var alert = false
     @State private var error = ""
@@ -63,7 +63,7 @@ struct Sponsor: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.accentColor)
-                    .foregroundColor(.white)
+                    .foregroundColor(session.reader ? .init("Background") : .white)
                     .padding(.vertical, 20)
                     
                     if let product = product {

@@ -52,8 +52,10 @@ struct Middlebar: View {
             .navigationBarTitleDisplayMode(.large)
             .background(session.reader ? .init("Background") : Color.clear)
             .onChange(of: session.item) { item in
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    proxy.scrollTo(item?.link, anchor: .center)
+                if UIDevice.current.userInterfaceIdiom == .pad  {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        proxy.scrollTo(item?.link, anchor: .center)
+                    }
                 }
             }
             .onAppear {

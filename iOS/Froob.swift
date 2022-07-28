@@ -32,7 +32,7 @@ struct Froob: View {
             }
             .buttonStyle(.borderedProminent)
             .tint(.accentColor)
-            .foregroundColor(.white)
+            .foregroundColor(session.reader ? .init("Background") : .white)
             
             if let product = product {
                 Text("1 time purchase of " + product.displayPrice)
