@@ -30,10 +30,10 @@ final class Parser: NSObject, XMLParserDelegate {
                                       with: "\n",
                                       options: .caseInsensitive)
                 .replacingOccurrences(of: "<li>",
-                                      with: "\n",
+                                      with: "",
                                       options: .caseInsensitive)
                 .replacingOccurrences(of: "</li>",
-                                      with: "",
+                                      with: "\n",
                                       options: .caseInsensitive)
             
             let xml = XMLParser(data: .init(("<xml>" + clean + "</xml>").utf8))
