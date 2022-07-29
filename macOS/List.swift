@@ -162,9 +162,9 @@ final class List: NSScrollView {
                     return
                 }
                 
-                appearance.provider = .systemFont(ofSize: 8 + .init(font), weight: .regular)
-                appearance.date = .systemFont(ofSize: 8 + .init(font), weight: .light)
-                appearance.title = .systemFont(ofSize: 12 + .init(font), weight: .regular)
+                appearance.provider = .systemFont(ofSize: 8 + font, weight: .regular)
+                appearance.date = .systemFont(ofSize: 8 + font, weight: .light)
+                appearance.title = .systemFont(ofSize: 12 + font, weight: .regular)
                 
                 let result = items
                     .reduce(into: (info: Set<Info>(), y: CGFloat(20))) {

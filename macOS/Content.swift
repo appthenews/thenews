@@ -106,14 +106,14 @@ final class Content: NSVisualEffectView {
                     let string = NSMutableAttributedString()
                     string.append(.init(string: item.feed.provider.title,
                                         attributes: [
-                                            .font: NSFont.systemFont(ofSize: 11 + .init(font), weight: .light),
+                                            .font: NSFont.systemFont(ofSize: 11 + font, weight: .light),
                                             .foregroundColor: NSColor.secondaryLabelColor,
                                             .paragraphStyle: paragraph]))
                     string.append(.init(string: " – " + item
                         .date
                         .formatted(.relative(presentation: .named, unitsStyle: .wide)),
                                         attributes: [
-                                            .font: NSFont.systemFont(ofSize: 11 + .init(font), weight: .light),
+                                            .font: NSFont.systemFont(ofSize: 11 + font, weight: .light),
                                             .foregroundColor: NSColor.tertiaryLabelColor,
                                             .paragraphStyle: paragraph]))
                     
@@ -121,12 +121,12 @@ final class Content: NSVisualEffectView {
                     
                     title.attributedStringValue = .init(
                         string: item.title,
-                        attributes: [.font: NSFont.systemFont(ofSize: 18 + .init(font), weight: .medium),
+                        attributes: [.font: NSFont.systemFont(ofSize: 18 + font, weight: .medium),
                                      .kern: 1])
                     
                     description.attributedStringValue = .init(
                         string: item.description,
-                        attributes: [.font: NSFont.systemFont(ofSize: 14 + .init(font), weight: .regular),
+                        attributes: [.font: NSFont.systemFont(ofSize: 14 + font, weight: .regular),
                                      .kern: 1])
                     
                     Task {

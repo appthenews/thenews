@@ -26,8 +26,8 @@ extension Preferences {
             large.textColor = .secondaryLabelColor
             addSubview(large)
             
-            let slider = NSSlider(value: .init(session.font.value),
-                                  minValue: 0,
+            let slider = NSSlider(value: session.font.value,
+                                  minValue: -2,
                                   maxValue: 10,
                                   target: self,
                                   action: #selector(update))
@@ -56,9 +56,9 @@ extension Preferences {
         }
         
         @objc private func update(_ slider: NSSlider) {
-            guard session.font.value != slider.integerValue else { return }
-            session.font.value = slider.integerValue
-            UserDefaults.standard.set(slider.integerValue, forKey: "font")
+            guard session.font.value != slider.doubleValue else { return }
+            session.font.value = slider.doubleValue
+            UserDefaults.standard.set(slider.doubleValue, forKey: "font")
         }
     }
 }

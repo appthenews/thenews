@@ -147,10 +147,12 @@ final class Session: ObservableObject {
     }
     
     func review() {
+        #if !DEBUG
         if Defaults.ready && !reviewed {
             UIApplication.shared.review()
             reviewed = true
         }
+        #endif
     }
     
     private func accent() {
