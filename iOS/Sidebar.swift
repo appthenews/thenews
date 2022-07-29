@@ -9,7 +9,9 @@ struct Sidebar: View {
     var body: some View {
         List {
             if session.loading {
-                Loading()
+                if UIDevice.current.userInterfaceIdiom == .phone  {
+                    Loading()
+                }
             } else {
                 provider(provider: .all)
                 provider(provider: .theGuardian)
@@ -19,7 +21,7 @@ struct Sidebar: View {
             }
         }
         .listStyle(.plain)
-        .navigationTitle("Feeds")
+        .navigationTitle(session.loading ? "" : "Feeds")
         .navigationBarTitleDisplayMode(.large)
         .background(session.reader ? .init("Background") : Color.clear)
         .onReceive(session.cloud) { model in

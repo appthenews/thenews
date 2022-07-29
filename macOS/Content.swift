@@ -43,20 +43,13 @@ final class Content: NSVisualEffectView {
         description.textColor = .labelColor
         flip.addSubview(description)
         
-        let loading = Vibrant(layer: false)
-        addSubview(loading)
+        let empty = Vibrant(layer: false)
+        addSubview(empty)
         
-        let image = NSImageView(image: .init(systemSymbolName: "cloud.bolt", accessibilityDescription: nil) ?? .init())
-        image.symbolConfiguration = .init(pointSize: 60, weight: .ultraLight)
-            .applying(.init(hierarchicalColor: .tertiaryLabelColor))
+        let image = NSImageView(image: .init(named: "Logo") ?? .init())
+        image.contentTintColor = .quaternaryLabelColor
         image.translatesAutoresizingMaskIntoConstraints = false
-        loading.addSubview(image)
-        
-        let message = Text(vibrancy: false)
-        message.stringValue = "Fetching news..."
-        message.textColor = .tertiaryLabelColor
-        message.font = .preferredFont(forTextStyle: .title3)
-        loading.addSubview(message)
+        empty.addSubview(image)
         
         header.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
         header.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -162).isActive = true
@@ -82,16 +75,13 @@ final class Content: NSVisualEffectView {
         description.widthAnchor.constraint(lessThanOrEqualToConstant: 800).isActive = true
         description.bottomAnchor.constraint(equalTo: flip.bottomAnchor, constant: -40).isActive = true
         
-        loading.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        loading.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        loading.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        loading.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        empty.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        empty.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        empty.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        empty.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
-        image.centerXAnchor.constraint(equalTo: loading.centerXAnchor).isActive = true
-        image.centerYAnchor.constraint(equalTo: loading.centerYAnchor, constant: -10).isActive = true
-        
-        message.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 30).isActive = true
-        message.centerXAnchor.constraint(equalTo: loading.centerXAnchor).isActive = true
+        image.centerXAnchor.constraint(equalTo: empty.centerXAnchor).isActive = true
+        image.centerYAnchor.constraint(equalTo: empty.centerYAnchor).isActive = true
         
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = .byTruncatingTail
@@ -111,6 +101,8 @@ final class Content: NSVisualEffectView {
             }
             .sink { item, font in
                 if let item = item {
+                    empty.isHidden = true
+                    
                     let string = NSMutableAttributedString()
                     string.append(.init(string: item.feed.provider.title,
                                         attributes: [
@@ -146,6 +138,7 @@ final class Content: NSVisualEffectView {
                     header.attributedStringValue = .init()
                     title.attributedStringValue = .init()
                     description.attributedStringValue = .init()
+                    empty.isHidden = false
                 }
             }
             .store(in: &subs)
@@ -156,7 +149,6 @@ final class Content: NSVisualEffectView {
                 !$0
             }
             .sink { _ in
-                loading.removeFromSuperview()
                 header.isHidden = false
                 scroll.isHidden = false
             }

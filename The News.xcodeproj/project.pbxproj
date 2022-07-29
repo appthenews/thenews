@@ -47,6 +47,9 @@
 		CE9A1C212880163200CB6D44 /* NSMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9A1C202880163200CB6D44 /* NSMenuItem.swift */; };
 		CE9B6579287ED83D00AD0D98 /* TextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B6578287ED83D00AD0D98 /* TextLayer.swift */; };
 		CE9B657B287ED86700AD0D98 /* ShapeLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B657A287ED86700AD0D98 /* ShapeLayer.swift */; };
+		CE9DBD842893F26C0039EA11 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE9DBD832893F26C0039EA11 /* Media.xcassets */; };
+		CE9DBD852893F26C0039EA11 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE9DBD832893F26C0039EA11 /* Media.xcassets */; };
+		CE9DBD872893F4090039EA11 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9DBD862893F4090039EA11 /* Loading.swift */; };
 		CE9DC2F8287DB436004DA15D /* Control.Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9DC2F7287DB436004DA15D /* Control.Symbol.swift */; };
 		CEAC22B1289169F10099A162 /* Listed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC22B0289169F10099A162 /* Listed.swift */; };
 		CEAC22B3289172470099A162 /* Froob.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC22B2289172470099A162 /* Froob.swift */; };
@@ -129,6 +132,8 @@
 		CE9A1C202880163200CB6D44 /* NSMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMenuItem.swift; sourceTree = "<group>"; };
 		CE9B6578287ED83D00AD0D98 /* TextLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLayer.swift; sourceTree = "<group>"; };
 		CE9B657A287ED86700AD0D98 /* ShapeLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeLayer.swift; sourceTree = "<group>"; };
+		CE9DBD832893F26C0039EA11 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		CE9DBD862893F4090039EA11 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		CE9DC2F7287DB436004DA15D /* Control.Symbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Control.Symbol.swift; sourceTree = "<group>"; };
 		CEAC22B0289169F10099A162 /* Listed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listed.swift; sourceTree = "<group>"; };
 		CEAC22B2289172470099A162 /* Froob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Froob.swift; sourceTree = "<group>"; };
@@ -233,6 +238,7 @@
 				CED728D2287869E50010A4BC /* List.Info.swift */,
 				CED728D428786A0A0010A4BC /* List.State.swift */,
 				CED728CA287865210010A4BC /* List.swift */,
+				CE9DBD862893F4090039EA11 /* Loading.swift */,
 				CE9A1C1C2880155700CB6D44 /* Menu.Link.swift */,
 				CE9A1C1E288015F400CB6D44 /* Menu.Share.swift */,
 				CE9A1C1A2880154600CB6D44 /* Menu.swift */,
@@ -313,6 +319,7 @@
 			children = (
 				CEE81F1A288816D300AC1694 /* Configuration.storekit */,
 				CEE81F1B2888173400AC1694 /* Store.swift */,
+				CE9DBD832893F26C0039EA11 /* Media.xcassets */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -402,6 +409,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE9DBD842893F26C0039EA11 /* Media.xcassets in Resources */,
 				CE346084287066FE001962E7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -411,6 +419,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE53F80F288AB78A00C91444 /* Launch Screen.storyboard in Resources */,
+				CE9DBD852893F26C0039EA11 /* Media.xcassets in Resources */,
 				CE34609B287067D3001962E7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +441,7 @@
 				CE3C70E028732AD100863C22 /* Middlebar.Field.swift in Sources */,
 				CED728D728787B540010A4BC /* Vibrant.swift in Sources */,
 				CE19C0E9287702800045E221 /* Preferences.Feeds.Switch.swift in Sources */,
+				CE9DBD872893F4090039EA11 /* Loading.swift in Sources */,
 				CE34608F28706760001962E7 /* Session.swift in Sources */,
 				CE3C70E428732B2100863C22 /* Middlebar.Editor.swift in Sources */,
 				CEC5DFB32871BD50008C8E56 /* Control.swift in Sources */,

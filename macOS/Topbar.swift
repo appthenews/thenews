@@ -28,6 +28,7 @@ final class Topbar: NSView {
                                          action: #selector(change))
         segmented.translatesAutoresizingMaskIntoConstraints = false
         segmented.selectedSegment = session.columns.value
+        segmented.isHidden = true
         addSubview(segmented)
         
         let delete = Button(symbol: "trash")
@@ -121,6 +122,16 @@ final class Topbar: NSView {
                     bookmark.state = .on
                     open.state = .on
                 }
+            }
+            .store(in: &subs)
+        
+        session
+            .loading
+            .filter {
+                !$0
+            }
+            .sink { _ in
+                segmented.isHidden = false
             }
             .store(in: &subs)
     }

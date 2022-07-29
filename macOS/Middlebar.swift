@@ -17,10 +17,12 @@ final class Middlebar: NSVisualEffectView {
         let width = widthAnchor.constraint(equalToConstant: 0)
         width.isActive = true
         
+        field.isHidden = true
         addSubview(field)
         
         let filter = Control.Symbol(symbol: "line.3.horizontal.decrease.circle", size: 18)
         filter.toolTip = "Filters"
+        filter.state = .hidden
         filter
             .click
             .sink {
@@ -44,6 +46,7 @@ final class Middlebar: NSVisualEffectView {
         addSubview(count)
         
         let divider = Separator()
+        divider.isHidden = true
         addSubview(divider)
         
         let separator = Separator()
@@ -52,6 +55,9 @@ final class Middlebar: NSVisualEffectView {
         let list = List(session: session)
         list.isHidden = true
         addSubview(list)
+        
+        let loading = Loading()
+        addSubview(loading)
         
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         field.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
@@ -80,6 +86,11 @@ final class Middlebar: NSVisualEffectView {
         list.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         list.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         list.widthAnchor.constraint(equalToConstant: 310).isActive = true
+        
+        loading.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        loading.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        loading.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        loading.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = .byTruncatingTail
@@ -158,8 +169,12 @@ final class Middlebar: NSVisualEffectView {
                 !$0
             }
             .sink { _ in
+                loading.removeFromSuperview()
                 count.isHidden = false
                 list.isHidden = false
+                divider.isHidden = false
+                field.isHidden = false
+                filter.state = .on
             }
             .store(in: &subs)
     }

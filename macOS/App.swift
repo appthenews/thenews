@@ -35,7 +35,7 @@ import News
             await session.cloud.fetch()
         
             if session.loading.value {
-//                session.loading.value = false
+                session.loading.value = false
             }
         }
     }
