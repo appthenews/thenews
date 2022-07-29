@@ -18,6 +18,7 @@ final class Session {
     let columns: CurrentValueSubject<Int, Never>
     let showing: CurrentValueSubject<Int, Never>
     let font: CurrentValueSubject<CGFloat, Never>
+    let reader: CurrentValueSubject<Bool, Never>
     let froob: CurrentValueSubject<Bool, Never>
     let items: AnyPublisher<[Item], Never>
     private var reviewed = false
@@ -31,6 +32,7 @@ final class Session {
         columns = .init(UserDefaults.standard.value(forKey: "columns") as? Int ?? 0)
         showing = .init(UserDefaults.standard.value(forKey: "showing") as? Int ?? 0)
         font = .init(UserDefaults.standard.value(forKey: "font") as? CGFloat ?? 2)
+        reader = .init(UserDefaults.standard.value(forKey: "reader") as? Bool ?? false)
         froob = .init(Defaults.froob)
         
         items = provider

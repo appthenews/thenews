@@ -13,7 +13,7 @@
 		CE19C0EB287725330045E221 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19C0EA287725330045E221 /* Stack.swift */; };
 		CE19C0ED287726150045E221 /* Sidebar.Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19C0EC287726150045E221 /* Sidebar.Item.swift */; };
 		CE1CE2082888536D0027B7B5 /* Control.Plain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CE2072888536D0027B7B5 /* Control.Plain.swift */; };
-		CE32BDED2881714C0091FAC7 /* Preferences.Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE32BDEC2881714C0091FAC7 /* Preferences.Font.swift */; };
+		CE32BDED2881714C0091FAC7 /* Preferences.Reading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE32BDEC2881714C0091FAC7 /* Preferences.Reading.swift */; };
 		CE346080287066FD001962E7 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE34607F287066FD001962E7 /* App.swift */; };
 		CE346082287066FD001962E7 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE346081287066FD001962E7 /* Window.swift */; };
 		CE346084287066FE001962E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE346083287066FE001962E7 /* Assets.xcassets */; };
@@ -94,7 +94,7 @@
 		CE19C0EA287725330045E221 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		CE19C0EC287726150045E221 /* Sidebar.Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.Item.swift; sourceTree = "<group>"; };
 		CE1CE2072888536D0027B7B5 /* Control.Plain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Control.Plain.swift; sourceTree = "<group>"; };
-		CE32BDEC2881714C0091FAC7 /* Preferences.Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.Font.swift; sourceTree = "<group>"; };
+		CE32BDEC2881714C0091FAC7 /* Preferences.Reading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.Reading.swift; sourceTree = "<group>"; };
 		CE346077287065D9001962E7 /* News */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = News; sourceTree = "<group>"; };
 		CE34607C287066FD001962E7 /* The News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The News.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE34607F287066FD001962E7 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -249,7 +249,7 @@
 				CE9A1C202880163200CB6D44 /* NSMenuItem.swift */,
 				CE19C0E6287702370045E221 /* Preferences.Feeds.swift */,
 				CE19C0E8287702800045E221 /* Preferences.Feeds.Switch.swift */,
-				CE32BDEC2881714C0091FAC7 /* Preferences.Font.swift */,
+				CE32BDEC2881714C0091FAC7 /* Preferences.Reading.swift */,
 				CE19C0E4287701C60045E221 /* Preferences.swift */,
 				CE3EEC6728804336004060A1 /* Preferences.Update.swift */,
 				CEE81F1D28883F3F00AC1694 /* Purchased.swift */,
@@ -448,7 +448,7 @@
 				CE9DC2F8287DB436004DA15D /* Control.Symbol.swift in Sources */,
 				CED728CF2878659F0010A4BC /* Flip.swift in Sources */,
 				CEC5DFB12871BB76008C8E56 /* Topbar.swift in Sources */,
-				CE32BDED2881714C0091FAC7 /* Preferences.Font.swift in Sources */,
+				CE32BDED2881714C0091FAC7 /* Preferences.Reading.swift in Sources */,
 				CE19C0ED287726150045E221 /* Sidebar.Item.swift in Sources */,
 				CEC5DFAD2871B1F9008C8E56 /* Middlebar.swift in Sources */,
 				CEE81F1E28883F3F00AC1694 /* Purchased.swift in Sources */,

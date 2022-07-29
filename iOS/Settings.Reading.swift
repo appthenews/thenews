@@ -17,7 +17,7 @@ extension Settings {
                 }
                 
                 Section("Font size") {
-                    Slider(value: $session.font, in: -2 ... 10, step: 2) {
+                    Slider(value: $session.font, in: -2 ... 14, step: 2) {
                         Text("Font size")
                             .font(.callout)
                             .foregroundStyle(.secondary)
@@ -27,7 +27,7 @@ extension Settings {
                             .foregroundStyle(.secondary)
                     } maximumValueLabel: {
                         Text(verbatim: "A")
-                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize + 10, weight: .medium))
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize + 14, weight: .medium))
                             .foregroundStyle(.secondary)
                     }
                     .listRowBackground(Color.clear)
