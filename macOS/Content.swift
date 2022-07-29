@@ -3,14 +3,20 @@ import Combine
 import News
 
 final class Content: NSVisualEffectView {
+    private weak var background: NSView!
     private var subs = Set<AnyCancellable>()
     
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
+        let background = NSView()
+        background.wantsLayer = true
+        self.background = background
+        
         super.init(frame: .zero)
-        state = .active
-        material = .sidebar
         translatesAutoresizingMaskIntoConstraints = false
+        
+        background.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(background)
         
         let header = Text(vibrancy: true)
         header.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -50,6 +56,11 @@ final class Content: NSVisualEffectView {
         image.contentTintColor = .quaternaryLabelColor
         image.translatesAutoresizingMaskIntoConstraints = false
         empty.addSubview(image)
+        
+        background.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        background.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
         header.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
         header.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -162).isActive = true
@@ -153,5 +164,30 @@ final class Content: NSVisualEffectView {
                 scroll.isHidden = false
             }
             .store(in: &subs)
+        
+        session
+            .reader
+            .sink { [weak self] in
+                if $0 {
+                    self?.state = .inactive
+                    self?.material = .underPageBackground
+                    background.isHidden = false
+                } else {
+                    self?.state = .active
+                    self?.material = .sidebar
+                    background.isHidden = true
+                }
+            }
+            .store(in: &subs)
+    }
+    
+    override func updateLayer() {
+        super.updateLayer()
+        
+        NSApp
+            .effectiveAppearance
+            .performAsCurrentDrawingAppearance {
+                background.layer!.backgroundColor = NSColor(named: "Background")!.cgColor
+            }
     }
 }

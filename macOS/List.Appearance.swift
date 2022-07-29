@@ -2,14 +2,16 @@ import AppKit
 
 extension List {
     struct Appearance {
-        var provider = NSFont.preferredFont(forTextStyle: .body)
-        var date = NSFont.preferredFont(forTextStyle: .footnote)
         var title = NSFont.preferredFont(forTextStyle: .footnote)
         var primary = NSColor.labelColor
         var secondary = NSColor.secondaryLabelColor
         var tertiary = NSColor.tertiaryLabelColor
+        var text = NSColor.labelColor
+        var reader = false
+        let provider = NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize, weight: .regular)
+        let date = NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize, weight: .light)
         let paragraph: NSParagraphStyle
-        let spacing = NSAttributedString(string: "\n\n", attributes: [.font: NSFont.systemFont(ofSize: 4, weight: .regular)])
+        let spacing = NSAttributedString(string: "\n\n", attributes: [.font: NSFont.systemFont(ofSize: 2, weight: .regular)])
         
         init() {
             let paragraph = NSMutableParagraphStyle()
@@ -24,6 +26,18 @@ extension List {
             paragraph.minimumLineHeight = 1
             paragraph.maximumLineHeight = 100
             self.paragraph = paragraph
+        }
+        
+        func heading(new: Bool) -> NSColor {
+            new
+            ? reader ? text : secondary
+            : tertiary
+        }
+        
+        func content(new: Bool) -> NSColor {
+            new
+            ? reader ? text : primary
+            : tertiary
         }
     }
 }

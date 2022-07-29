@@ -111,16 +111,19 @@ final class Topbar: NSView {
             .sink { item in
                 bookmark.toolTip = item?.status == .bookmarked ? "Remove bookmark" : "Add bookmark"
                 
-                if item == nil {
-                    delete.state = .hidden
-                    share.state = .hidden
-                    bookmark.state = .hidden
-                    open.state = .hidden
-                } else {
+                if let item = item {
                     delete.state = .on
                     share.state = .on
                     bookmark.state = .on
                     open.state = .on
+                    
+                    bookmark.image.image = .init(systemSymbolName: item.status == .bookmarked ? "bookmark.fill" : "bookmark",
+                                                 accessibilityDescription: nil)
+                } else {
+                    delete.state = .hidden
+                    share.state = .hidden
+                    bookmark.state = .hidden
+                    open.state = .hidden
                 }
             }
             .store(in: &subs)
@@ -132,6 +135,16 @@ final class Topbar: NSView {
             }
             .sink { _ in
                 segmented.isHidden = false
+            }
+            .store(in: &subs)
+        
+        session
+            .reader
+            .sink { reader in
+                [delete, share, bookmark, open]
+                    .forEach {
+                        $0.color = reader ? .init(named: "Text")! : .controlAccentColor
+                    }
             }
             .store(in: &subs)
     }

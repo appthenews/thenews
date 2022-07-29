@@ -15,17 +15,32 @@ extension List {
                 label.frame.size.height = info.rect.height - 30
                 
                 if info.recent {
-                    recent.frame.origin.y = info.rect.height - 30
+                    recent.frame.origin.y = info.rect.height - 33
                     recent.isHidden = false
                     bookmark.isHidden = true
                 } else if info.item.status == .bookmarked {
                     recent.isHidden = true
-                    bookmark.frame.origin.y = info.rect.height - 40
+                    bookmark.frame.origin.y = info.rect.height - 43
                     bookmark.isHidden = false
                 } else {
                     recent.isHidden = true
                     bookmark.isHidden = true
                 }
+            }
+        }
+        
+        var reader = false {
+            didSet {
+                guard reader != oldValue else { return }
+                
+                NSApp
+                    .effectiveAppearance
+                    .performAsCurrentDrawingAppearance {
+                        recent.fillColor = reader ? NSColor(named: "Text")!.cgColor : NSColor.controlAccentColor.cgColor
+                        bookmark.symbolConfiguration = bookmark
+                            .symbolConfiguration!
+                            .applying(.init(hierarchicalColor: reader ? .init(named: "Text")!: .tertiaryLabelColor))
+                    }
             }
         }
         
@@ -45,13 +60,11 @@ extension List {
         required init() {
             let vibrant = Vibrant(layer: true)
             vibrant.translatesAutoresizingMaskIntoConstraints = true
-            vibrant.layer!.cornerCurve = .continuous
-            vibrant.layer!.cornerRadius = 10
-            vibrant.frame = .init(x: 10, y: 0, width: 290, height: 0)
+            vibrant.frame = .init(x: 0, y: 0, width: 290, height: 0)
             self.vibrant = vibrant
 
             let label = TextLayer()
-            label.frame = .init(x: 15, y: 15, width: 240, height: 0)
+            label.frame = .init(x: 15, y: 12, width: 240, height: 0)
             label.contentsScale = NSScreen.main?.backingScaleFactor ?? 2
             label.isWrapped = true
             label.allowsFontSubpixelQuantization = true
@@ -62,7 +75,7 @@ extension List {
             
             let recent = ShapeLayer()
             recent.isHidden = true
-            recent.frame = .init(x: 278, y: 0, width: 14, height: 14)
+            recent.frame = .init(x: 268, y: 0, width: 14, height: 14)
             recent.path = .init(ellipseIn: .init(x: 3, y: 3, width: 8, height: 8), transform: nil)
             recent.fillColor = NSColor.controlAccentColor.cgColor
             self.recent = recent
@@ -70,8 +83,7 @@ extension List {
             let bookmark = NSImageView(image: .init(systemSymbolName: "bookmark.fill", accessibilityDescription: nil) ?? .init())
             bookmark.isHidden = true
             bookmark.frame = .init(x: 260, y: 0, width: 30, height: 30)
-            bookmark.symbolConfiguration = .init(pointSize: 12, weight: .regular)
-                .applying(.init(hierarchicalColor: .tertiaryLabelColor))
+            bookmark.symbolConfiguration = .init(pointSize: 11, weight: .regular)
             vibrant.addSubview(bookmark)
             self.bookmark = bookmark
             
@@ -89,7 +101,7 @@ extension List {
                 .performAsCurrentDrawingAppearance {
                     switch state {
                     case .highlighted, .selected:
-                        vibrant.layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.07).cgColor
+                        vibrant.layer!.backgroundColor = NSColor(named: "Text")!.withAlphaComponent(0.07).cgColor
                     default:
                         vibrant.layer!.backgroundColor = .clear
                     }

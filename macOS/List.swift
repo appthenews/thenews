@@ -56,7 +56,8 @@ final class List: NSScrollView {
                         }
                 }
                 .removeDuplicates()
-                .sink { visible in
+                .combineLatest(session.reader)
+                .sink { visible, reader in
                     cells
                         .filter {
                             $0.info != nil && !visible.contains($0.info!)
@@ -80,6 +81,7 @@ final class List: NSScrollView {
                                 return $0
                             } (Cell())
                             cell.state = session.item.value?.link == info.item.link ? .selected : .none
+                            cell.reader = reader
                             cell.info = info
                             content.addSubview(cell)
                         }
@@ -149,8 +151,9 @@ final class List: NSScrollView {
         session
             .items
             .combineLatest(session.font,
+                           session.reader,
                            refresh)
-            .sink { [weak self] items, font, _ in
+            .sink { [weak self] items, font, reader, _ in
                 guard
                     !items.isEmpty,
                     var appearance = self?.appear
@@ -162,19 +165,18 @@ final class List: NSScrollView {
                     return
                 }
                 
-                appearance.provider = .systemFont(ofSize: 8 + font, weight: .regular)
-                appearance.date = .systemFont(ofSize: 8 + font, weight: .light)
+                appearance.reader = reader
                 appearance.title = .systemFont(ofSize: 12 + font, weight: .regular)
                 
                 let result = items
-                    .reduce(into: (info: Set<Info>(), y: CGFloat(20))) {
+                    .reduce(into: (info: Set<Info>(), y: CGFloat(1))) {
                         let info = Info(item: $1, y: $0.y, appearance: appearance)
                         $0.info.insert(info)
-                        $0.y = info.rect.maxY + 2
+                        $0.y = info.rect.maxY + 1
                     }
                 
                 info.send(result.info)
-                size.send(.init(width: 0, height: result.y + 20))
+                size.send(.init(width: 0, height: result.y + 1))
                 highlighted.value = nil
                 
                 if let current = session.item.value?.link,
@@ -261,10 +263,12 @@ final class List: NSScrollView {
             appear.primary = .init(white: 1, alpha: 1)
             appear.secondary = .init(white: 1, alpha: 0.5)
             appear.tertiary = .init(white: 1, alpha: 0.4)
+            appear.text = .init(white: 0.82, alpha: 1)
         } else {
             appear.primary = .init(white: 0, alpha: 1)
             appear.secondary = .init(white: 0, alpha: 0.5)
             appear.tertiary = .init(white: 0, alpha: 0.4)
+            appear.text = .init(white: 0.32, alpha: 1)
         }
         
         refresh.send()

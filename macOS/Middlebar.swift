@@ -3,6 +3,7 @@ import Combine
 
 final class Middlebar: NSVisualEffectView {
     private weak var field: Field!
+    private weak var background: NSView!
     private var subs = Set<AnyCancellable>()
     
     required init?(coder: NSCoder) { nil }
@@ -10,10 +11,16 @@ final class Middlebar: NSVisualEffectView {
         let field = Field(session: session)
         self.field = field
         
+        let background = NSView()
+        background.wantsLayer = true
+        self.background = background
+        
         super.init(frame: .zero)
-        state = .active
-        material = .menu
         translatesAutoresizingMaskIntoConstraints = false
+        
+        background.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(background)
+        
         let width = widthAnchor.constraint(equalToConstant: 0)
         width.isActive = true
         
@@ -59,9 +66,14 @@ final class Middlebar: NSVisualEffectView {
         let loading = Loading()
         addSubview(loading)
         
+        background.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        background.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         field.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
-        field.widthAnchor.constraint(equalToConstant: 240).isActive = true
+        field.widthAnchor.constraint(equalToConstant: 220).isActive = true
         
         filter.centerYAnchor.constraint(equalTo: field.centerYAnchor).isActive = true
         filter.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
@@ -85,7 +97,7 @@ final class Middlebar: NSVisualEffectView {
         list.topAnchor.constraint(equalTo: divider.bottomAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         list.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        list.widthAnchor.constraint(equalToConstant: 310).isActive = true
+        list.widthAnchor.constraint(equalToConstant: 290).isActive = true
         
         loading.topAnchor.constraint(equalTo: topAnchor).isActive = true
         loading.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -108,7 +120,7 @@ final class Middlebar: NSVisualEffectView {
         session
             .columns
             .sink {
-                width.constant = $0 < 2 ? 311 : 0
+                width.constant = $0 < 2 ? 291 : 0
                 leading.constant = $0 == 1 ? 195 : 20
             }
             .store(in: &subs)
@@ -177,6 +189,21 @@ final class Middlebar: NSVisualEffectView {
                 filter.state = .on
             }
             .store(in: &subs)
+        
+        session
+            .reader
+            .sink { [weak self] in
+                if $0 {
+                    self?.state = .inactive
+                    self?.material = .underPageBackground
+                    background.isHidden = false
+                } else {
+                    self?.state = .active
+                    self?.material = .menu
+                    background.isHidden = true
+                }
+            }
+            .store(in: &subs)
     }
     
     override func updateLayer() {
@@ -186,6 +213,7 @@ final class Middlebar: NSVisualEffectView {
             .effectiveAppearance
             .performAsCurrentDrawingAppearance {
                 field.layer!.backgroundColor = NSColor.quaternaryLabelColor.cgColor
+                background.layer!.backgroundColor = NSColor(named: "Background")!.cgColor
             }
     }
 }

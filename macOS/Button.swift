@@ -1,13 +1,21 @@
 import AppKit
 
 final class Button: Control {
+    var color = NSColor.controlAccentColor {
+        didSet {
+            image.symbolConfiguration = .init(pointSize: 14, weight: .regular)
+                .applying(.init(hierarchicalColor: color))
+        }
+    }
+    
+    private(set) weak var image: NSImageView!
+    
     required init?(coder: NSCoder) { nil }
     init(symbol: String) {
         let image = NSImageView(image: .init(systemSymbolName: symbol,
                                              accessibilityDescription: nil) ?? .init())
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.symbolConfiguration = .init(pointSize: 14, weight: .regular)
-        image.contentTintColor = .controlAccentColor
+        self.image = image
         
         super.init(layer: true)
         layer!.cornerRadius = 6
@@ -25,7 +33,7 @@ final class Button: Control {
         
         switch state {
         case .pressed, .highlighted:
-            layer!.backgroundColor = NSColor.controlAccentColor.withAlphaComponent(0.2).cgColor
+            layer!.backgroundColor = color.withAlphaComponent(0.2).cgColor
         default:
             layer!.backgroundColor = .clear
         }

@@ -32,7 +32,8 @@ extension Shortcut {
                                 attributes: [
                                     .font: NSFont.preferredFont(forTextStyle: .body),
                                     .foregroundColor: NSColor.labelColor,
-                                    .paragraphStyle: paragraph]))
+                                    .paragraphStyle: paragraph,
+                                    .kern: 0.5]))
             
             let text = Text(vibrancy: true)
             text.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
