@@ -4,7 +4,6 @@ import News
 struct Sidebar: View {
     @ObservedObject var session: Session
     @State private var providers = Set<Provider>()
-    @State private var feeds = false
     @State private var recents = Provider.allCases.reduce(into: [:]) { $0[$1] = 0 }
     
     var body: some View {
@@ -23,27 +22,8 @@ struct Sidebar: View {
         .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.large)
         .background(session.reader ? .init("Background") : Color.clear)
-        .sheet(isPresented: $feeds) {
-            NavigationView {
-                Feeds(session: session)
-                    .navigationTitle("Select your feeds")
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Done") {
-                                feeds = false
-                            }
-                        }
-                    }
-            }
-            .navigationViewStyle(.stack)
-        }
         .onReceive(session.cloud) { model in
             providers = model.preferences.providers
-            
-            if providers.isEmpty {
-                feeds = true
-            }
-            
             recents = Provider
                 .allCases
                 .reduce(into: [:]) { result, provider in

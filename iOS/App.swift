@@ -4,6 +4,7 @@ import News
 @main struct App: SwiftUI.App {
     @StateObject private var session = Session()
     @State private var purchased = false
+    @State private var feeds = false
     @Environment(\.scenePhase) private var phase
     @UIApplicationDelegateAdaptor(Delegate.self) private var delegate
     
@@ -40,6 +41,20 @@ import News
             .sheet(isPresented: $purchased) {
                 Sheet(rootView: Purchased())
             }
+            .sheet(isPresented: $feeds) {
+                NavigationView {
+                    Feeds(session: session)
+                        .navigationTitle("Select your feeds")
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button("Done") {
+                                    feeds = false
+                                }
+                            }
+                        }
+                }
+                .navigationViewStyle(.stack)
+            }
             .accentColor(session.reader ? .init("Text") : .init("AccentColor"))
             .onReceive(session.store.purchased) {
                 session.froob = false
@@ -63,13 +78,20 @@ import News
             case .active:
                 session.cloud.pull.send()
                 
-                Task {
-                    await session.cloud.fetch()
-                    
-                    if session.loading {
-                        session.loading = false
-                        if UIDevice.current.userInterfaceIdiom == .pad  {
-                            session.provider = .all
+                session.cloud.ready.notify(queue: .main) {
+                    Task {
+                        await session.cloud.fetch()
+                        
+                        if session.loading {
+                            session.loading = false
+                            
+                            if UIDevice.current.userInterfaceIdiom == .pad  {
+                                session.provider = .all
+                            }
+                            
+                            if await session.cloud.model.preferences.providers.isEmpty {
+                                feeds = true
+                            }
                         }
                     }
                 }
