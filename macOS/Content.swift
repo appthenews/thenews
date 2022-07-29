@@ -151,11 +151,15 @@ final class Content: NSVisualEffectView {
             .store(in: &subs)
         
         session
-            .ready
-            .notify(queue: .main) {
+            .loading
+            .filter {
+                !$0
+            }
+            .sink { _ in
                 loading.removeFromSuperview()
                 header.isHidden = false
                 scroll.isHidden = false
             }
+            .store(in: &subs)
     }
 }

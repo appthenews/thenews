@@ -150,9 +150,13 @@ final class Sidebar: NSVisualEffectView {
             .store(in: &subs)
         
         session
-            .ready
-            .notify(queue: .main) {
+            .loading
+            .filter {
+                !$0
+            }
+            .sink { _ in
                 stack.isHidden = false
             }
+            .store(in: &subs)
     }
 }

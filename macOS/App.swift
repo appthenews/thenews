@@ -33,7 +33,10 @@ import News
         
         Task {
             await session.cloud.fetch()
-            session.notify()
+        
+            if session.loading.value {
+//                session.loading.value = false
+            }
         }
     }
     

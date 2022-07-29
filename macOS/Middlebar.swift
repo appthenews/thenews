@@ -153,11 +153,15 @@ final class Middlebar: NSVisualEffectView {
             .store(in: &subs)
         
         session
-            .ready
-            .notify(queue: .main) {
+            .loading
+            .filter {
+                !$0
+            }
+            .sink { _ in
                 count.isHidden = false
                 list.isHidden = false
             }
+            .store(in: &subs)
     }
     
     override func updateLayer() {
