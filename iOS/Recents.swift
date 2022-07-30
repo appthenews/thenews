@@ -107,7 +107,7 @@ struct Recents: View {
         .buttonStyle(Listed {
             if $0 {
                 selection = article.link
-            } else {
+            } else if selection == article.link {
                 selection = nil
             }
         })
