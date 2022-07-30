@@ -64,7 +64,7 @@ struct Sidebar: View {
                         .fixedSize()
                     }
                 }
-                .padding(.vertical, 15)
+                .padding(.vertical, 8)
                 .contentShape(Rectangle())
             }
             .listRowBackground(session.provider == provider

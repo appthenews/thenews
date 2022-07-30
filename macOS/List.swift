@@ -162,7 +162,7 @@ final class List: NSScrollView {
                 }
                 
                 appearance.reader = reader
-                appearance.title = .systemFont(ofSize: 12 + font, weight: .regular)
+                appearance.title = .systemFont(ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize + font, weight: .regular)
                 
                 let result = items
                     .reduce(into: (info: Set<Info>(), y: CGFloat())) {

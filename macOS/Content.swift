@@ -18,35 +18,38 @@ final class Content: NSVisualEffectView {
         background.translatesAutoresizingMaskIntoConstraints = false
         addSubview(background)
         
-        let header = Text(vibrancy: true)
-        header.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        header.maximumNumberOfLines = 1
-        header.isHidden = true
-        addSubview(header)
-        
         let flip = Flip()
         flip.translatesAutoresizingMaskIntoConstraints = false
         
         let scroll = NSScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         scroll.documentView = flip
+        scroll.hasVerticalScroller = true
+        scroll.verticalScroller!.controlSize = .mini
         scroll.drawsBackground = false
         scroll.automaticallyAdjustsContentInsets = false
         scroll.isHidden = true
         addSubview(scroll)
         
+        let header = Text(vibrancy: true)
+        header.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        flip.addSubview(header)
+        
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .justified
+        
         let title = Text(vibrancy: true)
         title.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         title.isSelectable = true
+        title.allowsEditingTextAttributes = true
         title.alignment = .justified
-        title.textColor = .labelColor
         flip.addSubview(title)
         
         let description = Text(vibrancy: true)
         description.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         description.isSelectable = true
+        description.allowsEditingTextAttributes = true
         description.alignment = .justified
-        description.textColor = .labelColor
         flip.addSubview(description)
         
         let empty = Vibrant(layer: false)
@@ -62,11 +65,6 @@ final class Content: NSVisualEffectView {
         background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
-        header.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
-        header.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -162).isActive = true
-        let leading = header.leftAnchor.constraint(equalTo: leftAnchor)
-        leading.isActive = true
-        
         scroll.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         scroll.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         scroll.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
@@ -76,15 +74,20 @@ final class Content: NSVisualEffectView {
         flip.leftAnchor.constraint(equalTo: scroll.leftAnchor).isActive = true
         flip.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
         
-        title.topAnchor.constraint(equalTo: flip.topAnchor, constant: 10).isActive = true
-        title.leftAnchor.constraint(equalTo: description.leftAnchor).isActive = true
-        title.rightAnchor.constraint(equalTo: description.rightAnchor).isActive = true
+        header.topAnchor.constraint(equalTo: flip.topAnchor, constant: 25).isActive = true
+        header.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 70).isActive = true
+        header.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -70).isActive = true
         
-        description.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 20).isActive = true
-        description.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 60).isActive = true
-        description.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -60).isActive = true
-        description.widthAnchor.constraint(lessThanOrEqualToConstant: 800).isActive = true
-        description.bottomAnchor.constraint(equalTo: flip.bottomAnchor, constant: -40).isActive = true
+        title.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 5).isActive = true
+        title.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 70).isActive = true
+        title.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -70).isActive = true
+        title.widthAnchor.constraint(lessThanOrEqualToConstant: 850).isActive = true
+        
+        description.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 30).isActive = true
+        description.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 70).isActive = true
+        description.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -70).isActive = true
+        description.widthAnchor.constraint(lessThanOrEqualToConstant: 850).isActive = true
+        description.bottomAnchor.constraint(equalTo: flip.bottomAnchor, constant: -60).isActive = true
         
         empty.topAnchor.constraint(equalTo: topAnchor).isActive = true
         empty.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -94,51 +97,47 @@ final class Content: NSVisualEffectView {
         image.centerXAnchor.constraint(equalTo: empty.centerXAnchor).isActive = true
         image.centerYAnchor.constraint(equalTo: empty.centerYAnchor).isActive = true
         
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.lineBreakMode = .byTruncatingTail
-        
-        session
-            .columns
-            .sink {
-                leading.constant = $0 == 2 ? 195 : 60
-            }
-            .store(in: &subs)
-        
         session
             .item
-            .combineLatest(session.font)
-            .removeDuplicates { first, second in
-                first.0 == second.0 && first.1 == second.1
-            }
-            .sink { item, font in
+            .combineLatest(session.font, session.reader)
+            .sink { item, font, reader in
                 if let item = item {
                     empty.isHidden = true
                     
                     let string = NSMutableAttributedString()
                     string.append(.init(string: item.feed.provider.title,
                                         attributes: [
-                                            .font: NSFont.systemFont(ofSize: 11 + font, weight: .light),
-                                            .foregroundColor: NSColor.secondaryLabelColor,
-                                            .paragraphStyle: paragraph]))
+                                            .font: NSFont.systemFont(ofSize:
+                                                                        NSFont.preferredFont(forTextStyle: .body).pointSize,
+                                                                     weight: .regular),
+                                            .foregroundColor: reader ? .init(named: "Text")! : NSColor.secondaryLabelColor]))
                     string.append(.init(string: " – " + item
                         .date
                         .formatted(.relative(presentation: .named, unitsStyle: .wide)),
                                         attributes: [
-                                            .font: NSFont.systemFont(ofSize: 11 + font, weight: .light),
-                                            .foregroundColor: NSColor.tertiaryLabelColor,
-                                            .paragraphStyle: paragraph]))
-                    
+                                            .font: NSFont.systemFont(ofSize:
+                                                                        NSFont.preferredFont(forTextStyle: .body).pointSize,
+                                                                     weight: .light),
+                                            .foregroundColor: reader ? .init(named: "Text")! : NSColor.secondaryLabelColor]))
                     header.attributedStringValue = string
                     
                     title.attributedStringValue = .init(
                         string: item.title,
-                        attributes: [.font: NSFont.systemFont(ofSize: 18 + font, weight: .medium),
-                                     .kern: 1])
+                        attributes: [.font: NSFont.systemFont(ofSize:
+                                                                NSFont.preferredFont(forTextStyle: .title2).pointSize + font,
+                                                              weight: .medium),
+                                     .kern: 1,
+                                     .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor,
+                                     .paragraphStyle: paragraph])
                     
                     description.attributedStringValue = .init(
                         string: item.description,
-                        attributes: [.font: NSFont.systemFont(ofSize: 14 + font, weight: .regular),
-                                     .kern: 1])
+                        attributes: [.font: NSFont.systemFont(ofSize:
+                                                                NSFont.preferredFont(forTextStyle: .body).pointSize + font,
+                                                              weight: .regular),
+                                     .kern: 1,
+                                     .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor,
+                                     .paragraphStyle: paragraph])
                     
                     Task {
                         await session.cloud.read(item: item)
@@ -160,7 +159,6 @@ final class Content: NSVisualEffectView {
                 !$0
             }
             .sink { _ in
-                header.isHidden = false
                 scroll.isHidden = false
             }
             .store(in: &subs)

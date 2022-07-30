@@ -84,23 +84,24 @@ struct Recents: View {
             }
         } label: {
             VStack(alignment: .leading, spacing: 4) {
-                Text(verbatim: article.feed.provider.title)
-                    .foregroundColor(session.reader ? .accentColor : .secondary)
-                    .font(.footnote)
-                + Text(verbatim: " — ")
-                    .foregroundColor(session.reader ? .accentColor : .secondary)
-                    .font(.footnote.weight(.light))
-                + Text(article.date, format: .relative(presentation: .named, unitsStyle: .wide))
-                    .foregroundColor(session.reader ? .accentColor : .secondary)
-                    .font(.footnote.weight(.light))
                 Text(verbatim: article.title)
                     .font(.system(size: UIFont.preferredFont(forTextStyle: .callout).pointSize, weight: .regular))
                     .kerning(0.5)
                     .foregroundColor(session.reader ? .accentColor : .primary)
+                    .lineLimit(1)
                     .fixedSize(horizontal: false, vertical: true)
+                Text(verbatim: article.feed.provider.title)
+                    .foregroundColor(.secondary)
+                    .font(.footnote)
+                + Text(verbatim: " — ")
+                    .foregroundColor(.secondary)
+                    .font(.footnote.weight(.light))
+                + Text(article.date, format: .relative(presentation: .named, unitsStyle: .wide))
+                    .foregroundColor(.secondary)
+                    .font(.footnote.weight(.light))
             }
             .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-            .padding(.vertical, 6)
+            .padding(.vertical, 8)
             .contentShape(Rectangle())
         }
         .buttonStyle(Listed {
