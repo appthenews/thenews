@@ -3,10 +3,6 @@ import Combine
 import News
 
 final class List: NSScrollView {
-    override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
-        true
-    }
-    
     private var appear = Appearance()
     private var subs = Set<AnyCancellable>()
     private let clear = PassthroughSubject<Void, Never>()
@@ -272,6 +268,10 @@ final class List: NSScrollView {
         }
         
         refresh.send()
+    }
+    
+    override func acceptsFirstMouse(for: NSEvent?) -> Bool {
+        true
     }
     
     private func point(with: NSEvent) -> CGPoint {

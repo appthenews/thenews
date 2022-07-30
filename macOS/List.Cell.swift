@@ -55,6 +55,7 @@ extension List {
         private weak var label: CATextLayer!
         private weak var recent: CAShapeLayer!
         private weak var bookmark: NSImageView!
+        private weak var separator: Separator!
         
         required init?(coder: NSCoder) { nil }
         required init() {
@@ -87,9 +88,16 @@ extension List {
             vibrant.addSubview(bookmark)
             self.bookmark = bookmark
             
+            let separator = Separator()
+            separator.translatesAutoresizingMaskIntoConstraints = true
+            separator.frame = .init(x: 0, y: -1, width: 290, height: 1)
+            self.separator = separator
+            
             super.init(frame: .zero)
             wantsLayer = true
+            layer!.masksToBounds = false
             addSubview(vibrant)
+            addSubview(separator)
             layer!.addSublayer(recent)
         }
         

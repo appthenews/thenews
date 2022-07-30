@@ -216,4 +216,8 @@ final class Middlebar: NSVisualEffectView {
                 background.layer!.backgroundColor = NSColor(named: "Background")!.cgColor
             }
     }
+    
+    override func acceptsFirstMouse(for: NSEvent?) -> Bool {
+        true
+    }
 }
