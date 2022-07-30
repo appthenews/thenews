@@ -5,6 +5,7 @@ struct Sidebar: View {
     @ObservedObject var session: Session
     @State private var providers = Set<Provider>()
     @State private var recents = Provider.allCases.reduce(into: [:]) { $0[$1] = 0 }
+    @State private var selection: Provider?
     
     var body: some View {
         List {
@@ -23,6 +24,17 @@ struct Sidebar: View {
         .listStyle(.plain)
         .navigationTitle(session.loading ? "" : "Feeds")
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: Middlebar(session: session), tag: true, selection: .init(get: {
+                    session.provider != nil
+                }, set: {
+                    if $0 != true {
+                        session.provider = nil
+                    }
+                })) { }
+            }
+        }
         .background(session.reader ? .init("Background") : Color.clear)
         .onReceive(session.cloud) { model in
             providers = model.preferences.providers
@@ -43,8 +55,8 @@ struct Sidebar: View {
     
     @ViewBuilder private func provider(provider: Provider) -> some View {
         if provider == .all || providers.contains(provider) {
-            NavigationLink(tag: provider, selection: $session.provider) {
-                Middlebar(session: session)
+            Button {
+                session.provider = provider
             } label: {
                 HStack(spacing: 0) {
                     Text(verbatim: provider.title)
@@ -63,11 +75,24 @@ struct Sidebar: View {
                         }
                         .fixedSize()
                     }
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(.init(.tertiaryLabel))
+                        .frame(width: 16)
+                        .padding(.leading)
                 }
                 .padding(.vertical, 8)
                 .contentShape(Rectangle())
             }
-            .listRowBackground(session.provider == provider
+            .buttonStyle(Listed {
+                if $0 {
+                    selection = provider
+                } else if selection == provider {
+                    selection = nil
+                }
+            })
+            .listRowBackground(session.provider == provider || selection == provider
                                ? .accentColor.opacity(0.15)
                                : Color.clear)
         }
