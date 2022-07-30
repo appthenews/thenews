@@ -36,7 +36,7 @@ extension List {
                                     .kern: 0.5]))
             
             let height = string.boundingRect(
-                with: .init(width: 240,
+                with: .init(width: 225,
                             height: CGFloat.greatestFiniteMagnitude),
                 options: [
                     .usesFontLeading,
@@ -45,7 +45,7 @@ extension List {
                     .usesDeviceMetrics])
                 .height
             
-            rect = .init(x: 0, y: y, width: 290, height: ceil(height) + 30)
+            rect = .init(x: 0, y: y, width: 290, height: ceil(height) + 20)
             recent = item.recent
             self.item = item
             self.string = string

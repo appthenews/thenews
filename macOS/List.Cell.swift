@@ -12,15 +12,15 @@ extension List {
                 frame = info.rect
                 vibrant.frame.size.height = info.rect.height
                 label.string = info.string
-                label.frame.size.height = info.rect.height - 30
+                label.frame.size.height = info.rect.height - 20
                 
                 if info.recent {
-                    recent.frame.origin.y = info.rect.height - 33
+                    recent.frame.origin.y = info.rect.height - 25
                     recent.isHidden = false
                     bookmark.isHidden = true
                 } else if info.item.status == .bookmarked {
                     recent.isHidden = true
-                    bookmark.frame.origin.y = info.rect.height - 43
+                    bookmark.frame.origin.y = info.rect.height - 35
                     bookmark.isHidden = false
                 } else {
                     recent.isHidden = true
@@ -65,7 +65,7 @@ extension List {
             self.vibrant = vibrant
 
             let label = TextLayer()
-            label.frame = .init(x: 15, y: 12, width: 240, height: 0)
+            label.frame = .init(x: 25, y: 10, width: 225, height: 0)
             label.contentsScale = NSScreen.main?.backingScaleFactor ?? 2
             label.isWrapped = true
             label.allowsFontSubpixelQuantization = true

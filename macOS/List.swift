@@ -165,7 +165,7 @@ final class List: NSScrollView {
                 appearance.title = .systemFont(ofSize: 12 + font, weight: .regular)
                 
                 let result = items
-                    .reduce(into: (info: Set<Info>(), y: CGFloat(1))) {
+                    .reduce(into: (info: Set<Info>(), y: CGFloat())) {
                         let info = Info(item: $1, y: $0.y, appearance: appearance)
                         $0.info.insert(info)
                         $0.y = info.rect.maxY + 1
