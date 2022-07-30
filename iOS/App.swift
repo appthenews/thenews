@@ -79,18 +79,20 @@ import News
                 session.cloud.pull.send()
                 
                 session.cloud.ready.notify(queue: .main) {
-                    Task {
-                        await session.cloud.fetch()
-                        
-                        if session.loading {
-                            session.loading = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        Task {
+                            await session.cloud.fetch()
                             
-                            if UIDevice.current.userInterfaceIdiom == .pad  {
-                                session.provider = .all
-                            }
-                            
-                            if await session.cloud.model.preferences.providers.isEmpty {
-                                feeds = true
+                            if session.loading {
+                                session.loading = false
+                                
+                                if UIDevice.current.userInterfaceIdiom == .pad  {
+                                    session.provider = .all
+                                }
+                                
+                                if await session.cloud.model.preferences.providers.isEmpty {
+                                    feeds = true
+                                }
                             }
                         }
                     }

@@ -78,16 +78,10 @@ final class Sidebar: NSVisualEffectView {
         separator.widthAnchor.constraint(equalToConstant: 1).isActive = true
         separator.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
-        var first = true
-        
         session
             .cloud
             .sink { model in
                 let providers = model.preferences.providers
-                
-                if providers.isEmpty && first {
-                    (NSApp as! App).showPreferencesWindow(nil)
-                }
                 
                 stack
                     .views
@@ -111,8 +105,6 @@ final class Sidebar: NSVisualEffectView {
                             }
                         }
                     }
-                
-                first = false
             }
             .store(in: &subs)
         
