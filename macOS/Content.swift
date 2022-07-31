@@ -18,6 +18,10 @@ final class Content: NSVisualEffectView {
         background.translatesAutoresizingMaskIntoConstraints = false
         addSubview(background)
         
+        let separator = Separator()
+        separator.isHidden = true
+        addSubview(separator)
+        
         let flip = Flip()
         flip.translatesAutoresizingMaskIntoConstraints = false
         
@@ -29,6 +33,8 @@ final class Content: NSVisualEffectView {
         scroll.drawsBackground = false
         scroll.automaticallyAdjustsContentInsets = false
         scroll.isHidden = true
+        scroll.contentView.postsBoundsChangedNotifications = true
+        scroll.contentView.postsFrameChangedNotifications = false
         addSubview(scroll)
         
         let header = Text(vibrancy: true)
@@ -65,7 +71,12 @@ final class Content: NSVisualEffectView {
         background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
-        scroll.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        separator.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        separator.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        separator.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        scroll.topAnchor.constraint(equalTo: separator.bottomAnchor).isActive = true
         scroll.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         scroll.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         scroll.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -112,6 +123,8 @@ final class Content: NSVisualEffectView {
             .item
             .combineLatest(session.font, session.reader)
             .sink { item, font, reader in
+                scroll.contentView.bounds.origin.y = 0
+                
                 if let item = item {
                     empty.isHidden = true
                     
@@ -186,6 +199,24 @@ final class Content: NSVisualEffectView {
                     self?.material = .sidebar
                     background.isHidden = true
                 }
+            }
+            .store(in: &subs)
+        
+        NotificationCenter
+            .default
+            .publisher(for: NSView.boundsDidChangeNotification)
+            .compactMap {
+                $0.object as? NSClipView
+            }
+            .filter {
+                $0 == scroll.contentView
+            }
+            .map {
+                $0.bounds.minY < 25
+            }
+            .removeDuplicates()
+            .sink {
+                separator.isHidden = $0
             }
             .store(in: &subs)
     }

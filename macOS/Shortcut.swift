@@ -57,6 +57,8 @@ final class Shortcut: NSView {
         scroll.scrollerInsets.top = 5
         scroll.scrollerInsets.bottom = 5
         scroll.automaticallyAdjustsContentInsets = false
+        scroll.contentView.postsBoundsChangedNotifications = false
+        scroll.contentView.postsFrameChangedNotifications = false
         background.addSubview(scroll)
         
         let stack = Stack()
