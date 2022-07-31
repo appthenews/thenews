@@ -7,7 +7,7 @@ struct Loading: View {
                 .font(.system(size: 60, weight: .ultraLight))
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(.tertiary)
-            Text("Fetching news...")
+            Text("Loading...")
                 .font(.callout)
                 .foregroundStyle(.tertiary)
         }

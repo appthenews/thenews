@@ -79,7 +79,7 @@ import News
                 session.cloud.pull.send()
                 
                 session.cloud.ready.notify(queue: .main) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         Task {
                             await session.cloud.fetch()
                             

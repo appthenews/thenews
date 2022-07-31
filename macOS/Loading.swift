@@ -13,7 +13,7 @@ final class Loading: NSView {
         addSubview(image)
         
         let message = Text(vibrancy: false)
-        message.stringValue = "Fetching news..."
+        message.stringValue = "Loading..."
         message.textColor = .tertiaryLabelColor
         message.font = NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .title3).pointSize, weight: .regular)
         addSubview(message)
