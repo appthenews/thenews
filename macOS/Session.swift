@@ -13,6 +13,7 @@ final class Session {
     let up = PassthroughSubject<Void, Never>()
     let down = PassthroughSubject<Void, Never>()
     let open = PassthroughSubject<Void, Never>()
+    let trash = PassthroughSubject<Void, Never>()
     let provider: CurrentValueSubject<Provider?, Never>
     let item: CurrentValueSubject<Item?, Never>
     let columns: CurrentValueSubject<Int, Never>
@@ -146,6 +147,28 @@ final class Session {
                         }
                 } else {
                     item.value = items.last
+                }
+            }
+            .store(in: &subs)
+        
+        trash
+            .sink { [weak self] in
+                guard let item = item.value else { return }
+                
+                let alert = NSAlert()
+                alert.alertStyle = .warning
+                alert.icon = .init(systemSymbolName: "trash", accessibilityDescription: nil)
+                alert.messageText = "Delete article?"
+                
+                let delete = alert.addButton(withTitle: "Delete")
+                let cancel = alert.addButton(withTitle: "Cancel")
+                delete.keyEquivalent = "\r"
+                cancel.keyEquivalent = "\u{1b}"
+                
+                if alert.runModal().rawValue == delete.tag {
+                    Task { [weak self] in
+                        await self?.cloud.delete(item: item)
+                    }
                 }
             }
             .store(in: &subs)

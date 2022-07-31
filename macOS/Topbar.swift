@@ -37,11 +37,7 @@ final class Topbar: NSView {
         delete
             .click
             .sink {
-                guard let item = session.item.value else { return }
-                
-                Task {
-                    await session.cloud.delete(item: item)
-                }
+                session.trash.send()
             }
             .store(in: &subs)
         addSubview(delete)
@@ -85,22 +81,22 @@ final class Topbar: NSView {
             .store(in: &subs)
         addSubview(bookmark)
         
-        let open = Button(symbol: "paperplane")
-        open.state = .hidden
-        open.toolTip = "Continue reading"
-        open
-            .click
-            .subscribe(session.open)
-            .store(in: &subs)
-        addSubview(open)
+//        let open = Button(symbol: "paperplane")
+//        open.state = .hidden
+//        open.toolTip = "Continue reading"
+//        open
+//            .click
+//            .subscribe(session.open)
+//            .store(in: &subs)
+//        addSubview(open)
         
         segmented.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 7).isActive = true
-        delete.rightAnchor.constraint(equalTo: share.leftAnchor, constant: -14).isActive = true
-        share.rightAnchor.constraint(equalTo: bookmark.leftAnchor, constant: -14).isActive = true
-        bookmark.rightAnchor.constraint(equalTo: open.leftAnchor, constant: -14).isActive = true
-        open.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
+        delete.rightAnchor.constraint(equalTo: bookmark.leftAnchor, constant: -14).isActive = true
+        bookmark.rightAnchor.constraint(equalTo: share.leftAnchor, constant: -14).isActive = true
+        share.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
+//        open.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
         
-        [segmented, delete, share, bookmark, open]
+        [segmented, delete, share, bookmark]
             .forEach {
                 $0.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             }
@@ -115,7 +111,7 @@ final class Topbar: NSView {
                     delete.state = .on
                     share.state = .on
                     bookmark.state = .on
-                    open.state = .on
+//                    open.state = .on
                     
                     bookmark.image.image = .init(systemSymbolName: item.status == .bookmarked ? "bookmark.fill" : "bookmark",
                                                  accessibilityDescription: nil)
@@ -123,7 +119,7 @@ final class Topbar: NSView {
                     delete.state = .hidden
                     share.state = .hidden
                     bookmark.state = .hidden
-                    open.state = .hidden
+//                    open.state = .hidden
                 }
             }
             .store(in: &subs)
@@ -141,7 +137,7 @@ final class Topbar: NSView {
         session
             .reader
             .sink { reader in
-                [delete, share, bookmark, open]
+                [delete, share, bookmark]
                     .forEach {
                         $0.color = reader ? .init(named: "Text")! : .controlAccentColor
                     }

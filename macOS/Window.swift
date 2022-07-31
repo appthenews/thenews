@@ -84,10 +84,3 @@ final class Window: NSWindow {
         NSApp.terminate(nil)
     }
 }
-
-
-class C: NSView {
-    override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
-        true
-    }
-}

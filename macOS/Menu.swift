@@ -94,7 +94,13 @@ final class Menu: NSMenu, NSMenuDelegate {
              $0.keyEquivalentModifierMask = []
          },
          .separator(),
-         .child("Continue reading", #selector(triggerOpen), "\r") {
+         .child("Go to article", #selector(triggerOpen), "\r") {
+             $0.target = self
+             $0.isEnabled = session.item.value != nil && !session.loading.value
+             $0.keyEquivalentModifierMask = []
+         },
+         .separator(),
+         .child("Delete article", #selector(triggerTrash), .init(Unicode.Scalar(NSBackspaceCharacter)!)) {
              $0.target = self
              $0.isEnabled = session.item.value != nil && !session.loading.value
              $0.keyEquivalentModifierMask = []
@@ -111,6 +117,10 @@ final class Menu: NSMenu, NSMenuDelegate {
     
     @objc private func triggerOpen() {
         session.open.send()
+    }
+    
+    @objc private func triggerTrash() {
+        session.trash.send()
     }
     
     @objc private func triggerRate() {
