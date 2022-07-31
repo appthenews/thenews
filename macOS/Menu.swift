@@ -128,7 +128,7 @@ final class Menu: NSMenu, NSMenuDelegate {
     }
     
     @objc private func triggerShortcut(_ button: NSStatusBarButton) {
-        guard let event = NSApp.currentEvent else { return }
+        guard let event = NSApp.currentEvent, !session.loading.value else { return }
         
         switch event.type {
         case .rightMouseUp:

@@ -86,6 +86,9 @@ final class Content: NSVisualEffectView {
         let titleWidth = title.widthAnchor.constraint(equalToConstant: 700)
         titleWidth.priority = .defaultLow
         titleWidth.isActive = true
+        let titleLeft = title.leftAnchor.constraint(equalTo: description.leftAnchor)
+        titleLeft.priority = .defaultLow
+        titleLeft.isActive = true
         
         description.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 30).isActive = true
         description.leftAnchor.constraint(greaterThanOrEqualTo: flip.leftAnchor, constant: 70).isActive = true
