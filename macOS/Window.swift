@@ -1,6 +1,8 @@
 import AppKit
+import Combine
 
 final class Window: NSWindow {
+    private var subs = Set<AnyCancellable>()
     private let session: Session
     
     init(session: Session) {
@@ -12,7 +14,7 @@ final class Window: NSWindow {
                    styleMask: [.closable, .miniaturizable, .resizable, .titled, .fullSizeContentView],
                    backing: .buffered,
                    defer: false)
-        minSize = .init(width: 780, height: 300)
+        minSize.height = 200
         center()
         toolbar = .init()
         isReleasedWhenClosed = false
@@ -47,6 +49,34 @@ final class Window: NSWindow {
         content.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
         content.leftAnchor.constraint(equalTo: middlebar.rightAnchor).isActive = true
         content.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
+        
+        session
+            .columns
+            .sink { [weak self] in
+                guard let self = self else { return }
+                
+                let minWidth: CGFloat
+                switch $0 {
+                case 1:
+                    minWidth = 550
+                case 2:
+                    minWidth = 400
+                default:
+                    minWidth = 800
+                }
+                
+                if self.frame.width < minWidth {
+                    NSAnimationContext
+                        .runAnimationGroup {
+                            $0.duration = 0.4
+                            $0.allowsImplicitAnimation = true
+                            self.animator().setContentSize(.init(width: minWidth, height: self.frame.height))
+                        }
+                }
+                
+                self.minSize.width = minWidth
+            }
+            .store(in: &subs)
     }
     
     override func close() {

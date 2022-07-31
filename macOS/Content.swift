@@ -75,19 +75,27 @@ final class Content: NSVisualEffectView {
         flip.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
         
         header.topAnchor.constraint(equalTo: flip.topAnchor, constant: 25).isActive = true
-        header.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 70).isActive = true
-        header.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -70).isActive = true
+        header.leftAnchor.constraint(equalTo: title.leftAnchor).isActive = true
+        header.rightAnchor.constraint(lessThanOrEqualTo: title.rightAnchor).isActive = true
         
         title.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 5).isActive = true
-        title.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 70).isActive = true
+        title.leftAnchor.constraint(greaterThanOrEqualTo: flip.leftAnchor, constant: 70).isActive = true
         title.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -70).isActive = true
-        title.widthAnchor.constraint(lessThanOrEqualToConstant: 850).isActive = true
+        title.widthAnchor.constraint(lessThanOrEqualToConstant: 700).isActive = true
+        title.centerXAnchor.constraint(equalTo: flip.centerXAnchor).isActive = true
+        let titleWidth = title.widthAnchor.constraint(equalToConstant: 700)
+        titleWidth.priority = .defaultLow
+        titleWidth.isActive = true
         
         description.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 30).isActive = true
-        description.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 70).isActive = true
+        description.leftAnchor.constraint(greaterThanOrEqualTo: flip.leftAnchor, constant: 70).isActive = true
         description.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -70).isActive = true
-        description.widthAnchor.constraint(lessThanOrEqualToConstant: 850).isActive = true
+        description.widthAnchor.constraint(lessThanOrEqualToConstant: 700).isActive = true
         description.bottomAnchor.constraint(equalTo: flip.bottomAnchor, constant: -60).isActive = true
+        description.centerXAnchor.constraint(equalTo: flip.centerXAnchor).isActive = true
+        let descriptionWidth = description.widthAnchor.constraint(equalToConstant: 700)
+        descriptionWidth.priority = .defaultLow
+        descriptionWidth.isActive = true
         
         empty.topAnchor.constraint(equalTo: topAnchor).isActive = true
         empty.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true

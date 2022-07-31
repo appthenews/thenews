@@ -23,7 +23,7 @@ final class Menu: NSMenu, NSMenuDelegate {
     }
     
     func menuNeedsUpdate(_ menu: NSMenu) {
-        menu.items = newItems
+        menu.items = newsItems
     }
     
     private var app: NSMenuItem {
@@ -58,7 +58,7 @@ final class Menu: NSMenu, NSMenuDelegate {
     }
     
     private var news: NSMenuItem {
-        .parent("News", newItems) {
+        .parent("News", newsItems) {
             $0.submenu!.delegate = self
             $0.submenu!.autoenablesItems = false
         }
@@ -82,21 +82,21 @@ final class Menu: NSMenu, NSMenuDelegate {
             }])
     }
     
-    private var newItems: [NSMenuItem] {
+    private var newsItems: [NSMenuItem] {
         [.child("Previous", #selector(triggerUp), "↑") {
             $0.target = self
-            $0.isEnabled = session.provider.value != nil
+            $0.isEnabled = session.provider.value != nil && !session.loading.value
             $0.keyEquivalentModifierMask = []
         },
          .child("Next", #selector(triggerDown), "↓") {
              $0.target = self
-             $0.isEnabled = session.provider.value != nil
+             $0.isEnabled = session.provider.value != nil && !session.loading.value
              $0.keyEquivalentModifierMask = []
          },
          .separator(),
          .child("Continue reading", #selector(triggerOpen), "\r") {
              $0.target = self
-             $0.isEnabled = session.item.value != nil
+             $0.isEnabled = session.item.value != nil && !session.loading.value
              $0.keyEquivalentModifierMask = []
          }]
     }
