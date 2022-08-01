@@ -3,14 +3,21 @@ import Combine
 import News
 
 final class Sidebar: NSVisualEffectView {
+    private weak var background: NSView!
     private var subs = Set<AnyCancellable>()
     
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
+        let background = NSView()
+        background.wantsLayer = true
+        self.background = background
+        
         super.init(frame: .zero)
-        state = .active
-        material = .hudWindow
         translatesAutoresizingMaskIntoConstraints = false
+        
+        background.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(background)
+        
         let width = widthAnchor.constraint(equalToConstant: 0)
         width.isActive = true
         
@@ -73,6 +80,11 @@ final class Sidebar: NSVisualEffectView {
         stack.spacing = 2
         stack.isHidden = true
         addSubview(stack)
+        
+        background.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        background.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
         stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         stack.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
@@ -163,5 +175,52 @@ final class Sidebar: NSVisualEffectView {
                 stack.isHidden = false
             }
             .store(in: &subs)
+        
+        session
+            .reader
+            .sink { [weak self] in
+                if $0 {
+                    self?.state = .inactive
+                    self?.material = .underPageBackground
+                    background.isHidden = false
+                    
+                    stack
+                        .views
+                        .compactMap {
+                            $0 as? Item
+                        }
+                        .forEach {
+                            $0.color = .init(named: "Text")!
+                            $0.recent.layer!.backgroundColor = NSColor(named: "Text")!.cgColor
+                            $0.count.textColor = .init(named: "Background")!
+                        }
+                } else {
+                    self?.state = .active
+                    self?.material = .hudWindow
+                    background.isHidden = true
+                    
+                    stack
+                        .views
+                        .compactMap {
+                            $0 as? Item
+                        }
+                        .forEach {
+                            $0.color = .labelColor
+                            $0.recent.layer!.backgroundColor = NSColor.controlAccentColor.cgColor
+                            $0.count.textColor = .white
+                        }
+                }
+            }
+            .store(in: &subs)
+    }
+    
+    override func updateLayer() {
+        super.updateLayer()
+        
+        NSApp
+            .effectiveAppearance
+            .performAsCurrentDrawingAppearance {
+                background.layer!.backgroundColor = NSColor(named: "Background")!.cgColor
+            }
     }
 }

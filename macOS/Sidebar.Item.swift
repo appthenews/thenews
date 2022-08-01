@@ -3,10 +3,16 @@ import News
 
 extension Sidebar {
     final class Item: Control {
+        var color = NSColor.labelColor {
+            didSet {
+                updateLayer()
+            }
+        }
+        
         let provider: Provider
+        private(set) weak var recent: NSView!
+        private(set) weak var count: Text!
         private weak var vibrant: Vibrant!
-        private weak var recent: NSView!
-        private weak var count: Text!
         
         var recents = 0 {
             didSet {
@@ -34,7 +40,6 @@ extension Sidebar {
             recent.isHidden = true
             recent.translatesAutoresizingMaskIntoConstraints = false
             recent.wantsLayer = true
-            recent.layer!.backgroundColor = NSColor.controlAccentColor.cgColor
             recent.layer!.cornerRadius = 10
             self.recent = recent
             
@@ -76,7 +81,7 @@ extension Sidebar {
                 .performAsCurrentDrawingAppearance {
                     switch state {
                     case .highlighted, .pressed, .selected:
-                        vibrant.layer!.backgroundColor = NSColor.labelColor.withAlphaComponent(0.07).cgColor
+                        vibrant.layer!.backgroundColor = color.withAlphaComponent(0.07).cgColor
                     default:
                         vibrant.layer!.backgroundColor = .clear
                     }

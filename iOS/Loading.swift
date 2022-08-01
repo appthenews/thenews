@@ -4,11 +4,11 @@ struct Loading: View {
     var body: some View {
         VStack {
             Image(systemName: "cloud.bolt")
-                .font(.system(size: 60, weight: .ultraLight))
+                .font(.system(size: 40, weight: .ultraLight))
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(.tertiary)
             Text("Loading...")
-                .font(.callout)
+                .font(.footnote)
                 .foregroundStyle(.tertiary)
         }
         .frame(maxWidth: .greatestFiniteMagnitude)
