@@ -184,7 +184,6 @@ final class Middlebar: NSVisualEffectView {
                 loading.removeFromSuperview()
                 count.isHidden = false
                 list.isHidden = false
-                divider.isHidden = false
                 field.isHidden = false
                 filter.state = .on
             }
@@ -202,6 +201,24 @@ final class Middlebar: NSVisualEffectView {
                     self?.material = .menu
                     background.isHidden = true
                 }
+            }
+            .store(in: &subs)
+        
+        NotificationCenter
+            .default
+            .publisher(for: NSView.boundsDidChangeNotification)
+            .compactMap {
+                $0.object as? NSClipView
+            }
+            .filter {
+                $0 == list.contentView
+            }
+            .map {
+                $0.bounds.minY < 10
+            }
+            .removeDuplicates()
+            .sink {
+                divider.isHidden = $0
             }
             .store(in: &subs)
     }
