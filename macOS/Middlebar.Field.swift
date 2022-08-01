@@ -2,7 +2,7 @@ import AppKit
 import Combine
 
 extension Middlebar {
-    final class Field: NSTextField, NSTextFieldDelegate {
+    final class Field: NSTextField {
         private let session: Session
         private var subs = Set<AnyCancellable>()
         
@@ -27,7 +27,6 @@ extension Middlebar {
             wantsLayer = true
             layer!.cornerRadius = 8
             layer!.cornerCurve = .continuous
-            delegate = self
             
             session
                 .provider
@@ -50,31 +49,12 @@ extension Middlebar {
             stringValue = ""
             undoManager?.removeAllActions()
             session.search.send("")
+            window?.makeFirstResponder(nil)
         }
         
         override func becomeFirstResponder() -> Bool {
             undoManager?.removeAllActions()
             return super.becomeFirstResponder()
-        }
-        
-        func controlTextDidChange(_ notification: Notification) {
-            guard let search = notification.object as? Field else { return }
-            session.search.send(search.stringValue)
-        }
-        
-        func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
-            switch doCommandBy {
-            case #selector(cancelOperation):
-                cancelOperation(nil)
-                return true
-            case #selector(complete),
-                #selector(NSSavePanel.cancel),
-                #selector(insertNewline):
-                window!.makeFirstResponder(window!.contentView)
-                return true
-            default:
-                return false
-            }
         }
     }
 }

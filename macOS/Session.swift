@@ -14,6 +14,7 @@ final class Session {
     let down = PassthroughSubject<Void, Never>()
     let open = PassthroughSubject<Void, Never>()
     let trash = PassthroughSubject<Void, Never>()
+    let find = PassthroughSubject<Void, Never>()
     let provider: CurrentValueSubject<Provider?, Never>
     let item: CurrentValueSubject<Item?, Never>
     let columns: CurrentValueSubject<Int, Never>

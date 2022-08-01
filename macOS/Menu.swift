@@ -54,7 +54,9 @@ final class Menu: NSMenu, NSMenuDelegate {
             .child("Delete", #selector(NSText.delete)),
             .child("Select All", #selector(NSText.selectAll), "a"),
             .separator(),
-            .child("Search", #selector(NSText.selectAll), "a")])
+            .child("Search", #selector(triggerFind), "f") {
+                $0.target = self
+            }])
     }
     
     private var news: NSMenuItem {
@@ -121,6 +123,10 @@ final class Menu: NSMenu, NSMenuDelegate {
     
     @objc private func triggerTrash() {
         session.trash.send()
+    }
+    
+    @objc private func triggerFind() {
+        session.find.send()
     }
     
     @objc private func triggerRate() {

@@ -1,15 +1,22 @@
 import AppKit
 import Combine
 
-final class Middlebar: NSVisualEffectView {
+final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
     private weak var field: Field!
     private weak var background: NSView!
+    private weak var cancel: Control.Plain!
     private var subs = Set<AnyCancellable>()
+    private let session: Session
     
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
+        self.session = session
+        
         let field = Field(session: session)
         self.field = field
+        
+        let cancel = Control.Plain(title: "Cancel")
+        self.cancel = cancel
         
         let background = NSView()
         background.wantsLayer = true
@@ -24,6 +31,7 @@ final class Middlebar: NSVisualEffectView {
         let width = widthAnchor.constraint(equalToConstant: 0)
         width.isActive = true
         
+        field.delegate = self
         field.isHidden = true
         addSubview(field)
         
@@ -45,6 +53,17 @@ final class Middlebar: NSVisualEffectView {
             }
             .store(in: &subs)
         addSubview(filter)
+        
+        cancel.state = .off
+        cancel
+            .click
+            .sink { [weak self] in
+                field.stringValue = ""
+                session.search.send("")
+                self?.update()
+            }
+            .store(in: &subs)
+        addSubview(cancel)
         
         let count = Text(vibrancy: true)
         count.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -73,10 +92,14 @@ final class Middlebar: NSVisualEffectView {
         
         field.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         field.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
-        field.widthAnchor.constraint(equalToConstant: 220).isActive = true
+        field.widthAnchor.constraint(equalToConstant: 160).isActive = true
+        
+        cancel.centerYAnchor.constraint(equalTo: field.centerYAnchor).isActive = true
+        cancel.leftAnchor.constraint(equalTo: field.rightAnchor, constant: 3).isActive = true
+        cancel.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
         filter.centerYAnchor.constraint(equalTo: field.centerYAnchor).isActive = true
-        filter.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
+        filter.rightAnchor.constraint(equalTo: rightAnchor, constant: -8).isActive = true
         
         count.centerYAnchor.constraint(equalTo: topAnchor, constant: 26).isActive = true
         let trailing = count.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -20)
@@ -204,6 +227,13 @@ final class Middlebar: NSVisualEffectView {
             }
             .store(in: &subs)
         
+        session
+            .find
+            .sink { [weak self] in
+                self?.window?.makeFirstResponder(field)
+            }
+            .store(in: &subs)
+        
         NotificationCenter
             .default
             .publisher(for: NSView.boundsDidChangeNotification)
@@ -223,6 +253,29 @@ final class Middlebar: NSVisualEffectView {
             .store(in: &subs)
     }
     
+    func controlTextDidChange(_ notification: Notification) {
+        guard let search = notification.object as? Field else { return }
+        session.search.send(search.stringValue)
+        update()
+    }
+    
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
+        switch doCommandBy {
+        case #selector(cancelOperation):
+            field.cancelOperation(nil)
+            update()
+            return true
+        case #selector(complete),
+            #selector(NSSavePanel.cancel),
+            #selector(insertNewline):
+            window!.makeFirstResponder(window!.contentView)
+            update()
+            return true
+        default:
+            return false
+        }
+    }
+    
     override func updateLayer() {
         super.updateLayer()
         
@@ -236,5 +289,9 @@ final class Middlebar: NSVisualEffectView {
     
     override func acceptsFirstMouse(for: NSEvent?) -> Bool {
         true
+    }
+    
+    private func update() {
+        cancel.state = field.stringValue.isEmpty ? .off : .on
     }
 }
