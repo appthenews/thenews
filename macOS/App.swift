@@ -34,7 +34,7 @@ import News
         if session.loading.value {
             session.cloud.ready.notify(queue: .main) {
                 self.session.loading.value = false
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     Task {
                         if await self.session.cloud.model.preferences.providers.isEmpty {

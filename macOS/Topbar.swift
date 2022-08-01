@@ -81,22 +81,23 @@ final class Topbar: NSView {
             .store(in: &subs)
         addSubview(bookmark)
         
-//        let open = Button(symbol: "paperplane")
-//        open.state = .hidden
-//        open.toolTip = "Continue reading"
-//        open
-//            .click
-//            .subscribe(session.open)
-//            .store(in: &subs)
-//        addSubview(open)
+        let open = Control.Main(title: "Article")
+        open.state = .hidden
+        open.toolTip = "Go to article"
+        open.widthAnchor.constraint(equalToConstant: 68).isActive = true
+        open
+            .click
+            .subscribe(session.open)
+            .store(in: &subs)
+        addSubview(open)
         
         segmented.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 7).isActive = true
+        open.rightAnchor.constraint(equalTo: delete.leftAnchor, constant: -16).isActive = true
         delete.rightAnchor.constraint(equalTo: bookmark.leftAnchor, constant: -14).isActive = true
         bookmark.rightAnchor.constraint(equalTo: share.leftAnchor, constant: -14).isActive = true
         share.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
-//        open.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
         
-        [segmented, delete, share, bookmark]
+        [segmented, delete, share, bookmark, open]
             .forEach {
                 $0.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             }
@@ -111,7 +112,7 @@ final class Topbar: NSView {
                     delete.state = .on
                     share.state = .on
                     bookmark.state = .on
-//                    open.state = .on
+                    open.state = .on
                     
                     bookmark.image.image = .init(systemSymbolName: item.status == .bookmarked ? "bookmark.fill" : "bookmark",
                                                  accessibilityDescription: nil)
@@ -119,7 +120,7 @@ final class Topbar: NSView {
                     delete.state = .hidden
                     share.state = .hidden
                     bookmark.state = .hidden
-//                    open.state = .hidden
+                    open.state = .hidden
                 }
             }
             .store(in: &subs)
@@ -141,6 +142,9 @@ final class Topbar: NSView {
                     .forEach {
                         $0.color = reader ? .init(named: "Text")! : .controlAccentColor
                     }
+                
+                open.color = reader ? .init(named: "Text")! : .controlAccentColor
+                open.text.textColor = reader ? .init(named: "Background")! : .white
             }
             .store(in: &subs)
     }

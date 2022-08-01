@@ -16,6 +16,7 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
         self.field = field
         
         let cancel = Control.Plain(title: "Cancel")
+        cancel.toolTip = "Cancel search"
         self.cancel = cancel
         
         let background = NSView()
@@ -54,7 +55,7 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
             .store(in: &subs)
         addSubview(filter)
         
-        cancel.state = .off
+        cancel.state = .hidden
         cancel
             .click
             .sink { [weak self] in
@@ -163,10 +164,13 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
                 switch showing {
                 case 0:
                     title = items.count == 1 ? "article" : "articles"
+                    filter.image.image = .init(systemSymbolName: "line.3.horizontal.decrease.circle", accessibilityDescription: nil)
                 case 1:
                     title = "not read"
+                    filter.image.image = .init(systemSymbolName: "line.3.horizontal.decrease.circle.fill", accessibilityDescription: nil)
                 default:
                     title = items.count == 1 ? "bookmark" : "bookmarks"
+                    filter.image.image = .init(systemSymbolName: "line.3.horizontal.decrease.circle.fill", accessibilityDescription: nil)
                 }
                 
                 string.append(AttributedString(title, attributes: titleAttributes))
@@ -179,18 +183,19 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
         
         session
             .froob
-            .sink { [weak self] in
+            .combineLatest(session.loading)
+            .sink { [weak self] show, loading in
                 guard let self = self else { return }
                 
                 dividerTop?.isActive = false
                 froob?.removeFromSuperview()
-                if $0 {
+                if show && !loading {
                     froob = Froob(session: session)
                     self.addSubview(froob!)
                     
-                    froob!.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 20).isActive = true
+                    froob!.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 40).isActive = true
                     froob!.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-                    dividerTop = divider.topAnchor.constraint(equalTo: froob!.bottomAnchor, constant: 20)
+                    dividerTop = divider.topAnchor.constraint(equalTo: froob!.bottomAnchor, constant: 40)
                 } else {
                     dividerTop = divider.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 20)
                 }
@@ -209,6 +214,7 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
                 list.isHidden = false
                 field.isHidden = false
                 filter.state = .on
+                cancel.state = .off
             }
             .store(in: &subs)
         

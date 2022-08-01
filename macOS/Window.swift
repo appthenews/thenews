@@ -60,7 +60,7 @@ final class Window: NSWindow {
                 case 1:
                     minWidth = 550
                 case 2:
-                    minWidth = 400
+                    minWidth = 420
                 default:
                     minWidth = 800
                 }

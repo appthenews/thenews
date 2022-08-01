@@ -15,7 +15,6 @@ final class Froob: NSView {
         let title = Text(vibrancy: true)
         title.stringValue = "Contribute to\nmaintenance\nand improvement."
         title.font = .systemFont(ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize, weight: .regular)
-        title.textColor = .labelColor
         title.alignment = .center
         addSubview(title)
         
@@ -83,6 +82,15 @@ final class Froob: NSView {
                 default:
                     break
                 }
+            }
+            .store(in: &subs)
+        
+        session
+            .reader
+            .sink {
+                title.textColor = $0 ? .init(named: "Text")! : .labelColor
+                control.text.textColor = $0 ? .init(named: "Background")! : .white
+                control.color = $0 ? .init(named: "Text")! : .controlAccentColor
             }
             .store(in: &subs)
     }

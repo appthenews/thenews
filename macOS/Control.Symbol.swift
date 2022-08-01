@@ -2,6 +2,8 @@ import AppKit
 
 extension Control {
     final class Symbol: Control {
+        private(set) weak var image: NSImageView!
+        
         required init?(coder: NSCoder) { nil }
         init(symbol: String, size: CGFloat) {
             let image = NSImageView(image: .init(systemSymbolName: symbol,
@@ -9,6 +11,7 @@ extension Control {
             image.translatesAutoresizingMaskIntoConstraints = false
             image.symbolConfiguration = .init(pointSize: size, weight: .regular)
                 .applying(.init(hierarchicalColor: .secondaryLabelColor))
+            self.image = image
             
             super.init(layer: true)
             layer!.cornerRadius = 7
