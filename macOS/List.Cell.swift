@@ -70,7 +70,6 @@ extension List {
             label.isWrapped = true
             label.allowsFontSubpixelQuantization = true
             label.masksToBounds = true
-            label.allowsEdgeAntialiasing = false
             vibrant.layer!.addSublayer(label)
             self.label = label
             

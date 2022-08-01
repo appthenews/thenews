@@ -31,19 +31,23 @@ import News
     func applicationDidBecomeActive(_: Notification) {
         session.cloud.pull.send()
         
-        session.cloud.ready.notify(queue: .main) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                Task {
-                    await self.session.cloud.fetch()
+        if session.loading.value {
+            session.cloud.ready.notify(queue: .main) {
+                self.session.loading.value = false
                 
-                    if self.session.loading.value {
-                        self.session.loading.value = false
-                        
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    Task {
                         if await self.session.cloud.model.preferences.providers.isEmpty {
                             self.showPreferencesWindow(nil)
                         }
+                        
+                        await self.session.cloud.fetch()
                     }
                 }
+            }
+        } else {
+            Task {
+                await session.cloud.fetch()
             }
         }
     }

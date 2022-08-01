@@ -78,23 +78,27 @@ import News
             case .active:
                 session.cloud.pull.send()
                 
-                session.cloud.ready.notify(queue: .main) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        Task {
-                            await session.cloud.fetch()
-                            
-                            if session.loading {
-                                session.loading = false
-                                
-                                if UIDevice.current.userInterfaceIdiom == .pad  {
-                                    session.provider = .all
-                                }
-                                
+                if session.loading.value {
+                    session.cloud.ready.notify(queue: .main) {
+                        session.loading.value = false
+                        
+                        if UIDevice.current.userInterfaceIdiom == .pad  {
+                            session.provider = .all
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            Task {
                                 if await session.cloud.model.preferences.providers.isEmpty {
                                     feeds = true
                                 }
+                                
+                                await session.cloud.fetch()
                             }
                         }
+                    }
+                } else {
+                    Task {
+                        await session.cloud.fetch()
                     }
                 }
             default:
