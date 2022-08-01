@@ -78,9 +78,9 @@ import News
             case .active:
                 session.cloud.pull.send()
                 
-                if session.loading.value {
+                if session.loading {
                     session.cloud.ready.notify(queue: .main) {
-                        session.loading.value = false
+                        session.loading = false
                         
                         if UIDevice.current.userInterfaceIdiom == .pad  {
                             session.provider = .all

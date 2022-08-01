@@ -23,14 +23,14 @@ extension Sidebar {
             icon.translatesAutoresizingMaskIntoConstraints = false
             addSubview(icon)
             
-            base.frame = .init(x: 45, y: 43, width: 145, height: 8)
-            base.path = .init(roundedRect: .init(x: 0, y: 0, width: 120, height: 8),
-                              cornerWidth: 4,
-                              cornerHeight: 4,
+            base.frame = .init(x: 45, y: 44, width: 145, height: 6)
+            base.path = .init(roundedRect: .init(x: 0, y: 0, width: 120, height: 6),
+                              cornerWidth: 3,
+                              cornerHeight: 3,
                               transform: nil)
             layer!.addSublayer(base)
             
-            progress.frame = .init(x: 45, y: 43, width: 145, height: 8)
+            progress.frame = .init(x: 45, y: 44, width: 145, height: 8)
             layer!.addSublayer(progress)
             
             widthAnchor.constraint(equalToConstant: 185).isActive = true
@@ -41,9 +41,9 @@ extension Sidebar {
         }
         
         func update(value: Double) {
-            progress.path = .init(roundedRect: .init(x: 0, y: 0, width: 120 * value, height: 8),
-                                  cornerWidth: 4,
-                                  cornerHeight: 4,
+            progress.path = .init(roundedRect: .init(x: 0, y: 0, width: 120 * value, height: 6),
+                                  cornerWidth: 3,
+                                  cornerHeight: 3,
                                   transform: nil)
         }
         

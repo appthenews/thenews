@@ -85,11 +85,12 @@ final class Sidebar: NSVisualEffectView {
         session
             .cloud
             .sink { model in
+                
                 switch model.fetch {
                 case .off:
-                    fetch.isHidden = true
+                    fetch.animator().isHidden = true
                 case let .on(progress):
-                    fetch.isHidden = false
+                    fetch.animator().isHidden = false
                     fetch.update(value: progress)
                 }
                 

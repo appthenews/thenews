@@ -6,6 +6,7 @@ struct Sidebar: View {
     @State private var providers = Set<Provider>()
     @State private var recents = Provider.allCases.reduce(into: [:]) { $0[$1] = 0 }
     @State private var selection: Provider?
+    @State private var fetch = Archive.Fetch.off
     
     var body: some View {
         List {
@@ -14,6 +15,11 @@ struct Sidebar: View {
                     Loading()
                 }
             } else {
+                if case let .on(value) = fetch {
+                    progress(value: value)
+                        .animation(.easeOut(duration: 0.3), value: fetch)
+                }
+                
                 provider(provider: .all)
                 provider(provider: .theGuardian)
                 provider(provider: .reuters)
@@ -37,6 +43,7 @@ struct Sidebar: View {
         }
         .background(session.reader ? .init("Background") : Color.clear)
         .onReceive(session.cloud) { model in
+            fetch = model.fetch
             providers = model.preferences.providers
             recents = Provider
                 .allCases
@@ -96,5 +103,29 @@ struct Sidebar: View {
                                ? .accentColor.opacity(0.15)
                                : Color.clear)
         }
+    }
+    
+    private func progress(value: Double) -> some View {
+        HStack {
+            Image(systemName: "cloud.bolt.fill")
+                .font(.system(size: 20, weight: .light))
+                .foregroundStyle(.tertiary)
+                .padding([.top, .bottom, .leading])
+            
+            ZStack {
+                Capsule()
+                    .fill(.quaternary)
+                    .frame(height: 6)
+                Progress(value: value)
+                    .stroke(.tertiary, style: .init(lineWidth: 6, lineCap: .round))
+                    .padding(.horizontal, 3)
+                    .frame(height: 6)
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.horizontal)
+        }
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
+        .listSectionSeparator(.hidden)
     }
 }
