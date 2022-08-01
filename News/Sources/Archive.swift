@@ -4,6 +4,7 @@ import Archivable
 public struct Archive: Arch {
     public var timestamp: UInt32
     public internal(set) var preferences: Preferences
+    public internal(set) var fetch = Fetch.off
     private(set) var feeds: [Feed : Date]
     private(set) var links: Set<String>
     var items: Set<Item>

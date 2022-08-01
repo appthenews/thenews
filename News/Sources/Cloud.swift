@@ -6,13 +6,22 @@ extension Cloud where Output == Archive {
             let fetchable = model.fetchable
             
             if !fetchable.isEmpty {
+                var index = 0
+                model.fetch = .on(.init(index) / .init(fetchable.count))
+                await publish(model: model)
+                
                 model.clean()
                 
                 let fetcher = Fetcher()
                 for feed in fetchable {
+                    index += 1
+                    model.fetch = .on(.init(index) / .init(fetchable.count))
+                    await publish(model: model)
+                    
                     model.update(feed: feed, date: .now, items: try await fetcher.fetch(feed: feed))
                 }
                 
+                model.fetch = .off
                 await stream()
             }
         } catch { }

@@ -17,6 +17,9 @@ final class Sidebar: NSVisualEffectView {
         let separator = Separator()
         addSubview(separator)
         
+        let fetch = Fetch()
+        fetch.update(value: 0.5)
+        
         let all = Item(provider: .all)
         all
             .click
@@ -58,6 +61,7 @@ final class Sidebar: NSVisualEffectView {
             .store(in: &subs)
         
         let stack = Stack(views: [
+            fetch,
             all,
             theGuardian,
             reuters,
@@ -81,6 +85,14 @@ final class Sidebar: NSVisualEffectView {
         session
             .cloud
             .sink { model in
+                switch model.fetch {
+                case .off:
+                    fetch.isHidden = true
+                case let .on(progress):
+                    fetch.isHidden = false
+                    fetch.update(value: progress)
+                }
+                
                 let providers = model.preferences.providers
                 
                 stack
