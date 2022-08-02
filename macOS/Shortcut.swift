@@ -1,14 +1,14 @@
 import AppKit
 import Combine
 
-private let width = CGFloat(340)
+private let width = CGFloat(380)
 
 final class Shortcut: NSView {
     private var subs = Set<AnyCancellable>()
 
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
-        super.init(frame: .init(origin: .zero, size: .init(width: width, height: 400)))
+        super.init(frame: .init(origin: .zero, size: .init(width: width, height: 500)))
         
         let separator = Separator()
         addSubview(separator)
@@ -20,10 +20,34 @@ final class Shortcut: NSView {
         addSubview(background)
         
         let title = Text(vibrancy: true)
-        title.stringValue = "Recently read"
-        title.font = .preferredFont(forTextStyle: .body)
-        title.textColor = .secondaryLabelColor
+        title.stringValue = "Recents"
+        title.font = NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .body).pointSize, weight: .medium)
+        title.textColor = .labelColor
         addSubview(title)
+        
+        let clear = Control.Symbol(symbol: "trash", size: 16)
+        clear.toolTip = "Clear recents"
+        clear
+            .click
+            .sink {
+                let alert = NSAlert()
+                alert.alertStyle = .warning
+                alert.icon = .init(systemSymbolName: "trash", accessibilityDescription: nil)
+                alert.messageText = "Clear recents?"
+                
+                let delete = alert.addButton(withTitle: "Clear")
+                let cancel = alert.addButton(withTitle: "Cancel")
+                delete.keyEquivalent = "\r"
+                cancel.keyEquivalent = "\u{1b}"
+                
+                if alert.runModal().rawValue == delete.tag {
+                    Task {
+                        await session.cloud.clear()
+                    }
+                }
+            }
+            .store(in: &subs)
+        addSubview(clear)
         
         let preferences = Control.Symbol(symbol: "slider.vertical.3", size: 16)
         preferences.toolTip = "Preferences"
@@ -64,7 +88,7 @@ final class Shortcut: NSView {
         let stack = Stack()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.orientation = .vertical
-        stack.spacing = 2
+        stack.spacing = 1
         flip.addSubview(stack)
         
         background.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -79,6 +103,9 @@ final class Shortcut: NSView {
         
         title.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
         title.centerYAnchor.constraint(equalTo: bottomAnchor, constant: -25).isActive = true
+        
+        clear.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
+        clear.leftAnchor.constraint(equalTo: title.rightAnchor, constant: 10).isActive = true
         
         preferences.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
         preferences.rightAnchor.constraint(equalTo: sponsor.leftAnchor, constant: -10).isActive = true
@@ -96,9 +123,9 @@ final class Shortcut: NSView {
         flip.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
         flip.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: 20).isActive = true
         
-        stack.topAnchor.constraint(equalTo: flip.topAnchor, constant: 20).isActive = true
-        stack.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 8).isActive = true
-        stack.widthAnchor.constraint(equalToConstant: width - 16).isActive = true
+        stack.topAnchor.constraint(equalTo: flip.topAnchor, constant: 1).isActive = true
+        stack.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 1).isActive = true
+        stack.widthAnchor.constraint(equalToConstant: width - 2).isActive = true
         
         session
             .cloud

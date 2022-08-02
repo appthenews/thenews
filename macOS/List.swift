@@ -279,8 +279,6 @@ final class List: NSScrollView {
     }
     
     private func show(rect: CGRect, animated: Bool) {
-//        contentView.layer!.removeAllAnimations()
-        
         if rect.midY >= contentView.bounds.midY {
             contentView.bounds.origin.y = rect.maxY - contentView.bounds.height
         } else {

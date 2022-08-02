@@ -10,7 +10,6 @@ extension Shortcut {
         required init?(coder: NSCoder) { nil }
         init(session: Session, item: News.Item) {
             let background = Vibrant(layer: true)
-            background.layer!.cornerRadius = 12
             self.background = background
             
             super.init(layer: true)
@@ -24,16 +23,32 @@ extension Shortcut {
             paragraph.lineBreakMode = .byTruncatingTail
             
             let string = NSMutableAttributedString()
-            string.append(.init(string: item.feed.provider.title + "\n",
-                                attributes: [
-                                    .font: NSFont.preferredFont(forTextStyle: .footnote),
-                                    .foregroundColor: NSColor.secondaryLabelColor]))
             string.append(.init(string: item.title,
                                 attributes: [
                                     .font: NSFont.preferredFont(forTextStyle: .body),
                                     .foregroundColor: NSColor.labelColor,
                                     .paragraphStyle: paragraph,
                                     .kern: 0.5]))
+            string.append(.init(string: "\n" + item.feed.provider.title,
+                                attributes: [
+                                    .font: NSFont.systemFont(
+                                        ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
+                                        weight: .regular),
+                                    .foregroundColor: NSColor.secondaryLabelColor]))
+            string.append(.init(string: " - ",
+                                attributes: [
+                                    .font: NSFont.systemFont(
+                                        ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
+                                        weight: .light),
+                                    .foregroundColor: NSColor.secondaryLabelColor]))
+            string.append(.init(string: item.date.formatted(
+                .relative(presentation: .named,
+                          unitsStyle: .wide)),
+                                attributes: [
+                                    .font: NSFont.systemFont(
+                                        ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize,
+                                        weight: .light),
+                                    .foregroundColor: NSColor.secondaryLabelColor]))
             
             let text = Text(vibrancy: true)
             text.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -41,20 +56,20 @@ extension Shortcut {
             text.attributedStringValue = string
             addSubview(text)
             
-            heightAnchor.constraint(equalToConstant: 54).isActive = true
+            bottomAnchor.constraint(equalTo: text.bottomAnchor, constant: 12).isActive = true
             
             background.topAnchor.constraint(equalTo: topAnchor).isActive = true
             background.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
             
-            text.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-            text.rightAnchor.constraint(equalTo: rightAnchor, constant: -12).isActive = true
-            text.leftAnchor.constraint(equalTo: leftAnchor, constant: 12).isActive = true
+            text.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
+            text.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
+            text.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
             
-            separator.topAnchor.constraint(equalTo: bottomAnchor, constant: 0.5).isActive = true
-            separator.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
-            separator.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
+            separator.topAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            separator.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+            separator.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
             separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
             
             click
