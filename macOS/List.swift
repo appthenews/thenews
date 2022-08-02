@@ -179,7 +179,7 @@ final class List: NSScrollView {
                    let rect = result.info.first(where: { $0.item.link == current })?.rect {
                     
                     if !clip.value.intersects(rect) {
-                        self?.center(y: rect.minY - 20, animated: false)
+                        self?.show(rect: rect, animated: false)
                     }
                 } else {
                     self?.contentView.bounds.origin.y = 0
@@ -213,7 +213,7 @@ final class List: NSScrollView {
                                 $0.state = $0.info?.item.link == link ? .selected : .none
                             }
                     } else if let rect = info.first(where: { $0.item.link == link })?.rect {
-                        self?.center(y: rect.minY - 20, animated: true)
+                        self?.show(rect: rect, animated: true)
                     }
                 } else {
                     cells
@@ -278,12 +278,20 @@ final class List: NSScrollView {
         documentView!.convert(with.locationInWindow, from: nil)
     }
     
-    private func center(y: CGFloat, animated: Bool) {
-        contentView.bounds.origin.y = y
-        if animated {
-            contentView.layer?.add({
-                $0.duration = 0.3
+    private func show(rect: CGRect, animated: Bool) {
+//        contentView.layer!.removeAllAnimations()
+        
+        if rect.midY >= contentView.bounds.midY {
+            contentView.bounds.origin.y = rect.maxY - contentView.bounds.height
+        } else {
+            contentView.bounds.origin.y = rect.minY
+        }
+        
+        if animated && contentView.layer!.animation(forKey: "bounds") == nil {
+            contentView.layer!.add({
+                $0.duration = 0.2
                 $0.timingFunction = .init(name: .easeInEaseOut)
+                $0.isRemovedOnCompletion = true
                 return $0
             } (CABasicAnimation(keyPath: "bounds")), forKey: "bounds")
         }
