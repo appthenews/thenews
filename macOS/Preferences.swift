@@ -15,7 +15,6 @@ final class Preferences: NSWindow {
         animationBehavior = .alertPanel
         isReleasedWhenClosed = false
         isMovableByWindowBackground = true
-        titlebarAppearsTransparent = true
         contentViewController = controller
         center()
         setFrameAutosaveName("Preferences")

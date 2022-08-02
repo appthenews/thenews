@@ -16,7 +16,7 @@ final class Sponsor: NSWindow {
         self.session = session
         
         super.init(contentRect: .init(x: 0, y: 0, width: 440, height: 480),
-                   styleMask: [.closable, .titled, .fullSizeContentView], backing: .buffered, defer: true)
+                   styleMask: [.closable, .miniaturizable, .titled, .fullSizeContentView], backing: .buffered, defer: true)
         animationBehavior = .alertPanel
         toolbar = .init()
         isReleasedWhenClosed = false
@@ -32,7 +32,6 @@ final class Sponsor: NSWindow {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.symbolConfiguration = .init(pointSize: 100, weight: .ultraLight)
             .applying(.init(hierarchicalColor: .controlAccentColor))
-        image.translatesAutoresizingMaskIntoConstraints = false
         content.addSubview(image)
         
         let paragraph = NSMutableParagraphStyle()

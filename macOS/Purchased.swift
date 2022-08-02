@@ -6,9 +6,8 @@ final class Purchased: NSWindow {
     
     init() {
         super.init(contentRect: .init(x: 0, y: 0, width: 300, height: 300),
-                   styleMask: [.closable, .titled, .fullSizeContentView], backing: .buffered, defer: true)
+                   styleMask: [.titled, .fullSizeContentView], backing: .buffered, defer: true)
         animationBehavior = .alertPanel
-        toolbar = .init()
         isReleasedWhenClosed = false
         titlebarAppearsTransparent = true
         
@@ -22,7 +21,6 @@ final class Purchased: NSWindow {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.symbolConfiguration = .init(pointSize: 60, weight: .ultraLight)
             .applying(.init(hierarchicalColor: .controlAccentColor))
-        image.translatesAutoresizingMaskIntoConstraints = false
         content.addSubview(image)
         
         let paragraph = NSMutableParagraphStyle()

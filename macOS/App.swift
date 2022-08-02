@@ -35,7 +35,7 @@ import News
             session.cloud.ready.notify(queue: .main) {
                 self.session.loading.value = false
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     Task {
                         if await self.session.cloud.model.preferences.providers.isEmpty {
                             self.showPreferencesWindow(nil)
@@ -66,6 +66,11 @@ import News
                 $0 as? T
             }
             .first
+    }
+    
+    override func orderFrontStandardAboutPanel(_ sender: Any?) {
+        (anyWindow() ?? About())
+            .makeKeyAndOrderFront(nil)
     }
     
     @objc func showPreferencesWindow(_ sender: Any?) {

@@ -51,7 +51,7 @@ extension Preferences {
             stack.setCustomSpacing(30, after: update)
             addSubview(stack)
             
-            stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+            stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
             stack.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
             
             Task {

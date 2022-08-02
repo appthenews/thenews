@@ -5,7 +5,7 @@ extension Preferences {
     final class Feeds: NSVisualEffectView {
         required init?(coder: NSCoder) { nil }
         init(session: Session) {
-            super.init(frame: .init(origin: .zero, size: .init(width: 400, height: 360)))
+            super.init(frame: .init(origin: .zero, size: .init(width: 400, height: 370)))
             let stack = Stack(views: [make(provider: .theGuardian, session: session),
                                       make(provider: .reuters, session: session),
                                       make(provider: .derSpiegel, session: session),
@@ -16,7 +16,7 @@ extension Preferences {
             stack.spacing = 20
             addSubview(stack)
             
-            stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+            stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
             stack.centerXAnchor.constraint(equalTo: centerXAnchor, constant: -30).isActive = true
         }
         

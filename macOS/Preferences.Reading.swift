@@ -79,7 +79,7 @@ extension Preferences {
             subtitleReader.centerYAnchor.constraint(equalTo: reader.centerYAnchor).isActive = true
             subtitleReader.rightAnchor.constraint(lessThanOrEqualTo: reader.rightAnchor).isActive = true
             
-            stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+            stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
             stack.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
             stack.widthAnchor.constraint(equalToConstant: 200).isActive = true
             
