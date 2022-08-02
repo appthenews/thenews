@@ -205,16 +205,24 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
         
         session
             .loading
-            .filter {
-                !$0
-            }
-            .sink { _ in
-                loading.removeFromSuperview()
-                count.isHidden = false
-                list.isHidden = false
-                field.isHidden = false
-                filter.state = .on
-                cancel.state = .off
+            .combineLatest(session.provider)
+            .sink { load, provider in
+                guard !load else { return }
+                
+                if provider == nil {
+                    count.isHidden = true
+                    list.isHidden = true
+                    field.isHidden = true
+                    filter.state = .hidden
+                    cancel.state = .hidden
+                } else {
+                    loading.removeFromSuperview()
+                    count.isHidden = false
+                    list.isHidden = false
+                    field.isHidden = false
+                    filter.state = .on
+                    cancel.state = .off
+                }
             }
             .store(in: &subs)
         
