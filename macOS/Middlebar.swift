@@ -143,9 +143,15 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
         
         session
             .columns
-            .sink {
+            .sink { [weak self] in
                 width.constant = $0 < 2 ? 291 : 0
                 leading.constant = $0 == 1 ? 195 : 20
+                
+                if $0 == 2,
+                    self?.window?.firstResponder == field.currentEditor()
+                    || self?.window?.firstResponder == field {
+                    self?.window?.makeFirstResponder(nil)
+                }
             }
             .store(in: &subs)
         
