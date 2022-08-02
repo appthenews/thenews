@@ -126,6 +126,10 @@ final class Menu: NSMenu, NSMenuDelegate {
     }
     
     @objc private func triggerFind() {
+        guard !session.loading.value, session.columns.value != 2 else { return }
+        if session.provider.value == nil {
+            session.provider.value = .all
+        }
         session.find.send()
     }
     
