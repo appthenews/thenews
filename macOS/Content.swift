@@ -41,21 +41,16 @@ final class Content: NSVisualEffectView {
         header.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         flip.addSubview(header)
         
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = .justified
-        
         let title = Text(vibrancy: true)
         title.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         title.isSelectable = true
         title.allowsEditingTextAttributes = true
-        title.alignment = .justified
         flip.addSubview(title)
         
         let description = Text(vibrancy: true)
         description.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         description.isSelectable = true
         description.allowsEditingTextAttributes = true
-        description.alignment = .justified
         flip.addSubview(description)
         
         let empty = Vibrant(layer: false)
@@ -151,8 +146,7 @@ final class Content: NSVisualEffectView {
                                                                 NSFont.preferredFont(forTextStyle: .title2).pointSize + font,
                                                               weight: .medium),
                                      .kern: 1,
-                                     .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor,
-                                     .paragraphStyle: paragraph])
+                                     .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor])
                     
                     description.attributedStringValue = .init(
                         string: item.description,
@@ -160,8 +154,7 @@ final class Content: NSVisualEffectView {
                                                                 NSFont.preferredFont(forTextStyle: .body).pointSize + font,
                                                               weight: .regular),
                                      .kern: 1,
-                                     .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor,
-                                     .paragraphStyle: paragraph])
+                                     .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor])
                     
                     Task {
                         await session.cloud.read(item: item)
