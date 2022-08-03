@@ -78,10 +78,6 @@
 		CEE4994D289A830A00C4C9B9 /* The News.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = CEE49932289A830900C4C9B9 /* The News.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CEE49958289A84B600C4C9B9 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE49957289A84B600C4C9B9 /* CloudKit.framework */; };
 		CEE4995A289A85F300C4C9B9 /* News in Frameworks */ = {isa = PBXBuildFile; productRef = CEE49959289A85F300C4C9B9 /* News */; };
-		CEE4995C289A86A400C4C9B9 /* Accent.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE4995B289A86A400C4C9B9 /* Accent.xcassets */; };
-		CEE4995D289A86A400C4C9B9 /* Accent.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE4995B289A86A400C4C9B9 /* Accent.xcassets */; };
-		CEE4995E289A86A400C4C9B9 /* Accent.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE4995B289A86A400C4C9B9 /* Accent.xcassets */; };
-		CEE4995F289A86A400C4C9B9 /* Accent.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE4995B289A86A400C4C9B9 /* Accent.xcassets */; };
 		CEE81F16288807A700AC1694 /* Froob.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F15288807A700AC1694 /* Froob.swift */; };
 		CEE81F1828880B8500AC1694 /* Control.Prominent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F1728880B8500AC1694 /* Control.Prominent.swift */; };
 		CEE81F1C2888173400AC1694 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F1B2888173400AC1694 /* Store.swift */; };
@@ -89,6 +85,10 @@
 		CEE81F2228884EA400AC1694 /* Sponsor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F2128884EA400AC1694 /* Sponsor.swift */; };
 		CEE9BB3F288578040061886E /* List.Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9BB3E288578040061886E /* List.Appearance.swift */; };
 		CEF313A7289957B50047846D /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF313A6289957B50047846D /* About.swift */; };
+		CEF61CFE289A8DCE008F65AA /* App.Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61CFD289A8DCE008F65AA /* App.Delegate.swift */; };
+		CEF61D00289A8DF5008F65AA /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61CFF289A8DF5008F65AA /* Session.swift */; };
+		CEF61D02289A96E9008F65AA /* Feeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61D01289A96E9008F65AA /* Feeds.swift */; };
+		CEF61D04289A976E008F65AA /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61D03289A976E008F65AA /* Sidebar.swift */; };
 		CEF6E071288C11CD006BDB70 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E070288C11CD006BDB70 /* Sidebar.swift */; };
 		CEF6E073288C132A006BDB70 /* Middlebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E072288C132A006BDB70 /* Middlebar.swift */; };
 		CEF6E075288C160C006BDB70 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E074288C160C006BDB70 /* Content.swift */; };
@@ -220,7 +220,6 @@
 		CEE4994A289A830A00C4C9B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEE49956289A84B200C4C9B9 /* watchOS Ex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "watchOS Ex.entitlements"; sourceTree = "<group>"; };
 		CEE49957289A84B600C4C9B9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS8.5.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
-		CEE4995B289A86A400C4C9B9 /* Accent.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Accent.xcassets; sourceTree = "<group>"; };
 		CEE81F15288807A700AC1694 /* Froob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Froob.swift; sourceTree = "<group>"; };
 		CEE81F1728880B8500AC1694 /* Control.Prominent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Control.Prominent.swift; sourceTree = "<group>"; };
 		CEE81F1A288816D300AC1694 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
@@ -229,6 +228,10 @@
 		CEE81F2128884EA400AC1694 /* Sponsor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sponsor.swift; sourceTree = "<group>"; };
 		CEE9BB3E288578040061886E /* List.Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.Appearance.swift; sourceTree = "<group>"; };
 		CEF313A6289957B50047846D /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
+		CEF61CFD289A8DCE008F65AA /* App.Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.Delegate.swift; sourceTree = "<group>"; };
+		CEF61CFF289A8DF5008F65AA /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		CEF61D01289A96E9008F65AA /* Feeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feeds.swift; sourceTree = "<group>"; };
+		CEF61D03289A976E008F65AA /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		CEF6E070288C11CD006BDB70 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		CEF6E072288C132A006BDB70 /* Middlebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Middlebar.swift; sourceTree = "<group>"; };
 		CEF6E074288C160C006BDB70 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
@@ -415,7 +418,11 @@
 			children = (
 				CEE49956289A84B200C4C9B9 /* watchOS Ex.entitlements */,
 				CEE4994A289A830A00C4C9B9 /* Info.plist */,
+				CEF61CFD289A8DCE008F65AA /* App.Delegate.swift */,
 				CEE49941289A830900C4C9B9 /* App.swift */,
+				CEF61D01289A96E9008F65AA /* Feeds.swift */,
+				CEF61CFF289A8DF5008F65AA /* Session.swift */,
+				CEF61D03289A976E008F65AA /* Sidebar.swift */,
 				CEE49945289A830A00C4C9B9 /* Assets.xcassets */,
 			);
 			path = "watchOS Ex";
@@ -426,7 +433,6 @@
 			children = (
 				CEE81F1A288816D300AC1694 /* Configuration.storekit */,
 				CEE81F1B2888173400AC1694 /* Store.swift */,
-				CEE4995B289A86A400C4C9B9 /* Accent.xcassets */,
 				CE9DBD832893F26C0039EA11 /* Media.xcassets */,
 			);
 			path = Shared;
@@ -565,7 +571,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE9DBD842893F26C0039EA11 /* Media.xcassets in Resources */,
-				CEE4995C289A86A400C4C9B9 /* Accent.xcassets in Resources */,
 				CE346084287066FE001962E7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -575,7 +580,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE53F80F288AB78A00C91444 /* Launch Screen.storyboard in Resources */,
-				CEE4995D289A86A400C4C9B9 /* Accent.xcassets in Resources */,
 				CE9DBD852893F26C0039EA11 /* Media.xcassets in Resources */,
 				CE34609B287067D3001962E7 /* Assets.xcassets in Resources */,
 			);
@@ -586,7 +590,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEE49935289A830900C4C9B9 /* Assets.xcassets in Resources */,
-				CEE4995E289A86A400C4C9B9 /* Accent.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,7 +597,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEE4995F289A86A400C4C9B9 /* Accent.xcassets in Resources */,
 				CEE49946289A830A00C4C9B9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -691,7 +693,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEF61D04289A976E008F65AA /* Sidebar.swift in Sources */,
 				CEE49942289A830900C4C9B9 /* App.swift in Sources */,
+				CEF61D02289A96E9008F65AA /* Feeds.swift in Sources */,
+				CEF61CFE289A8DCE008F65AA /* App.Delegate.swift in Sources */,
+				CEF61D00289A8DF5008F65AA /* Session.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

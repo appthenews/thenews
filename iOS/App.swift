@@ -66,20 +66,7 @@ import News
                     session.cloud.pull.send()
                     Defaults.start()
                     
-                    Task
-                        .detached {
-                            await session.store.launch()
-                        }
-                }
-            }
-        }
-        .onChange(of: phase) {
-            switch $0 {
-            case .active:
-                session.cloud.pull.send()
-                
-                if session.loading {
-                    session.cloud.ready.notify(queue: .main) {
+                    if session.loading {
                         session.loading = false
                         
                         if UIDevice.current.userInterfaceIdiom == .pad  {
@@ -96,7 +83,20 @@ import News
                             }
                         }
                     }
-                } else {
+                    
+                    Task
+                        .detached {
+                            await session.store.launch()
+                        }
+                }
+            }
+        }
+        .onChange(of: phase) {
+            switch $0 {
+            case .active:
+                session.cloud.pull.send()
+                
+                if !session.loading {
                     Task {
                         await session.cloud.fetch()
                     }
