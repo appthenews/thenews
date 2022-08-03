@@ -28,7 +28,7 @@ struct Settings: View {
                 .navigationTitle("Feeds"))
                 .font(.callout)
             
-            NavigationLink("Update", destination: Update(session: session))
+            NavigationLink("Refresh", destination: Update(session: session))
                 .font(.callout)
             
             NavigationLink("Reading", destination: Reading(session: session))

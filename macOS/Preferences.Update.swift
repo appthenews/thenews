@@ -10,7 +10,7 @@ extension Preferences {
             self.session = session
             super.init(frame: .init(origin: .zero, size: .init(width: 400, height: 300)))
             let updateTitle = Text(vibrancy: false)
-            updateTitle.stringValue = "Update every"
+            updateTitle.stringValue = "Refresh every"
             
             let update = NSSegmentedControl(labels: [Interval.hour,
                                                      .hours3,

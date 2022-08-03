@@ -9,8 +9,8 @@ extension Settings {
         
         var body: some View {
             List {
-                Section("Update every") {
-                    Picker("Update every interval", selection: $fetch) {
+                Section("Refresh every") {
+                    Picker("Refresh every", selection: $fetch) {
                         ForEach([Interval.hour, .hours3, .hours6, .day], id: \.self) {
                             Text(verbatim: $0.title)
                                 .tag($0)
@@ -28,7 +28,7 @@ extension Settings {
                 .headerProminence(.increased)
                 
                 Section("Delete after") {
-                    Picker("Delete after interval", selection: $clean) {
+                    Picker("Delete after", selection: $clean) {
                         ForEach([Interval.hours6, .day, .days3, .week], id: \.self) {
                             Text(verbatim: $0.title)
                                 .tag($0)
@@ -46,7 +46,7 @@ extension Settings {
                 .headerProminence(.increased)
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("Update")
+            .navigationTitle("Refresh")
             .navigationBarTitleDisplayMode(.large)
             .onReceive(session.cloud) {
                 fetch = $0.preferences.fetch

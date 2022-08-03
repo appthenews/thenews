@@ -3,6 +3,7 @@ import News
 
 struct Feeds: View {
     let session: Session
+    let dismissable: Bool
     @State private var feeds = Feed.allCases.map { _ in false }
     @Environment(\.dismiss) private var dismiss
     
@@ -31,11 +32,13 @@ struct Feeds: View {
             }
             .headerProminence(.increased)
             
-            Button("Close") {
-                dismiss()
+            if dismissable {
+                Button("Close") {
+                    dismiss()
+                }
+                .buttonStyle(.bordered)
+                .listRowBackground(Color.clear)
             }
-            .buttonStyle(.bordered)
-            .listRowBackground(Color.clear)
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
         .navigationTitle("Feeds")

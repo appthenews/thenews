@@ -10,7 +10,7 @@ final class Preferences: NSWindow {
         
         controller.tabViewItems = [
             item(Feeds(session: session), title: "Feeds", symbol: "switch.2"),
-            item(Update(session: session), title: "Update", symbol: "calendar.badge.clock"),
+            item(Update(session: session), title: "Refresh", symbol: "calendar.badge.clock"),
             item(Reading(session: session), title: "Reading", symbol: "textformat.size")]
         animationBehavior = .alertPanel
         isReleasedWhenClosed = false

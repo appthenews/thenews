@@ -9,7 +9,6 @@ struct Middlebar: View {
     var body: some View {
         List(articles, id: \.link, rowContent: link(article:))
             .navigationTitle(provider.title)
-            .background(session.reader ? .init("Background") : Color.clear)
             .onReceive(session.cloud) {
                 items = $0.items(provider: provider)
             }
@@ -31,23 +30,19 @@ struct Middlebar: View {
     }
     
     private func link(article: Item) -> some View {
-        NavigationLink(destination: Circle()) {
+        NavigationLink(destination: Content(session: session, item: article, provider: provider)) {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 0) {
                     VStack(alignment: .leading) {
                         if provider == .all {
                             Text(verbatim: article.feed.provider.title)
-                                .fontWeight(.regular)
                             Text(article.date, format: .relative(presentation: .named, unitsStyle: .wide))
-                                .fontWeight(.light)
                         } else {
                             Text(verbatim: article.date.formatted(.relative(presentation: .named, unitsStyle: .wide)).capitalized)
-                                .fontWeight(.light)
-                            
                         }
                     }
-                    .font(.caption2)
-                    .foregroundColor(session.reader && article.status == .new ? .init("Text") : .secondary)
+                    .font(.caption2.weight(.light))
+                    .foregroundColor(.secondary)
                     
                     Spacer()
                     
@@ -61,7 +56,7 @@ struct Middlebar: View {
                     case .bookmarked:
                         Image(systemName: "bookmark.fill")
                             .font(.system(size: 13, weight: .light))
-                            .foregroundColor(session.reader ? .accentColor : .secondary)
+                            .foregroundColor(.secondary)
                             .symbolRenderingMode(.hierarchical)
                     default:
                         EmptyView()
@@ -71,7 +66,7 @@ struct Middlebar: View {
                 Text(verbatim: article.title)
                     .font(.system(size: UIFont.preferredFont(forTextStyle: .footnote).pointSize + session.font, weight: .regular))
                     .foregroundColor(article.status == .new
-                                     ? session.reader ? .init("Text") : .primary
+                                     ? .primary
                                      : .secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }

@@ -7,22 +7,23 @@ struct Sidebar: View {
     @State private var recents = Provider.allCases.reduce(into: [:]) { $0[$1] = 0 }
     
     var body: some View {
-        List {
-            if session.loading {
-                Image("Logo")
-                    .foregroundColor(.primary)
-                    .frame(maxWidth: .greatestFiniteMagnitude, minHeight: 150)
-                    .listRowBackground(Color.clear)
-            } else {
-                provider(provider: .all)
-                provider(provider: .theGuardian)
-                provider(provider: .reuters)
-                provider(provider: .derSpiegel)
-                provider(provider: .theLocal)
+        NavigationView {
+            List {
+                if session.loading {
+                    Image("Logo")
+                        .foregroundColor(.primary)
+                        .frame(maxWidth: .greatestFiniteMagnitude, minHeight: 150)
+                        .listRowBackground(Color.clear)
+                } else {
+                    provider(provider: .all)
+                    provider(provider: .theGuardian)
+                    provider(provider: .reuters)
+                    provider(provider: .derSpiegel)
+                    provider(provider: .theLocal)
+                }
             }
+            .navigationTitle(session.loading ? "" : "Feeds")
         }
-        .navigationTitle(session.loading ? "" : "Feeds")
-        .background(session.reader ? .init("Background") : Color.clear)
         .onReceive(session.cloud) { model in
             providers = model.preferences.providers
             recents = Provider
@@ -45,7 +46,7 @@ struct Sidebar: View {
             NavigationLink(destination: Middlebar(session: session, provider: provider)) {
                 HStack(spacing: 0) {
                     Text(verbatim: provider.title)
-                        .foregroundColor(session.reader ? .accentColor : .primary)
+                        .foregroundColor(.primary)
                         .font(.callout.weight(.regular))
                     Spacer()
                     if recents[provider]! > 0 {
@@ -54,7 +55,7 @@ struct Sidebar: View {
                                 .fill(Color.accentColor)
                             Text(recents[provider]!, format: .number)
                                 .font(.caption2.monospacedDigit().weight(.medium))
-                                .foregroundColor(session.reader ? .init("Background") : .white)
+                                .foregroundColor(.white)
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 3)
                         }

@@ -11,14 +11,11 @@ import News
     var body: some Scene {
         WindowGroup {
             TabView(selection: $selection) {
-                NavigationView {
-                    Sidebar(session: session)
-                }
-                
-                Circle()
+                Sidebar(session: session)
+                Settings(session: session)
             }
             .sheet(isPresented: $feeds) {
-                Feeds(session: session)
+                Feeds(session: session, dismissable: true)
             }
             .task {
                 delegate.session = session
