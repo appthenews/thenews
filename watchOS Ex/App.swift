@@ -19,7 +19,6 @@ import News
             }
             .sheet(isPresented: $feeds) {
                 Feeds(session: session)
-                    .navigationTitle("Select your feeds")
             }
             .task {
                 delegate.session = session
@@ -28,7 +27,7 @@ import News
                     session.cloud.pull.send()
                     
                     if session.loading {
-//                        session.loading = false
+                        session.loading = false
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             Task {

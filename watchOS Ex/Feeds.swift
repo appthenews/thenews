@@ -4,6 +4,7 @@ import News
 struct Feeds: View {
     let session: Session
     @State private var feeds = Feed.allCases.map { _ in false }
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         List {
@@ -29,8 +30,15 @@ struct Feeds: View {
                 feed(feed: .theLocalGermany)
             }
             .headerProminence(.increased)
+            
+            Button("Close") {
+                dismiss()
+            }
+            .buttonStyle(.bordered)
+            .listRowBackground(Color.clear)
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .navigationTitle("Feeds")
         .onReceive(session.cloud) { model in
             feeds = Feed.allCases.map { model.preferences.feeds[$0] ?? false }
         }
