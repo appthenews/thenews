@@ -85,6 +85,7 @@
 		CEE81F2228884EA400AC1694 /* Sponsor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F2128884EA400AC1694 /* Sponsor.swift */; };
 		CEE9BB3F288578040061886E /* List.Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9BB3E288578040061886E /* List.Appearance.swift */; };
 		CEF313A7289957B50047846D /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF313A6289957B50047846D /* About.swift */; };
+		CEF56D95289ABB050002147B /* Middlebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF56D94289ABB050002147B /* Middlebar.swift */; };
 		CEF61CFE289A8DCE008F65AA /* App.Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61CFD289A8DCE008F65AA /* App.Delegate.swift */; };
 		CEF61D00289A8DF5008F65AA /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61CFF289A8DF5008F65AA /* Session.swift */; };
 		CEF61D02289A96E9008F65AA /* Feeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61D01289A96E9008F65AA /* Feeds.swift */; };
@@ -228,6 +229,7 @@
 		CEE81F2128884EA400AC1694 /* Sponsor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sponsor.swift; sourceTree = "<group>"; };
 		CEE9BB3E288578040061886E /* List.Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.Appearance.swift; sourceTree = "<group>"; };
 		CEF313A6289957B50047846D /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
+		CEF56D94289ABB050002147B /* Middlebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Middlebar.swift; sourceTree = "<group>"; };
 		CEF61CFD289A8DCE008F65AA /* App.Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.Delegate.swift; sourceTree = "<group>"; };
 		CEF61CFF289A8DF5008F65AA /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		CEF61D01289A96E9008F65AA /* Feeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feeds.swift; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 				CEF61CFD289A8DCE008F65AA /* App.Delegate.swift */,
 				CEE49941289A830900C4C9B9 /* App.swift */,
 				CEF61D01289A96E9008F65AA /* Feeds.swift */,
+				CEF56D94289ABB050002147B /* Middlebar.swift */,
 				CEF61CFF289A8DF5008F65AA /* Session.swift */,
 				CEF61D03289A976E008F65AA /* Sidebar.swift */,
 				CEE49945289A830A00C4C9B9 /* Assets.xcassets */,
@@ -695,6 +698,7 @@
 			files = (
 				CEF61D04289A976E008F65AA /* Sidebar.swift in Sources */,
 				CEE49942289A830900C4C9B9 /* App.swift in Sources */,
+				CEF56D95289ABB050002147B /* Middlebar.swift in Sources */,
 				CEF61D02289A96E9008F65AA /* Feeds.swift in Sources */,
 				CEF61CFE289A8DCE008F65AA /* App.Delegate.swift in Sources */,
 				CEF61D00289A8DF5008F65AA /* Session.swift in Sources */,

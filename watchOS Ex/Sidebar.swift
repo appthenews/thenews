@@ -42,21 +42,21 @@ struct Sidebar: View {
     
     @ViewBuilder private func provider(provider: Provider) -> some View {
         if provider == .all || providers.contains(provider) {
-            NavigationLink(destination: Circle()) {
+            NavigationLink(destination: Middlebar(session: session, provider: provider)) {
                 HStack(spacing: 0) {
                     Text(verbatim: provider.title)
                         .foregroundColor(session.reader ? .accentColor : .primary)
-                        .font(.body.weight(.medium))
+                        .font(.callout.weight(.regular))
                     Spacer()
                     if recents[provider]! > 0 {
                         ZStack {
                             Capsule()
                                 .fill(Color.accentColor)
                             Text(recents[provider]!, format: .number)
-                                .font(.footnote.monospacedDigit().weight(.bold))
+                                .font(.caption2.monospacedDigit().weight(.medium))
                                 .foregroundColor(session.reader ? .init("Background") : .white)
-                                .padding(.horizontal, 11)
-                                .padding(.vertical, 5)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 3)
                         }
                         .fixedSize()
                     }
