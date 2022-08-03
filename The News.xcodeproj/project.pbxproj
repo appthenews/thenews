@@ -71,6 +71,17 @@
 		CED728D728787B540010A4BC /* Vibrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED728D628787B540010A4BC /* Vibrant.swift */; };
 		CEDA94872886CA490087776C /* Shortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA94862886CA490087776C /* Shortcut.swift */; };
 		CEDA94892886CA5B0087776C /* Shortcut.Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA94882886CA5B0087776C /* Shortcut.Item.swift */; };
+		CEE49935289A830900C4C9B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE49934289A830900C4C9B9 /* Assets.xcassets */; };
+		CEE4993B289A830900C4C9B9 /* The News.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CEE4993A289A830900C4C9B9 /* The News.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CEE49942289A830900C4C9B9 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE49941289A830900C4C9B9 /* App.swift */; };
+		CEE49946289A830A00C4C9B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE49945289A830A00C4C9B9 /* Assets.xcassets */; };
+		CEE4994D289A830A00C4C9B9 /* The News.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = CEE49932289A830900C4C9B9 /* The News.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CEE49958289A84B600C4C9B9 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE49957289A84B600C4C9B9 /* CloudKit.framework */; };
+		CEE4995A289A85F300C4C9B9 /* News in Frameworks */ = {isa = PBXBuildFile; productRef = CEE49959289A85F300C4C9B9 /* News */; };
+		CEE4995C289A86A400C4C9B9 /* Accent.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE4995B289A86A400C4C9B9 /* Accent.xcassets */; };
+		CEE4995D289A86A400C4C9B9 /* Accent.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE4995B289A86A400C4C9B9 /* Accent.xcassets */; };
+		CEE4995E289A86A400C4C9B9 /* Accent.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE4995B289A86A400C4C9B9 /* Accent.xcassets */; };
+		CEE4995F289A86A400C4C9B9 /* Accent.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE4995B289A86A400C4C9B9 /* Accent.xcassets */; };
 		CEE81F16288807A700AC1694 /* Froob.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F15288807A700AC1694 /* Froob.swift */; };
 		CEE81F1828880B8500AC1694 /* Control.Prominent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F1728880B8500AC1694 /* Control.Prominent.swift */; };
 		CEE81F1C2888173400AC1694 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE81F1B2888173400AC1694 /* Store.swift */; };
@@ -90,6 +101,48 @@
 		CEF6E083288C17A5006BDB70 /* App.Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E082288C17A5006BDB70 /* App.Delegate.swift */; };
 		CEF6E085288C1B6A006BDB70 /* Feeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF6E084288C1B6A006BDB70 /* Feeds.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CEE4993C289A830900C4C9B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE346071287065B6001962E7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CEE49939289A830900C4C9B9;
+			remoteInfo = "watchOS WatchKit Extension";
+		};
+		CEE4994B289A830A00C4C9B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE346071287065B6001962E7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CEE49931289A830900C4C9B9;
+			remoteInfo = watchOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CEE4994E289A830A00C4C9B9 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				CEE4994D289A830A00C4C9B9 /* The News.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEE49951289A830A00C4C9B9 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CEE4993B289A830900C4C9B9 /* The News.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CE19C0E4287701C60045E221 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -159,6 +212,15 @@
 		CED728D628787B540010A4BC /* Vibrant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibrant.swift; sourceTree = "<group>"; };
 		CEDA94862886CA490087776C /* Shortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcut.swift; sourceTree = "<group>"; };
 		CEDA94882886CA5B0087776C /* Shortcut.Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcut.Item.swift; sourceTree = "<group>"; };
+		CEE49932289A830900C4C9B9 /* The News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The News.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEE49934289A830900C4C9B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CEE4993A289A830900C4C9B9 /* The News.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "The News.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEE49941289A830900C4C9B9 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		CEE49945289A830A00C4C9B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CEE4994A289A830A00C4C9B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CEE49956289A84B200C4C9B9 /* watchOS Ex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "watchOS Ex.entitlements"; sourceTree = "<group>"; };
+		CEE49957289A84B600C4C9B9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS8.5.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
+		CEE4995B289A86A400C4C9B9 /* Accent.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Accent.xcassets; sourceTree = "<group>"; };
 		CEE81F15288807A700AC1694 /* Froob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Froob.swift; sourceTree = "<group>"; };
 		CEE81F1728880B8500AC1694 /* Control.Prominent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Control.Prominent.swift; sourceTree = "<group>"; };
 		CEE81F1A288816D300AC1694 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
@@ -201,6 +263,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CEE49937289A830900C4C9B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE49958289A84B600C4C9B9 /* CloudKit.framework in Frameworks */,
+				CEE4995A289A85F300C4C9B9 /* News in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -213,6 +284,8 @@
 				CE34607E287066FD001962E7 /* macOS */,
 				CE34607D287066FD001962E7 /* Products */,
 				CEE81F19288816B300AC1694 /* Shared */,
+				CEE49933289A830900C4C9B9 /* watchOS */,
+				CEE4993E289A830900C4C9B9 /* watchOS Ex */,
 			);
 			sourceTree = "<group>";
 		};
@@ -221,6 +294,8 @@
 			children = (
 				CE34607C287066FD001962E7 /* The News.app */,
 				CE346094287067D2001962E7 /* The News.app */,
+				CEE49932289A830900C4C9B9 /* The News.app */,
+				CEE4993A289A830900C4C9B9 /* The News.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -318,6 +393,7 @@
 		CE3460A328706D04001962E7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CEE49957289A84B600C4C9B9 /* CloudKit.framework */,
 				CEF6E080288C1778006BDB70 /* StoreKit.framework */,
 				CEF6E07E288C1773006BDB70 /* StoreKit.framework */,
 				CEF6E07C288C1753006BDB70 /* CloudKit.framework */,
@@ -326,11 +402,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CEE49933289A830900C4C9B9 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				CEE49934289A830900C4C9B9 /* Assets.xcassets */,
+			);
+			path = watchOS;
+			sourceTree = "<group>";
+		};
+		CEE4993E289A830900C4C9B9 /* watchOS Ex */ = {
+			isa = PBXGroup;
+			children = (
+				CEE49956289A84B200C4C9B9 /* watchOS Ex.entitlements */,
+				CEE4994A289A830A00C4C9B9 /* Info.plist */,
+				CEE49941289A830900C4C9B9 /* App.swift */,
+				CEE49945289A830A00C4C9B9 /* Assets.xcassets */,
+			);
+			path = "watchOS Ex";
+			sourceTree = "<group>";
+		};
 		CEE81F19288816B300AC1694 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
 				CEE81F1A288816D300AC1694 /* Configuration.storekit */,
 				CEE81F1B2888173400AC1694 /* Store.swift */,
+				CEE4995B289A86A400C4C9B9 /* Accent.xcassets */,
 				CE9DBD832893F26C0039EA11 /* Media.xcassets */,
 			);
 			path = Shared;
@@ -366,10 +462,12 @@
 				CE346090287067D2001962E7 /* Sources */,
 				CE346091287067D2001962E7 /* Frameworks */,
 				CE346092287067D2001962E7 /* Resources */,
+				CEE4994E289A830A00C4C9B9 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CEE4994C289A830A00C4C9B9 /* PBXTargetDependency */,
 			);
 			name = iOS;
 			packageProductDependencies = (
@@ -378,6 +476,43 @@
 			productName = iOS;
 			productReference = CE346094287067D2001962E7 /* The News.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CEE49931289A830900C4C9B9 /* watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEE49955289A830A00C4C9B9 /* Build configuration list for PBXNativeTarget "watchOS" */;
+			buildPhases = (
+				CEE49930289A830900C4C9B9 /* Resources */,
+				CEE49951289A830A00C4C9B9 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CEE4993D289A830900C4C9B9 /* PBXTargetDependency */,
+			);
+			name = watchOS;
+			productName = watchOS;
+			productReference = CEE49932289A830900C4C9B9 /* The News.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		CEE49939289A830900C4C9B9 /* watchOS Ex */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEE49954289A830A00C4C9B9 /* Build configuration list for PBXNativeTarget "watchOS Ex" */;
+			buildPhases = (
+				CEE49936289A830900C4C9B9 /* Sources */,
+				CEE49937289A830900C4C9B9 /* Frameworks */,
+				CEE49938289A830900C4C9B9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "watchOS Ex";
+			packageProductDependencies = (
+				CEE49959289A85F300C4C9B9 /* News */,
+			);
+			productName = "watchOS WatchKit Extension";
+			productReference = CEE4993A289A830900C4C9B9 /* The News.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -393,6 +528,12 @@
 						CreatedOnToolsVersion = 13.4.1;
 					};
 					CE346093287067D2001962E7 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
+					CEE49931289A830900C4C9B9 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
+					CEE49939289A830900C4C9B9 = {
 						CreatedOnToolsVersion = 13.4.1;
 					};
 				};
@@ -412,6 +553,8 @@
 			targets = (
 				CE34607B287066FD001962E7 /* macOS */,
 				CE346093287067D2001962E7 /* iOS */,
+				CEE49931289A830900C4C9B9 /* watchOS */,
+				CEE49939289A830900C4C9B9 /* watchOS Ex */,
 			);
 		};
 /* End PBXProject section */
@@ -422,6 +565,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE9DBD842893F26C0039EA11 /* Media.xcassets in Resources */,
+				CEE4995C289A86A400C4C9B9 /* Accent.xcassets in Resources */,
 				CE346084287066FE001962E7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,8 +575,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE53F80F288AB78A00C91444 /* Launch Screen.storyboard in Resources */,
+				CEE4995D289A86A400C4C9B9 /* Accent.xcassets in Resources */,
 				CE9DBD852893F26C0039EA11 /* Media.xcassets in Resources */,
 				CE34609B287067D3001962E7 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEE49930289A830900C4C9B9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE49935289A830900C4C9B9 /* Assets.xcassets in Resources */,
+				CEE4995E289A86A400C4C9B9 /* Accent.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEE49938289A830900C4C9B9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE4995F289A86A400C4C9B9 /* Accent.xcassets in Resources */,
+				CEE49946289A830A00C4C9B9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,7 +687,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CEE49936289A830900C4C9B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE49942289A830900C4C9B9 /* App.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CEE4993D289A830900C4C9B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CEE49939289A830900C4C9B9 /* watchOS Ex */;
+			targetProxy = CEE4993C289A830900C4C9B9 /* PBXContainerItemProxy */;
+		};
+		CEE4994C289A830A00C4C9B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CEE49931289A830900C4C9B9 /* watchOS */;
+			targetProxy = CEE4994B289A830A00C4C9B9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		CE346075287065B6001962E7 /* Debug */ = {
@@ -858,6 +1042,282 @@
 			};
 			name = Release;
 		};
+		CEE4994F289A830A00C4C9B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = watchOS_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = "The News";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = thenewsapp;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = thenewsapp.watch;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)watch";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		CEE49950289A830A00C4C9B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = watchOS_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = "The News";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = thenewsapp;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = thenewsapp.watch;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)watch";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CEE49952289A830A00C4C9B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "watchOS Ex/watchOS Ex.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "watchOS Ex/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "The News";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "2022 The News Inc.";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = thenewsapp.watch.ex;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)watchex";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		CEE49953289A830A00C4C9B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "watchOS Ex/watchOS Ex.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "watchOS Ex/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "The News";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "2022 The News Inc.";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = thenewsapp.watch.ex;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)watchex";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -888,6 +1348,24 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		CEE49954289A830A00C4C9B9 /* Build configuration list for PBXNativeTarget "watchOS Ex" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE49952289A830A00C4C9B9 /* Debug */,
+				CEE49953289A830A00C4C9B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CEE49955289A830A00C4C9B9 /* Build configuration list for PBXNativeTarget "watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE4994F289A830A00C4C9B9 /* Debug */,
+				CEE49950289A830A00C4C9B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -896,6 +1374,10 @@
 			productName = News;
 		};
 		CE53F80C288AB74300C91444 /* News */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = News;
+		};
+		CEE49959289A85F300C4C9B9 /* News */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = News;
 		};
