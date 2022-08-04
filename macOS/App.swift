@@ -16,7 +16,7 @@ import News
     
     func applicationDidFinishLaunching(_: Notification) {
         registerForRemoteNotifications()
-        Window(session: self.session).makeKeyAndOrderFront(nil)
+        Window(session: session).makeKeyAndOrderFront(nil)
         
         session.cloud.ready.notify(queue: .main) {
             Defaults.start()
