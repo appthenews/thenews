@@ -26,7 +26,7 @@ import News
                     if session.loading {
                         session.loading = false
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             Task {
                                 if await session.cloud.model.preferences.providers.isEmpty {
                                     feeds = true
