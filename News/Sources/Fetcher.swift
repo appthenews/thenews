@@ -6,8 +6,8 @@ struct Fetcher {
     
     init() {
         let configuration = URLSessionConfiguration.ephemeral
-        configuration.timeoutIntervalForRequest = 6
-        configuration.timeoutIntervalForResource = 6
+        configuration.timeoutIntervalForRequest = 3
+        configuration.timeoutIntervalForResource = 3
         configuration.waitsForConnectivity = true
         configuration.allowsCellularAccess = true
         session = .init(configuration: configuration)
