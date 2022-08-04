@@ -20,11 +20,13 @@ extension Cloud where Output == Archive {
                     
                     model.update(feed: feed, date: .now, items: try await fetcher.fetch(feed: feed))
                 }
+                
+                await stream()
             }
         } catch { }
         
         model.fetch = .off
-        await stream()
+        await publish(model: model)
     }
     
     public func toggle(feed: Feed, value: Bool) async {
