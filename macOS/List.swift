@@ -270,10 +270,6 @@ final class List: NSScrollView {
         refresh.send()
     }
     
-    override func acceptsFirstMouse(for: NSEvent?) -> Bool {
-        true
-    }
-    
     private func point(with: NSEvent) -> CGPoint {
         documentView!.convert(with.locationInWindow, from: nil)
     }

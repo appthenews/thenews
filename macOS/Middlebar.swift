@@ -307,10 +307,6 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
             }
     }
     
-    override func acceptsFirstMouse(for: NSEvent?) -> Bool {
-        true
-    }
-    
     private func update() {
         cancel.state = field.stringValue.isEmpty ? .off : .on
     }
