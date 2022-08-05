@@ -1,4 +1,5 @@
 import AppKit
+import Coffee
 
 extension List {
     final class Cell: NSView {

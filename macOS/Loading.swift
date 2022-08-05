@@ -1,4 +1,5 @@
 import AppKit
+import Coffee
 
 final class Loading: NSView {
     required init?(coder: NSCoder) { nil }

@@ -1,4 +1,5 @@
 import AppKit
+import Coffee
 
 final class Filters: NSView {
     private let session: Session

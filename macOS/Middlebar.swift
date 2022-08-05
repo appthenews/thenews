@@ -1,4 +1,5 @@
 import AppKit
+import Coffee
 import Combine
 
 final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {

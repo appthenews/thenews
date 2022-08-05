@@ -1,4 +1,5 @@
 import AppKit
+import Coffee
 import Combine
 
 final class Topbar: NSView {
@@ -55,9 +56,9 @@ final class Topbar: NSView {
                 
                 share.menu = .init()
                 share.menu!.items = [
-                    Menu.Link(link: link),
+                    Link(link: link),
                     .separator(),
-                    Menu.Share(title: "To Service...", url: url)]
+                    Share(title: "To Service...", url: url)]
                 
                 share.menu!.popUp(positioning: nil, at: .init(x: 0, y: -8), in: share)
             }

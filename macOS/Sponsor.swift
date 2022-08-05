@@ -1,4 +1,5 @@
 import AppKit
+import Coffee
 import Combine
 import StoreKit
 import News

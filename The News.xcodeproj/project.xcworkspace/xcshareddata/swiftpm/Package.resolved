@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "coffee",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/macoskit/coffee.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "c44f5dfcbc067126a2d25ea9879725a5f0211b5a"
+      }
+    },
+    {
       "identity" : "package",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/archivable/package.git",

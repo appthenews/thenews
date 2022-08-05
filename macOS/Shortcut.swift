@@ -1,4 +1,5 @@
 import AppKit
+import Coffee
 import Combine
 
 private let width = CGFloat(380)
