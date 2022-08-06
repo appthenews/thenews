@@ -21,19 +21,15 @@ import News
                 delegate.session = session
                 
                 session.cloud.ready.notify(queue: .main) {
-                    session.cloud.pull.send()
-                    
                     if session.loading {
                         session.loading = false
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            Task {
-                                if await session.cloud.model.preferences.providers.isEmpty {
-                                    feeds = true
-                                }
-                                
-                                await session.cloud.fetch()
+                        Task {
+                            if await session.cloud.model.preferences.providers.isEmpty {
+                                feeds = true
                             }
+                            
+                            await session.cloud.fetch()
                         }
                     }
                     

@@ -63,9 +63,6 @@ import News
             .task {
                 delegate.session = session
                 session.cloud.ready.notify(queue: .main) {
-                    session.cloud.pull.send()
-                    Defaults.start()
-                    
                     if session.loading {
                         session.loading = false
                         
@@ -73,22 +70,22 @@ import News
                             session.provider = .all
                         }
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            Task {
-                                if await session.cloud.model.preferences.providers.isEmpty {
-                                    feeds = true
-                                }
-                                
-                                await session.cloud.fetch()
+                        Task {
+                            if await session.cloud.model.preferences.providers.isEmpty {
+                                feeds = true
                             }
+                            
+                            await session.cloud.fetch()
                         }
                     }
                     
-                    Task
-                        .detached {
-                            await session.store.launch()
-                        }
+                    Defaults.start()
                 }
+                
+                Task
+                    .detached {
+                        await session.store.launch()
+                    }
             }
         }
         .onChange(of: phase) {

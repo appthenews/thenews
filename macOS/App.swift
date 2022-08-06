@@ -18,34 +18,30 @@ import News
         registerForRemoteNotifications()
         Window(session: session).makeKeyAndOrderFront(nil)
         
-        session.cloud.ready.notify(queue: .main) {
-            Defaults.start()
-            
-            Task
-                .detached {
-                    await self.session.store.launch()
-                }
-        }
+        Task
+            .detached {
+                await self.session.store.launch()
+            }
     }
     
     func applicationDidBecomeActive(_: Notification) {
-        session.cloud.pull.send()
-        
         if session.loading.value {
             session.cloud.ready.notify(queue: .main) {
                 self.session.loading.value = false
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    Task {
-                        if await self.session.cloud.model.preferences.providers.isEmpty {
-                            self.showPreferencesWindow(nil)
-                        }
-                        
-                        await self.session.cloud.fetch()
+                Task {
+                    if await self.session.cloud.model.preferences.providers.isEmpty {
+                        self.showPreferencesWindow(nil)
                     }
+                    
+                    await self.session.cloud.fetch()
                 }
+                
+                Defaults.start()
             }
         } else {
+            session.cloud.pull.send()
+            
             Task {
                 await session.cloud.fetch()
             }
