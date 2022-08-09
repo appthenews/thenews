@@ -280,7 +280,7 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
         update()
     }
     
-    func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
+    func control(_: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
         switch doCommandBy {
         case #selector(cancelOperation):
             field.cancelOperation(nil)
