@@ -151,7 +151,7 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
                 if $0 == 2,
                     self?.window?.firstResponder == field.currentEditor()
                     || self?.window?.firstResponder == field {
-                    self?.window?.makeFirstResponder(nil)
+                    self?.window?.makeFirstResponder(self?.window?.contentView)
                 }
             }
             .store(in: &subs)
