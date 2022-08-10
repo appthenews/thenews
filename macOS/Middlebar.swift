@@ -43,15 +43,7 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
         filter
             .click
             .sink {
-                let filters = Filters(session: session)
-                
-                let popover = NSPopover()
-                popover.behavior = .transient
-                popover.contentSize = filters.frame.size
-                popover.contentViewController = .init()
-                popover.contentViewController!.view = filters
-                popover.show(relativeTo: filter.bounds, of: filter, preferredEdge: .minY)
-                popover.contentViewController!.view.window!.makeKey()
+                NSPopover().show(content: Filters(session: session), on: filter, edge: .minY)
             }
             .store(in: &subs)
         addSubview(filter)

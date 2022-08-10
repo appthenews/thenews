@@ -144,14 +144,7 @@ final class Menu: NSMenu, NSMenuDelegate {
         case .rightMouseUp:
             NSMenu.popUpContextMenu(button.menu!, with: event, for: button)
         case .leftMouseUp:
-            let shortcut = Shortcut(session: session)
-            let popover = NSPopover()
-            popover.behavior = .transient
-            popover.contentSize = shortcut.frame.size
-            popover.contentViewController = .init()
-            popover.contentViewController!.view = shortcut
-            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-            popover.contentViewController!.view.window!.makeKey()
+            NSPopover().show(content: Shortcut(session: session), on: button, edge: .minY)
         default:
             break
         }
