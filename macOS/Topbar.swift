@@ -150,6 +150,10 @@ final class Topbar: NSView {
             .store(in: &subs)
     }
     
+    override func acceptsFirstMouse(for: NSEvent?) -> Bool {
+        true
+    }
+    
     @objc private func change(_ segmented: NSSegmentedControl) {
         guard session.columns.value != segmented.selectedSegment else { return }
         session.columns.value = segmented.selectedSegment
