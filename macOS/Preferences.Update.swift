@@ -16,22 +16,24 @@ extension Preferences {
             let update = NSSegmentedControl(labels: [Interval.hour,
                                                      .hours3,
                                                      .hours6,
-                                                     .day].map(\.title),
+                                                     .hours12].map(\.title),
                                             trackingMode: .selectOne,
                                             target: self,
                                             action: #selector(update))
+            update.translatesAutoresizingMaskIntoConstraints = false
             update.controlSize = .large
             
             let deleteTitle = Text(vibrancy: false)
             deleteTitle.stringValue = "Delete after"
             
-            let delete = NSSegmentedControl(labels: [Interval.hours6,
+            let delete = NSSegmentedControl(labels: [Interval.hours12,
                                                      .day,
                                                      .days3,
                                                      .week].map(\.title),
                                             trackingMode: .selectOne,
                                             target: self,
                                             action: #selector(delete))
+            delete.translatesAutoresizingMaskIntoConstraints = false
             delete.controlSize = .large
             
             [updateTitle,
@@ -54,6 +56,9 @@ extension Preferences {
             
             stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
             stack.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            
+            update.widthAnchor.constraint(equalToConstant: 280).isActive = true
+            delete.widthAnchor.constraint(equalTo: update.widthAnchor).isActive = true
             
             Task {
                 let preferences = await session.cloud.model.preferences
