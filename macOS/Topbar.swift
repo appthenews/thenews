@@ -32,7 +32,7 @@ final class Topbar: NSView {
         segmented.isHidden = true
         addSubview(segmented)
         
-        let delete = Button(symbol: "trash")
+        let delete = Control.Button(symbol: "trash")
         delete.state = .hidden
         delete.toolTip = "Delete article"
         delete
@@ -43,7 +43,7 @@ final class Topbar: NSView {
             .store(in: &subs)
         addSubview(delete)
         
-        let share = Button(symbol: "square.and.arrow.up")
+        let share = Control.Button(symbol: "square.and.arrow.up")
         share.state = .hidden
         share.toolTip = "Share article"
         share
@@ -65,7 +65,7 @@ final class Topbar: NSView {
             .store(in: &subs)
         addSubview(share)
         
-        let bookmark = Button(symbol: "bookmark")
+        let bookmark = Control.Button(symbol: "bookmark")
         bookmark.state = .hidden
         bookmark
             .click
@@ -82,10 +82,9 @@ final class Topbar: NSView {
             .store(in: &subs)
         addSubview(bookmark)
         
-        let open = Control.Main(title: "Article")
+        let open = Control.Prominent(title: "Article", radius: 13)
         open.state = .hidden
         open.toolTip = "Go to article"
-        open.widthAnchor.constraint(equalToConstant: 68).isActive = true
         open
             .click
             .subscribe(session.open)
@@ -93,6 +92,8 @@ final class Topbar: NSView {
         addSubview(open)
         
         segmented.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 7).isActive = true
+        open.widthAnchor.constraint(equalToConstant: 68).isActive = true
+        open.heightAnchor.constraint(equalToConstant: 26).isActive = true
         open.rightAnchor.constraint(equalTo: delete.leftAnchor, constant: -16).isActive = true
         delete.rightAnchor.constraint(equalTo: bookmark.leftAnchor, constant: -14).isActive = true
         bookmark.rightAnchor.constraint(equalTo: share.leftAnchor, constant: -14).isActive = true
