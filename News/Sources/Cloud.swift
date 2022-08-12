@@ -25,8 +25,10 @@ extension Cloud where Output == Archive {
             }
         } catch { }
         
-        model.fetch = .off
-        await publish(model: model)
+        if model.fetch != .off {
+            model.fetch = .off
+            await publish(model: model)
+        }
     }
     
     public func toggle(feed: Feed, value: Bool) async {

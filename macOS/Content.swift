@@ -156,12 +156,6 @@ final class Content: NSVisualEffectView {
                                                               weight: .regular),
                                      .kern: 1,
                                      .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor])
-                    
-                    Task {
-                        await session.cloud.read(item: item)
-                    }
-                    
-                    session.review()
                 } else {
                     header.attributedStringValue = .init()
                     title.attributedStringValue = .init()

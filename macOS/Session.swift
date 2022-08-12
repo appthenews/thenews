@@ -21,7 +21,7 @@ final class Session {
     let font: CurrentValueSubject<CGFloat, Never>
     let reader: CurrentValueSubject<Bool, Never>
     let froob: CurrentValueSubject<Bool, Never>
-    let items: AnyPublisher<[Item], Never>
+    let items = PassthroughSubject<[Item], Never>()
     private var reviewed = false
     private var subs = Set<AnyCancellable>()
     
@@ -35,34 +35,6 @@ final class Session {
         font = .init(UserDefaults.standard.value(forKey: "font") as? CGFloat ?? 2)
         reader = .init(UserDefaults.standard.value(forKey: "reader") as? Bool ?? false)
         froob = .init(Defaults.froob)
-        
-        items = provider
-            .removeDuplicates()
-            .combineLatest(cloud) { provider, model in
-                provider == nil
-                ? []
-                : model
-                    .items(provider: provider!)
-            }
-            .combineLatest(search
-                .removeDuplicates(),
-                           showing
-                .removeDuplicates()) { items, search, showing in
-                    items
-                        .filter { element in
-                            switch showing {
-                            case 0:
-                                return true
-                            case 1:
-                                return element.status == .new || element.link == item.value?.link
-                            default:
-                                return element.status == .bookmarked
-                            }
-                        }
-                        .filter(search: search)
-                        .sorted()
-                }
-                .eraseToAnyPublisher()
         self.item = item
         self.provider = provider
         
@@ -181,9 +153,44 @@ final class Session {
                     .makeKeyAndOrderFront(nil)
             }
             .store(in: &subs)
+        
+        provider
+            .removeDuplicates()
+            .combineLatest(cloud) { provider, model in
+                provider == nil
+                ? []
+                : model
+                    .items(provider: provider!)
+            }
+            .combineLatest(search
+                .removeDuplicates(),
+                           showing
+                .removeDuplicates()) { items, search, showing in
+                    items
+                        .filter { element in
+                            switch showing {
+                            case 0:
+                                return true
+                            case 1:
+                                return element.status == .new || element.link == item.value?.link
+                            default:
+                                return element.status == .bookmarked
+                            }
+                        }
+                        .filter(search: search)
+                        .sorted()
+                }
+                .removeDuplicates()
+                .sink { [weak self] in
+                    self?.items.send($0)
+                }
+                .store(in: &subs)
     }
     
-    func review() {
+    @MainActor func read(item: Item) async {
+        self.item.value = item
+        await cloud.read(item: item)
+        
         #if !DEBUG
         if Defaults.ready && !reviewed {
             SKStoreReviewController.requestReview()

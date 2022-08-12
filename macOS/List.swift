@@ -199,7 +199,11 @@ final class List: NSScrollView {
                     }?
                     .item
             }
-            .subscribe(session.item)
+            .sink { item in
+                Task {
+                    await session.read(item: item)
+                }
+            }
             .store(in: &subs)
         
         session
