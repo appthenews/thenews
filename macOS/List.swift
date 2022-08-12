@@ -30,7 +30,9 @@ final class List: NSScrollView {
         contentView.postsBoundsChangedNotifications = true
         contentView.postsFrameChangedNotifications = true
         drawsBackground = false
-        addTrackingArea(.init(rect: .zero, options: [.mouseEnteredAndExited, .mouseMoved, .activeAlways, .inVisibleRect], owner: self))
+        addTrackingArea(.init(rect: .zero,
+                              options: [.mouseEnteredAndExited, .mouseMoved, .activeAlways, .inVisibleRect],
+                              owner: self))
         
         let clip = CurrentValueSubject<_, Never>(CGRect.zero)
         clip
@@ -224,6 +226,11 @@ final class List: NSScrollView {
                 }
             }
             .store(in: &subs)
+    }
+    
+    override func scrollWheel(with: NSEvent) {
+        super.scrollWheel(with: with)
+        highlight.send(point(with: with))
     }
     
     override func mouseExited(with: NSEvent) {
