@@ -70,18 +70,7 @@ final class Shortcut: NSView {
             .store(in: &subs)
         addSubview(sponsor)
         
-        let flip = Flip()
-        flip.translatesAutoresizingMaskIntoConstraints = false
-        
-        let scroll = NSScrollView()
-        scroll.translatesAutoresizingMaskIntoConstraints = false
-        scroll.documentView = flip
-        scroll.hasVerticalScroller = true
-        scroll.verticalScroller!.controlSize = .mini
-        scroll.drawsBackground = false
-        scroll.scrollerInsets.top = 5
-        scroll.scrollerInsets.bottom = 5
-        scroll.automaticallyAdjustsContentInsets = false
+        let scroll = Scroll()
         scroll.contentView.postsBoundsChangedNotifications = false
         scroll.contentView.postsFrameChangedNotifications = false
         background.addSubview(scroll)
@@ -90,7 +79,7 @@ final class Shortcut: NSView {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.orientation = .vertical
         stack.spacing = 1
-        flip.addSubview(stack)
+        scroll.documentView!.addSubview(stack)
         
         background.topAnchor.constraint(equalTo: topAnchor).isActive = true
         background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
@@ -119,13 +108,10 @@ final class Shortcut: NSView {
         scroll.rightAnchor.constraint(equalTo: background.rightAnchor).isActive = true
         scroll.bottomAnchor.constraint(equalTo: background.bottomAnchor).isActive = true
         
-        flip.topAnchor.constraint(equalTo: scroll.topAnchor).isActive = true
-        flip.leftAnchor.constraint(equalTo: scroll.leftAnchor).isActive = true
-        flip.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
-        flip.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: 20).isActive = true
+        scroll.documentView!.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: 20).isActive = true
         
-        stack.topAnchor.constraint(equalTo: flip.topAnchor, constant: 1).isActive = true
-        stack.leftAnchor.constraint(equalTo: flip.leftAnchor, constant: 1).isActive = true
+        stack.topAnchor.constraint(equalTo: scroll.documentView!.topAnchor, constant: 1).isActive = true
+        stack.leftAnchor.constraint(equalTo: scroll.documentView!.leftAnchor, constant: 1).isActive = true
         stack.widthAnchor.constraint(equalToConstant: width - 2).isActive = true
         
         session

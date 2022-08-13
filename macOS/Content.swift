@@ -23,16 +23,7 @@ final class Content: NSVisualEffectView {
         separator.isHidden = true
         addSubview(separator)
         
-        let flip = Flip()
-        flip.translatesAutoresizingMaskIntoConstraints = false
-        
-        let scroll = NSScrollView()
-        scroll.translatesAutoresizingMaskIntoConstraints = false
-        scroll.documentView = flip
-        scroll.hasVerticalScroller = true
-        scroll.verticalScroller!.controlSize = .mini
-        scroll.drawsBackground = false
-        scroll.automaticallyAdjustsContentInsets = false
+        let scroll = Scroll()
         scroll.isHidden = true
         scroll.contentView.postsBoundsChangedNotifications = true
         scroll.contentView.postsFrameChangedNotifications = false
@@ -40,19 +31,19 @@ final class Content: NSVisualEffectView {
         
         let header = Text(vibrancy: true)
         header.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        flip.addSubview(header)
+        scroll.documentView!.addSubview(header)
         
         let title = Text(vibrancy: true)
         title.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         title.isSelectable = true
         title.allowsEditingTextAttributes = true
-        flip.addSubview(title)
+        scroll.documentView!.addSubview(title)
         
         let description = Text(vibrancy: true)
         description.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         description.isSelectable = true
         description.allowsEditingTextAttributes = true
-        flip.addSubview(description)
+        scroll.documentView!.addSubview(description)
         
         let empty = Vibrant(layer: false)
         addSubview(empty)
@@ -77,19 +68,15 @@ final class Content: NSVisualEffectView {
         scroll.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         scroll.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
-        flip.topAnchor.constraint(equalTo: scroll.topAnchor).isActive = true
-        flip.leftAnchor.constraint(equalTo: scroll.leftAnchor).isActive = true
-        flip.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
-        
-        header.topAnchor.constraint(equalTo: flip.topAnchor, constant: 25).isActive = true
+        header.topAnchor.constraint(equalTo: scroll.documentView!.topAnchor, constant: 25).isActive = true
         header.leftAnchor.constraint(equalTo: title.leftAnchor).isActive = true
         header.rightAnchor.constraint(lessThanOrEqualTo: title.rightAnchor).isActive = true
         
         title.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 5).isActive = true
-        title.leftAnchor.constraint(greaterThanOrEqualTo: flip.leftAnchor, constant: 70).isActive = true
-        title.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -70).isActive = true
+        title.leftAnchor.constraint(greaterThanOrEqualTo: scroll.documentView!.leftAnchor, constant: 70).isActive = true
+        title.rightAnchor.constraint(lessThanOrEqualTo: scroll.documentView!.rightAnchor, constant: -70).isActive = true
         title.widthAnchor.constraint(lessThanOrEqualToConstant: 700).isActive = true
-        title.centerXAnchor.constraint(equalTo: flip.centerXAnchor).isActive = true
+        title.centerXAnchor.constraint(equalTo: scroll.documentView!.centerXAnchor).isActive = true
         let titleWidth = title.widthAnchor.constraint(equalToConstant: 700)
         titleWidth.priority = .defaultLow
         titleWidth.isActive = true
@@ -98,11 +85,11 @@ final class Content: NSVisualEffectView {
         titleLeft.isActive = true
         
         description.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 30).isActive = true
-        description.leftAnchor.constraint(greaterThanOrEqualTo: flip.leftAnchor, constant: 70).isActive = true
-        description.rightAnchor.constraint(lessThanOrEqualTo: flip.rightAnchor, constant: -70).isActive = true
+        description.leftAnchor.constraint(greaterThanOrEqualTo: scroll.documentView!.leftAnchor, constant: 70).isActive = true
+        description.rightAnchor.constraint(lessThanOrEqualTo: scroll.documentView!.rightAnchor, constant: -70).isActive = true
         description.widthAnchor.constraint(lessThanOrEqualToConstant: 700).isActive = true
-        description.bottomAnchor.constraint(equalTo: flip.bottomAnchor, constant: -60).isActive = true
-        description.centerXAnchor.constraint(equalTo: flip.centerXAnchor).isActive = true
+        description.bottomAnchor.constraint(equalTo: scroll.documentView!.bottomAnchor, constant: -60).isActive = true
+        description.centerXAnchor.constraint(equalTo: scroll.documentView!.centerXAnchor).isActive = true
         let descriptionWidth = description.widthAnchor.constraint(equalToConstant: 700)
         descriptionWidth.priority = .defaultLow
         descriptionWidth.isActive = true
