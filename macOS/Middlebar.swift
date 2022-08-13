@@ -163,13 +163,13 @@ final class Middlebar: NSVisualEffectView, NSTextFieldDelegate {
                 switch showing {
                 case 0:
                     title = items.count == 1 ? "article" : "articles"
-                    filter.image.image = .init(systemSymbolName: "line.3.horizontal.decrease.circle", accessibilityDescription: nil)
+                    filter.symbol = "line.3.horizontal.decrease.circle"
                 case 1:
                     title = "not read"
-                    filter.image.image = .init(systemSymbolName: "line.3.horizontal.decrease.circle.fill", accessibilityDescription: nil)
+                    filter.symbol = "line.3.horizontal.decrease.circle.fill"
                 default:
                     title = items.count == 1 ? "bookmark" : "bookmarks"
-                    filter.image.image = .init(systemSymbolName: "line.3.horizontal.decrease.circle.fill", accessibilityDescription: nil)
+                    filter.symbol = "line.3.horizontal.decrease.circle.fill"
                 }
                 
                 string.append(AttributedString(title, attributes: titleAttributes))
