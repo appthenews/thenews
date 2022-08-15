@@ -108,9 +108,9 @@ final class Shortcut: NSView {
         scroll.rightAnchor.constraint(equalTo: background.rightAnchor).isActive = true
         scroll.bottomAnchor.constraint(equalTo: background.bottomAnchor).isActive = true
         
-        scroll.documentView!.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: 20).isActive = true
+        scroll.documentView!.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: 6).isActive = true
         
-        stack.topAnchor.constraint(equalTo: scroll.documentView!.topAnchor, constant: 1).isActive = true
+        stack.topAnchor.constraint(equalTo: scroll.documentView!.topAnchor, constant: 6).isActive = true
         stack.leftAnchor.constraint(equalTo: scroll.documentView!.leftAnchor, constant: 1).isActive = true
         stack.widthAnchor.constraint(equalToConstant: width - 2).isActive = true
         
