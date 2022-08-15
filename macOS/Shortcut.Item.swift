@@ -82,7 +82,11 @@ extension Shortcut {
                         .first { $0 is Window }
                     window?.orderFrontRegardless()
                     session.provider.value = item.feed.provider
-                    session.item.value = item
+                    
+                    Task {
+                        await session.read(item: item)
+                    }
+                    
                     self?.window?.close()
                 }
                 .store(in: &subs)
