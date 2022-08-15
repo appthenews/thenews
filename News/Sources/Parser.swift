@@ -49,9 +49,8 @@ final class Parser: NSObject, XMLParserDelegate {
                                 .whitespacesAndNewlines)
                             .replacingOccurrences(of: "\n ", with: "\n")
                             .replacingOccurrences(of: " \n", with: "\n")
-                            .replacingOccurrences(of: "\n\n",
-                                                  with: "\n",
-                                                  options: .caseInsensitive))
+                            .replacingOccurrences(of: "\n\n\n", with: "\n")
+                            .replacingOccurrences(of: "\n\n", with: "\n"))
             }
             
             self?.fail = { [weak self] in
