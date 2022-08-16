@@ -33,15 +33,7 @@ extension List {
         var reader = false {
             didSet {
                 guard reader != oldValue else { return }
-                
-                NSApp
-                    .effectiveAppearance
-                    .performAsCurrentDrawingAppearance {
-                        recent.fillColor = reader ? NSColor(named: "Text")!.cgColor : NSColor.controlAccentColor.cgColor
-                        bookmark.symbolConfiguration = bookmark
-                            .symbolConfiguration!
-                            .applying(.init(hierarchicalColor: reader ? .init(named: "Text")!: .tertiaryLabelColor))
-                    }
+                updateLayer()
             }
         }
         
@@ -78,7 +70,6 @@ extension List {
             recent.isHidden = true
             recent.frame = .init(x: 268, y: 0, width: 14, height: 14)
             recent.path = .init(ellipseIn: .init(x: 3, y: 3, width: 8, height: 8), transform: nil)
-            recent.fillColor = NSColor.controlAccentColor.cgColor
             self.recent = recent
             
             let bookmark = NSImageView(image: .init(systemSymbolName: "bookmark.fill", accessibilityDescription: nil) ?? .init())
@@ -113,6 +104,11 @@ extension List {
                     default:
                         vibrant.layer!.backgroundColor = .clear
                     }
+                    
+                    recent.fillColor = reader ? NSColor(named: "Text")!.cgColor : NSColor.controlAccentColor.cgColor
+                    bookmark.symbolConfiguration = bookmark
+                        .symbolConfiguration!
+                        .applying(.init(hierarchicalColor: reader ? .init(named: "Text")!: .tertiaryLabelColor))
                 }
         }
         

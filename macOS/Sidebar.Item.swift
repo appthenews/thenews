@@ -4,8 +4,9 @@ import News
 
 extension Sidebar {
     final class Item: Control {
-        var color = NSColor.labelColor {
+        var reader = false {
             didSet {
+                guard reader != oldValue else { return }
                 updateLayer()
             }
         }
@@ -80,11 +81,21 @@ extension Sidebar {
             NSApp
                 .effectiveAppearance
                 .performAsCurrentDrawingAppearance {
+                    let color = reader ? NSColor.labelColor : .init(named: "Text")!
+                    
                     switch state {
                     case .highlighted, .pressed, .selected:
                         vibrant.layer!.backgroundColor = color.withAlphaComponent(0.07).cgColor
                     default:
                         vibrant.layer!.backgroundColor = .clear
+                    }
+                    
+                    if reader {
+                        recent.layer!.backgroundColor = NSColor(named: "Text")!.cgColor
+                        count.textColor = .init(named: "Background")!
+                    } else {
+                        recent.layer!.backgroundColor = NSColor.controlAccentColor.cgColor
+                        count.textColor = .white
                     }
                 }
         }

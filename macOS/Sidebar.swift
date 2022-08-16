@@ -179,38 +179,25 @@ final class Sidebar: NSVisualEffectView {
         
         session
             .reader
-            .sink { [weak self] in
-                if $0 {
+            .sink { [weak self] reader in
+                if reader {
                     self?.state = .inactive
                     self?.material = .underPageBackground
                     background.isHidden = false
-                    
-                    stack
-                        .views
-                        .compactMap {
-                            $0 as? Item
-                        }
-                        .forEach {
-                            $0.color = .init(named: "Text")!
-                            $0.recent.layer!.backgroundColor = NSColor(named: "Text")!.cgColor
-                            $0.count.textColor = .init(named: "Background")!
-                        }
                 } else {
                     self?.state = .active
                     self?.material = .hudWindow
                     background.isHidden = true
-                    
-                    stack
-                        .views
-                        .compactMap {
-                            $0 as? Item
-                        }
-                        .forEach {
-                            $0.color = .labelColor
-                            $0.recent.layer!.backgroundColor = NSColor.controlAccentColor.cgColor
-                            $0.count.textColor = .white
-                        }
                 }
+                
+                stack
+                    .views
+                    .compactMap {
+                        $0 as? Item
+                    }
+                    .forEach {
+                        $0.reader = reader
+                    }
             }
             .store(in: &subs)
     }
