@@ -24,7 +24,7 @@ struct Recents: View {
                     }
             }
         }
-        .animation(.easeInOut(duration: 0.4), value: items)
+        .animation(.easeOut(duration: 0.4), value: items)
         .navigationTitle("Recents")
         .navigationBarTitleDisplayMode(.large)
         .background(session.reader ? .init("Background") : Color.clear)

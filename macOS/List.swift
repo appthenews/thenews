@@ -296,7 +296,7 @@ final class List: NSScrollView {
         if animated && contentView.layer!.animation(forKey: "bounds") == nil {
             contentView.layer!.add({
                 $0.duration = 0.2
-                $0.timingFunction = .init(name: .easeInEaseOut)
+                $0.timingFunction = .init(name: .easeOut)
                 $0.isRemovedOnCompletion = true
                 return $0
             } (CABasicAnimation(keyPath: "bounds")), forKey: "bounds")

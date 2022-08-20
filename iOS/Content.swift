@@ -28,7 +28,7 @@ struct Content: View {
                     .padding(.horizontal, 24)
                 }
                 .onChange(of: session.item) { _ in
-                    withAnimation(.easeInOut(duration: 0.3)) {
+                    withAnimation(.easeOut(duration: 0.3)) {
                         proxy.scrollTo("header", anchor: .center)
                     }
                 }
@@ -99,12 +99,12 @@ struct Content: View {
             }
         }
         button(symbol: "chevron.up", size: 18) {
-            withAnimation(.easeInOut(duration: 0.35)) {
+            withAnimation(.easeOut(duration: 0.35)) {
                 session.previous()
             }
         }
         button(symbol: "chevron.down", size: 18) {
-            withAnimation(.easeInOut(duration: 0.35)) {
+            withAnimation(.easeOut(duration: 0.35)) {
                 session.next()
             }
         }
