@@ -85,17 +85,23 @@ final class Session {
             .removeDuplicates {
                 $0.0 == $1.0
             }
-            .sink { _, items in
+            .sink { [weak self] _, items in
                 if let current = item.value?.link {
                     items
                         .firstIndex {
                             $0.link == current
                         }
                         .map { index in
-                            item.value = items[index < items.count - 1 ? index + 1 : 0]
+                            let item = items[index < items.count - 1 ? index + 1 : 0]
+                            
+                            Task { [weak self] in
+                                await self?.read(item: item)
+                            }
                         }
-                } else {
-                    item.value = items.first
+                } else if let item = items.first {
+                    Task { [weak self] in
+                        await self?.read(item: item)
+                    }
                 }
             }
             .store(in: &subs)
@@ -108,17 +114,23 @@ final class Session {
             .removeDuplicates {
                 $0.0 == $1.0
             }
-            .sink { _, items in
+            .sink { [weak self] _, items in
                 if let current = item.value?.link {
                     items
                         .firstIndex {
                             $0.link == current
                         }
                         .map { index in
-                            item.value = items[index > 0 ? index - 1 : items.count - 1]
+                            let item = items[index > 0 ? index - 1 : items.count - 1]
+                            
+                            Task { [weak self] in
+                                await self?.read(item: item)
+                            }
                         }
-                } else {
-                    item.value = items.last
+                } else if let item = items.last {
+                    Task { [weak self] in
+                        await self?.read(item: item)
+                    }
                 }
             }
             .store(in: &subs)

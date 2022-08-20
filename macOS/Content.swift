@@ -84,7 +84,7 @@ final class Content: NSVisualEffectView {
         titleLeft.priority = .defaultLow
         titleLeft.isActive = true
         
-        description.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 50).isActive = true
+        description.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 10).isActive = true
         description.leftAnchor.constraint(greaterThanOrEqualTo: scroll.documentView!.leftAnchor, constant: 70).isActive = true
         description.rightAnchor.constraint(lessThanOrEqualTo: scroll.documentView!.rightAnchor, constant: -70).isActive = true
         description.widthAnchor.constraint(lessThanOrEqualToConstant: 700).isActive = true
