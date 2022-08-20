@@ -2,27 +2,17 @@ import AppKit
 import Coffee
 import Combine
 
-final class Purchased: NSWindow {
+final class Purchased: Notify {
     private var subs = Set<AnyCancellable>()
     
     init() {
-        super.init(contentRect: .init(x: 0, y: 0, width: 300, height: 300),
-                   styleMask: [.titled, .fullSizeContentView], backing: .buffered, defer: true)
-        animationBehavior = .alertPanel
-        isReleasedWhenClosed = false
-        titlebarAppearsTransparent = true
-        
-        let content = NSVisualEffectView()
-        content.state = .active
-        content.material = .hudWindow
-        contentView = content
-        center()
+        super.init(size: .init(width: 300, height: 300))
         
         let image = NSImageView(image: .init(systemSymbolName: "arrow.up.heart.fill", accessibilityDescription: nil) ?? .init())
         image.translatesAutoresizingMaskIntoConstraints = false
         image.symbolConfiguration = .init(pointSize: 60, weight: .ultraLight)
             .applying(.init(hierarchicalColor: .controlAccentColor))
-        content.addSubview(image)
+        contentView!.addSubview(image)
         
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
@@ -43,7 +33,7 @@ final class Purchased: NSWindow {
         
         let text = Text(vibrancy: true)
         text.attributedStringValue = string
-        content.addSubview(text)
+        contentView!.addSubview(text)
         
         let accept = Control.Prominent(title: "OK")
         accept
@@ -52,29 +42,16 @@ final class Purchased: NSWindow {
                 self?.close()
             }
             .store(in: &subs)
-        content.addSubview(accept)
+        contentView!.addSubview(accept)
         
-        image.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
-        image.topAnchor.constraint(equalTo: content.topAnchor, constant: 60).isActive = true
+        image.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
+        image.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 60).isActive = true
         
         text.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 20).isActive = true
-        text.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
+        text.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         
-        accept.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -50).isActive = true
-        accept.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
+        accept.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -50).isActive = true
+        accept.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         accept.widthAnchor.constraint(equalToConstant: 120).isActive = true
-    }
-    
-    override func keyDown(with: NSEvent) {
-        switch with.keyCode {
-        case 36:
-            close()
-        default:
-            super.keyDown(with: with)
-        }
-    }
-    
-    override func cancelOperation(_: Any?) {
-        close()
     }
 }
