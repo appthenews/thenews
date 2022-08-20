@@ -135,12 +135,11 @@ final class Content: NSVisualEffectView {
                                                               weight: .medium),
                                      .kern: 1,
                                      .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor])
-                    
                     description.attributedStringValue = .init(
                         string: item.description,
                         attributes: [.font: NSFont.systemFont(ofSize:
                                                                 NSFont.preferredFont(forTextStyle: .body).pointSize + font,
-                                                              weight: .regular),
+                                                              weight: .init(rawValue: -0.15)),
                                      .kern: 1,
                                      .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor])
                 } else {
