@@ -97,7 +97,7 @@ extension Preferences {
                 case 2:
                     await session.cloud.fetch(interval: .hours6)
                 default:
-                    await session.cloud.fetch(interval: .day)
+                    await session.cloud.fetch(interval: .hours12)
                 }
             }
         }
@@ -106,7 +106,7 @@ extension Preferences {
             Task {
                 switch segmented.selectedSegment {
                 case 0:
-                    await session.cloud.clean(interval: .hours6)
+                    await session.cloud.clean(interval: .hours12)
                 case 1:
                     await session.cloud.clean(interval: .day)
                 case 2:
