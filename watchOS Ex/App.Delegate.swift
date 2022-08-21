@@ -11,13 +11,5 @@ extension App {
         func didReceiveRemoteNotification(_: [AnyHashable : Any]) async -> WKBackgroundFetchResult {
             await session?.cloud.notified == true ? .newData : .noData
         }
-        
-        func didRegisterForRemoteNotifications(withDeviceToken: Data) {
-            
-        }
-        
-        func didFailToRegisterForRemoteNotificationsWithError(_: Error) {
-            
-        }
     }
 }
