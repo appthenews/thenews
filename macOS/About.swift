@@ -82,6 +82,7 @@ final class About: NSWindow {
         accept.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -50).isActive = true
         accept.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         accept.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        accept.heightAnchor.constraint(equalToConstant: 34).isActive = true
     }
     
     override func keyDown(with: NSEvent) {

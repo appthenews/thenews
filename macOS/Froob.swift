@@ -58,6 +58,7 @@ final class Froob: NSView {
         title.widthAnchor.constraint(lessThanOrEqualToConstant: 200).isActive = true
         
         control.widthAnchor.constraint(equalToConstant: 160).isActive = true
+        control.heightAnchor.constraint(equalToConstant: 34).isActive = true
         control.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 10).isActive = true
         control.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         

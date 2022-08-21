@@ -122,6 +122,7 @@ final class Sponsor: NSWindow {
         purchase.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 20).isActive = true
         purchase.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
         purchase.widthAnchor.constraint(equalToConstant: 240).isActive = true
+        purchase.heightAnchor.constraint(equalToConstant: 34).isActive = true
         
         disclaimer.topAnchor.constraint(equalTo: purchase.bottomAnchor, constant: 20).isActive = true
         disclaimer.centerXAnchor.constraint(equalTo: content.centerXAnchor).isActive = true
