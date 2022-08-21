@@ -72,7 +72,7 @@ final class Content: NSVisualEffectView {
         header.leftAnchor.constraint(equalTo: title.leftAnchor).isActive = true
         header.rightAnchor.constraint(lessThanOrEqualTo: title.rightAnchor).isActive = true
         
-        title.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 5).isActive = true
+        title.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10).isActive = true
         title.leftAnchor.constraint(greaterThanOrEqualTo: scroll.documentView!.leftAnchor, constant: 70).isActive = true
         title.rightAnchor.constraint(lessThanOrEqualTo: scroll.documentView!.rightAnchor, constant: -70).isActive = true
         title.widthAnchor.constraint(lessThanOrEqualToConstant: 700).isActive = true

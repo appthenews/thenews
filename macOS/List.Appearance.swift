@@ -11,7 +11,7 @@ extension List {
         let provider = NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize, weight: .regular)
         let date = NSFont.systemFont(ofSize: NSFont.preferredFont(forTextStyle: .callout).pointSize, weight: .light)
         let paragraph: NSParagraphStyle
-        let spacing = NSAttributedString(string: "\n\n", attributes: [.font: NSFont.systemFont(ofSize: 2, weight: .regular)])
+        let spacing = NSAttributedString(string: "\n\n", attributes: [.font: NSFont.systemFont(ofSize: 5, weight: .regular)])
         
         init() {
             let paragraph = NSMutableParagraphStyle()
