@@ -84,7 +84,7 @@ final class Content: NSVisualEffectView {
         titleLeft.priority = .defaultLow
         titleLeft.isActive = true
         
-        description.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 10).isActive = true
+        description.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 24).isActive = true
         description.leftAnchor.constraint(greaterThanOrEqualTo: scroll.documentView!.leftAnchor, constant: 70).isActive = true
         description.rightAnchor.constraint(lessThanOrEqualTo: scroll.documentView!.rightAnchor, constant: -70).isActive = true
         description.widthAnchor.constraint(lessThanOrEqualToConstant: 700).isActive = true
@@ -131,14 +131,14 @@ final class Content: NSVisualEffectView {
                     title.attributedStringValue = .init(
                         string: item.title,
                         attributes: [.font: NSFont.systemFont(ofSize:
-                                                                NSFont.preferredFont(forTextStyle: .title2).pointSize + font,
+                                                                NSFont.preferredFont(forTextStyle: .title1).pointSize + font,
                                                               weight: .medium),
                                      .kern: 1,
                                      .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor])
                     description.attributedStringValue = .init(
                         string: item.description,
                         attributes: [.font: NSFont.systemFont(ofSize:
-                                                                NSFont.preferredFont(forTextStyle: .body).pointSize + font,
+                                                                NSFont.preferredFont(forTextStyle: .title3).pointSize + font,
                                                               weight: .init(rawValue: -0.15)),
                                      .kern: 1,
                                      .foregroundColor: reader ? .init(named: "Text")! : NSColor.labelColor])
