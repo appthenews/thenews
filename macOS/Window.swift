@@ -3,10 +3,8 @@ import Combine
 
 final class Window: NSWindow {
     private var subs = Set<AnyCancellable>()
-    private let session: Session
     
     init(session: Session) {
-        self.session = session
         super.init(contentRect: .init(x: 0,
                                       y: 0,
                                       width: 980,
