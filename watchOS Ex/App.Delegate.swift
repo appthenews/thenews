@@ -1,11 +1,11 @@
 import WatchKit
 
 extension App {
-    final class Delegate: NSObject, WKExtensionDelegate {
+    final class Delegate: NSObject, WKApplicationDelegate {
         weak var session: Session?
         
         func applicationDidFinishLaunching() {
-            WKExtension.shared().registerForRemoteNotifications()
+            WKApplication.shared().registerForRemoteNotifications()
         }
         
         func didReceiveRemoteNotification(_: [AnyHashable : Any]) async -> WKBackgroundFetchResult {

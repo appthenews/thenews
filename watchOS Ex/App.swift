@@ -6,7 +6,7 @@ import News
     @State private var feeds = false
     @State private var selection = Int()
     @Environment(\.scenePhase) private var phase
-    @WKExtensionDelegateAdaptor(Delegate.self) private var delegate
+    @WKApplicationDelegateAdaptor(Delegate.self) private var delegate
     
     var body: some Scene {
         WindowGroup {
