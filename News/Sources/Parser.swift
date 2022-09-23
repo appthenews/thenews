@@ -35,6 +35,9 @@ final class Parser: NSObject, XMLParserDelegate {
                 .replacingOccurrences(of: "</li>",
                                       with: "\n",
                                       options: .caseInsensitive)
+                .replacingOccurrences(of: "  ",
+                                      with: " ",
+                                      options: .caseInsensitive)
             
             let xml = XMLParser(data: .init(("<xml>" + clean + "</xml>").utf8))
             self?.finished = { [weak self] in
