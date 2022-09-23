@@ -10,7 +10,7 @@ extension Settings {
         var body: some View {
             List {
                 Picker("Refresh every", selection: $fetch) {
-                    ForEach([Interval.hour, .hours3, .hours6, .day], id: \.self) {
+                    ForEach([Interval.hour, .hours3, .hours6, .hours12], id: \.self) {
                         Text(verbatim: $0.title)
                             .tag($0)
                     }
@@ -22,7 +22,7 @@ extension Settings {
                 }
                 
                 Picker("Delete after", selection: $clean) {
-                    ForEach([Interval.hours6, .day, .days3, .week], id: \.self) {
+                    ForEach([Interval.hours12, .day, .days3, .week], id: \.self) {
                         Text(verbatim: $0.title)
                             .tag($0)
                     }
