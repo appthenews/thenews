@@ -44,6 +44,7 @@
 		CE9DBD842893F26C0039EA11 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE9DBD832893F26C0039EA11 /* Media.xcassets */; };
 		CE9DBD852893F26C0039EA11 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE9DBD832893F26C0039EA11 /* Media.xcassets */; };
 		CE9DBD872893F4090039EA11 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9DBD862893F4090039EA11 /* Loading.swift */; };
+		CEA5425328DDABE50030B177 /* News in Frameworks */ = {isa = PBXBuildFile; productRef = CEFE902628DDABC100318882 /* News */; };
 		CEAA2673289D4B1000897FB3 /* Coffee in Frameworks */ = {isa = PBXBuildFile; productRef = CEAA2672289D4B1000897FB3 /* Coffee */; };
 		CEAC22B1289169F10099A162 /* Listed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC22B0289169F10099A162 /* Listed.swift */; };
 		CEAC22B3289172470099A162 /* Froob.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC22B2289172470099A162 /* Froob.swift */; };
@@ -231,6 +232,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEA5425328DDABE50030B177 /* News in Frameworks */,
 				CEE49958289A84B600C4C9B9 /* CloudKit.framework in Frameworks */,
 				CEE4995A289A85F300C4C9B9 /* News in Frameworks */,
 			);
@@ -652,7 +654,6 @@
 				CURRENT_PROJECT_VERSION = "$(MARKETING_VERSION)";
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -702,7 +703,6 @@
 				CURRENT_PROJECT_VERSION = "$(MARKETING_VERSION)";
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = fast;
