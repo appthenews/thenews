@@ -51,7 +51,7 @@ extension List {
         private weak var separator: Separator!
         
         required init?(coder: NSCoder) { nil }
-        required init() {
+        init() {
             let vibrant = Vibrant(layer: true)
             vibrant.translatesAutoresizingMaskIntoConstraints = true
             vibrant.frame = .init(x: 0, y: 0, width: 290, height: 0)
