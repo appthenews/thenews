@@ -29,7 +29,7 @@ final class XML: NSObject, XMLParserDelegate {
                 
                 for item in self.completed {
                     guard
-                        let raw = item["description"],
+                        let raw = item["content:encoded"] ?? item["description"],
                         let description = try? await Parser(html: raw).result,
                         let title = item["title"]?.max8,
                         let pubDate = item["pubDate"],
@@ -38,7 +38,7 @@ final class XML: NSObject, XMLParserDelegate {
                     else { continue }
                     self.items.insert(.init(feed: self.feed,
                                             title: title,
-                                            description: description.replacingOccurrences(of: "\n", with: "\n\n"),
+                                            description: description.replacingOccurrences(of: ".\n", with: ".\n\n"),
                                             link: link,
                                             date: date,
                                             synched: .now,
