@@ -48,6 +48,14 @@ On Wednesday the inquest was told Copeland’s family waited for hours in the Mo
 Sign up to receive an email with the top stories from Guardian Australia every morning
 Continue reading...
 """, result)
+        
+        string = """
+All passenger flights were cancelled at Berlin Brandenburg airport (BER) on Wednesday, as staff walked out in a dispute over\r\nhigher pay.
+"""
+        result = try await Parser(html: string).result
+        XCTAssertEqual("""
+All passenger flights were cancelled at Berlin Brandenburg airport (BER) on Wednesday, as staff walked out in a dispute over higher pay.
+""", result)
     }
 }
 

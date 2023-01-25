@@ -11,6 +11,7 @@ final class Parser: NSObject, XMLParserDelegate {
         
         result = try await withUnsafeThrowingContinuation { [weak self] continuation in
             let clean = html
+                .replacingOccurrences(of: "\r\n", with: " ")
                 .replacingOccurrences(of: "<br><br>",
                                       with: "<br>",
                                       options: .caseInsensitive)
